@@ -1,6 +1,4 @@
 import { useState, useEffect } from 'react'
-import type { Session } from '@supabase/supabase-js'
-import { supabase } from '../lib/supabase'
 import { usePlayer, useSeedPlayer } from '../hooks/usePlayer'
 import { useDailyReset } from '../hooks/useDailyReset'
 
@@ -18,11 +16,10 @@ import HPBar from '../components/player/HPBar'
 import ManaBar from '../components/player/ManaBar'
 
 interface Props {
-  session: Session
+  userId: string
 }
 
-export default function Dashboard({ session }: Props) {
-  const userId = session.user.id
+export default function Dashboard({ userId }: Props) {
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null)
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
 
@@ -32,11 +29,10 @@ export default function Dashboard({ session }: Props) {
   // Daily reset runs once per session per day
   useDailyReset(userId)
 
-  // Seed player on first login
+  // Seed player row + default abilities + shop items on first ever load
   useEffect(() => {
     if (!player && !playerLoading) {
-      const name = session.user.user_metadata?.name as string | undefined
-      seedPlayer.mutate(name || 'Hero')
+      seedPlayer.mutate('Hero')
     }
   }, [player, playerLoading]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -46,10 +42,6 @@ export default function Dashboard({ session }: Props) {
     window.addEventListener('resize', handler)
     return () => window.removeEventListener('resize', handler)
   }, [])
-
-  async function handleLogout() {
-    await supabase.auth.signOut()
-  }
 
   if (playerLoading || !player) {
     return (
@@ -76,12 +68,6 @@ export default function Dashboard({ session }: Props) {
               <ManaBar mana={player.mana} maxMana={player.max_mana} />
             </div>
             <GoldCounter gold={player.gold} compact />
-            <button
-              onClick={handleLogout}
-              className="pixel-btn pixel-btn-danger pixel-btn-xs flex-shrink-0"
-            >
-              ⏻
-            </button>
           </div>
         </div>
 
@@ -116,7 +102,6 @@ export default function Dashboard({ session }: Props) {
         style={{ width: 240 }}
       >
         <div className="p-3 flex flex-col gap-4 h-full">
-          {/* Logo */}
           <div className="font-pixel text-pixel-xs text-rpg-gold text-center py-2 border-b-2 border-rpg-border leading-relaxed">
             ⚔ RPG HUB ⚔
           </div>
@@ -124,14 +109,7 @@ export default function Dashboard({ session }: Props) {
           <PlayerPanel player={player} />
           <AbilityGrid userId={userId} />
 
-          {/* Spacer + logout */}
           <div className="flex-1" />
-          <button
-            onClick={handleLogout}
-            className="pixel-btn pixel-btn-danger pixel-btn-sm w-full"
-          >
-            LOGOUT
-          </button>
         </div>
       </aside>
 
