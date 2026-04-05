@@ -1,0 +1,392 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   GLOBAL RESET & BASE
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  image-rendering: pixelated;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #0d0d0d;
+  color: #e2e8f0;
+  font-family: 'VT323', monospace;
+  font-size: 18px;
+  line-height: 1.4;
+  /* Subtle pixel-grid scanline texture */
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(0, 0, 0, 0.12) 3px,
+      rgba(0, 0, 0, 0.12) 4px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 3px,
+      rgba(0, 0, 0, 0.06) 3px,
+      rgba(0, 0, 0, 0.06) 4px
+    );
+  background-size: 4px 4px;
+  /* disable smooth scrolling — pixel games are snappy */
+  scroll-behavior: auto;
+}
+
+/* Pixel font for headings/labels */
+.font-pixel {
+  font-family: 'Press Start 2P', monospace;
+}
+
+/* Body font */
+.font-body {
+  font-family: 'VT323', monospace;
+}
+
+/* ============================================================
+   PIXEL PANEL — NES/SNES double-border window effect
+   ============================================================ */
+.pixel-panel {
+  background-color: #16213e;
+  border: 3px solid #2a2a5e;
+  box-shadow:
+    inset -3px -3px 0px #0a0a1a,
+    inset 3px 3px 0px #3a3a7e,
+    0 0 0 1px #0a0a1a;
+  position: relative;
+}
+
+.pixel-panel-gold {
+  background-color: #1a1500;
+  border: 3px solid #92400e;
+  box-shadow:
+    inset -3px -3px 0px #0a0800,
+    inset 3px 3px 0px #d97706,
+    0 0 0 1px #0a0800;
+}
+
+.pixel-panel-crimson {
+  background-color: #1a0000;
+  border: 3px solid #7f1d1d;
+  box-shadow:
+    inset -3px -3px 0px #0a0000,
+    inset 3px 3px 0px #dc2626,
+    0 0 0 1px #0a0000;
+}
+
+/* ============================================================
+   PIXEL BUTTONS
+   ============================================================ */
+.pixel-btn {
+  display: inline-block;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  padding: 8px 12px;
+  border-bottom: 4px solid rgba(0, 0, 0, 0.6);
+  border-right: 3px solid rgba(0, 0, 0, 0.4);
+  user-select: none;
+  transition: none;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.pixel-btn:active:not(:disabled) {
+  border-bottom-width: 0;
+  border-right-width: 0;
+  transform: translate(2px, 2px);
+}
+
+.pixel-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pixel-btn-primary {
+  background-color: #2a2a8e;
+  color: #e2e8f0;
+}
+.pixel-btn-primary:hover:not(:disabled) { background-color: #3a3aae; }
+
+.pixel-btn-success {
+  background-color: #15803d;
+  color: #dcfce7;
+}
+.pixel-btn-success:hover:not(:disabled) { background-color: #16a34a; }
+
+.pixel-btn-danger {
+  background-color: #991b1b;
+  color: #fee2e2;
+}
+.pixel-btn-danger:hover:not(:disabled) { background-color: #b91c1c; }
+
+.pixel-btn-gold {
+  background-color: #92400e;
+  color: #fef3c7;
+}
+.pixel-btn-gold:hover:not(:disabled) { background-color: #b45309; }
+
+.pixel-btn-purple {
+  background-color: #6b21a8;
+  color: #f3e8ff;
+}
+.pixel-btn-purple:hover:not(:disabled) { background-color: #7e22ce; }
+
+.pixel-btn-sm {
+  font-size: 8px;
+  padding: 6px 10px;
+  border-bottom-width: 3px;
+}
+
+.pixel-btn-xs {
+  font-size: 7px;
+  padding: 4px 8px;
+  border-bottom-width: 2px;
+}
+
+/* ============================================================
+   HP / MANA / PROGRESS BARS
+   ============================================================ */
+.pixel-bar-track {
+  background-color: #0a0a1a;
+  border: 2px solid #1a1a3e;
+  box-shadow: inset 1px 1px 0px rgba(0,0,0,0.8);
+  overflow: hidden;
+  display: block;
+}
+
+.pixel-bar-fill {
+  height: 100%;
+  transition: none;
+  display: block;
+}
+
+.pixel-bar-hp    { background-color: #dc2626; }
+.pixel-bar-mana  { background-color: #2563eb; }
+.pixel-bar-xp    { background-color: #22c55e; }
+.pixel-bar-gold  { background-color: #f59e0b; }
+
+/* Segmented bar effect */
+.pixel-bar-segmented {
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent calc(10% - 2px),
+    rgba(0,0,0,0.3) calc(10% - 2px),
+    rgba(0,0,0,0.3) 10%
+  );
+}
+
+/* ============================================================
+   SECTION HEADERS — RPG chapter title banner
+   ============================================================ */
+.section-header {
+  background: linear-gradient(90deg, #1a1a2e 0%, #2a2a5e 50%, #1a1a2e 100%);
+  border-top: 2px solid #3a3a7e;
+  border-bottom: 2px solid #3a3a7e;
+  padding: 8px 16px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 11px;
+  color: #e2e8f0;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  position: relative;
+}
+
+.section-header::before,
+.section-header::after {
+  content: '◆';
+  color: #fbbf24;
+  margin: 0 8px;
+  font-size: 10px;
+}
+
+/* ============================================================
+   DIFFICULTY GEMS
+   ============================================================ */
+.gem {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  transform: rotate(45deg);
+  box-shadow: inset -2px -2px 0px rgba(0,0,0,0.4), inset 1px 1px 0px rgba(255,255,255,0.2);
+}
+.gem-1 { background-color: #6b7280; } /* grey */
+.gem-2 { background-color: #16a34a; } /* green */
+.gem-3 { background-color: #2563eb; } /* blue */
+.gem-4 { background-color: #7e22ce; } /* purple */
+.gem-5 { background-color: #d97706; } /* gold */
+
+/* ============================================================
+   PIXEL CHECKBOX
+   ============================================================ */
+.pixel-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #3a3a7e;
+  background-color: #0d0d0d;
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.pixel-checkbox:checked {
+  background-color: #22c55e;
+  border-color: #15803d;
+}
+
+.pixel-checkbox:checked::after {
+  content: '✓';
+  position: absolute;
+  top: -3px;
+  left: 1px;
+  font-size: 12px;
+  color: #000;
+  font-family: monospace;
+  font-weight: bold;
+}
+
+/* ============================================================
+   PIXEL INPUTS
+   ============================================================ */
+.pixel-input {
+  background-color: #0d0d0d;
+  border: 2px solid #2a2a5e;
+  color: #e2e8f0;
+  font-family: 'VT323', monospace;
+  font-size: 18px;
+  padding: 6px 10px;
+  outline: none;
+  width: 100%;
+  box-shadow: inset 2px 2px 0px rgba(0,0,0,0.5);
+}
+
+.pixel-input:focus {
+  border-color: #4a4aae;
+  box-shadow: inset 2px 2px 0px rgba(0,0,0,0.5), 0 0 0 1px #4a4aae;
+}
+
+.pixel-select {
+  background-color: #0d0d0d;
+  border: 2px solid #2a2a5e;
+  color: #e2e8f0;
+  font-family: 'VT323', monospace;
+  font-size: 18px;
+  padding: 6px 10px;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23e2e8f0'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 30px;
+}
+
+.pixel-select:focus {
+  border-color: #4a4aae;
+}
+
+/* ============================================================
+   ITEM / ABILITY CARDS (inventory slot look)
+   ============================================================ */
+.inventory-slot {
+  background-color: #0d0d1a;
+  border: 3px solid #2a2a5e;
+  box-shadow:
+    inset -2px -2px 0px #0a0a10,
+    inset 2px 2px 0px #2a2a4e;
+  position: relative;
+}
+
+.inventory-slot:hover {
+  border-color: #4a4a9e;
+  box-shadow:
+    inset -2px -2px 0px #0a0a10,
+    inset 2px 2px 0px #4a4a9e;
+}
+
+/* ============================================================
+   KO OVERLAY
+   ============================================================ */
+.ko-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(139, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.ko-text {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(32px, 8vw, 80px);
+  color: #fff;
+  text-shadow: 6px 6px 0px #000, -2px -2px 0px #000;
+  animation: koFlash 0.4s steps(1) infinite;
+}
+
+@keyframes koFlash {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ============================================================
+   PIXEL AVATAR (CSS pixel art sprite)
+   ============================================================ */
+.pixel-avatar {
+  width: 64px;
+  height: 64px;
+  position: relative;
+  image-rendering: pixelated;
+}
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #0d0d0d; }
+::-webkit-scrollbar-thumb { background: #2a2a5e; border: 1px solid #0d0d0d; }
+::-webkit-scrollbar-thumb:hover { background: #3a3a7e; }
+
+/* ============================================================
+   UTILITY
+   ============================================================ */
+.overdue-glow {
+  border-color: #dc2626 !important;
+  box-shadow: 0 0 0 1px #dc2626 !important;
+}
+
+.completed-dim {
+  opacity: 0.45;
+  text-decoration: line-through;
+}
+
+.armed-glow {
+  border-color: #f59e0b !important;
+  box-shadow: 0 0 0 1px #f59e0b !important;
+}
+
+.notice-board {
+  background: linear-gradient(135deg, #1a1400 0%, #2a1f00 100%);
+  border: 3px solid #92400e;
+  box-shadow:
+    inset -2px -2px 0px #0a0800,
+    inset 2px 2px 0px #d97706,
+    0 0 0 1px #0a0800;
+}

@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" shape-rendering="crispEdges">
+  <!-- Background -->
+  <rect width="512" height="512" fill="#0d0d0d"/>
+  <!-- Outer border -->
+  <rect x="16" y="16" width="480" height="480" fill="none" stroke="#2a2a5e" stroke-width="8"/>
+  <rect x="24" y="24" width="464" height="464" fill="none" stroke="#3a3a7e" stroke-width="4"/>
+
+  <!-- Shield body -->
+  <rect x="160" y="80" width="192" height="240" fill="#2d1b69"/>
+  <!-- Shield bottom point -->
+  <polygon points="160,320 256,420 352,320" fill="#2d1b69"/>
+  <!-- Shield highlight -->
+  <rect x="168" y="88" width="176" height="4" fill="#4a3a9e"/>
+  <!-- Shield border -->
+  <rect x="156" y="76" width="200" height="4" fill="#fbbf24"/>
+  <rect x="156" y="76" width="4" height="248" fill="#fbbf24"/>
+  <rect x="352" y="76" width="4" height="248" fill="#fbbf24"/>
+
+  <!-- Sword through shield (horizontal) -->
+  <rect x="96" y="236" width="320" height="40" fill="#94a3b8"/>
+  <!-- Sword crossguard -->
+  <rect x="224" y="196" width="64" height="120" fill="#d97706"/>
+  <!-- Sword blade vertical -->
+  <rect x="240" y="60" width="32" height="232" fill="#e2e8f0"/>
+  <!-- Sword tip -->
+  <polygon points="240,60 256,24 272,60" fill="#e2e8f0"/>
+  <!-- Sword grip -->
+  <rect x="244" y="292" width="24" height="100" fill="#92400e"/>
+  <!-- Sword pommel -->
+  <rect x="236" y="392" width="40" height="32" fill="#d97706"/>
+
+  <!-- Stars decoration -->
+  <rect x="108" y="108" width="12" height="12" fill="#fbbf24"/>
+  <rect x="392" y="108" width="12" height="12" fill="#fbbf24"/>
+  <rect x="108" y="392" width="12" height="12" fill="#fbbf24"/>
+  <rect x="392" y="392" width="12" height="12" fill="#fbbf24"/>
+</svg>
