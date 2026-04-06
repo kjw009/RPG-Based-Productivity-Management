@@ -5,8 +5,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { supabase } from '../lib/supabase'
 import type { InboxItem } from '../types'
 
-async function fetchInbox(userId: string): Promise<
-  // Load inbox items for the current user from Supabase in chronological order.InboxItem[]> {
+async function fetchInbox(userId: string): Promise<InboxItem[]> {
   const { data, error } = await supabase
     .from('inbox_items')
     .select('*')
