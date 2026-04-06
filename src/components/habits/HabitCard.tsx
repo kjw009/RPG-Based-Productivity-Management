@@ -32,7 +32,7 @@ export default function HabitCard({ habit, consistencyPct, onLog, onDelete, onEd
   const showNegative = habit.type === 'bad' || habit.type === 'both'
 
   return (
-    <div className="inventory-slot px-2 py-1.5" style={{ borderColor: borderColor(habit.type) }}>
+    <div className="group inventory-slot px-2 py-1.5" style={{ borderColor: borderColor(habit.type) }}>
       <div className="flex items-center gap-1.5">
         <span className="font-grimoire text-grimoire-base ink-text flex-1 min-w-0 truncate leading-tight">
           {habit.title}
@@ -43,7 +43,7 @@ export default function HabitCard({ habit, consistencyPct, onLog, onDelete, onEd
             <PixelButton size="xs" variant="primary" onClick={() => setConfirm(false)}>✗</PixelButton>
           </div>
         ) : (
-          <div className="flex gap-0.5 flex-shrink-0">
+          <div className="flex gap-0.5 flex-shrink-0 max-w-0 overflow-hidden opacity-0 group-hover:max-w-xs group-hover:opacity-100 transition-all">
             <PixelButton size="xs" variant="primary" onClick={() => onEdit(habit)}>✎</PixelButton>
             <PixelButton size="xs" variant="danger" onClick={() => setConfirm(true)}>×</PixelButton>
           </div>

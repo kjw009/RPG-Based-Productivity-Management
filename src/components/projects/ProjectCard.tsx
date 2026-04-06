@@ -21,7 +21,7 @@ export default function ProjectCard({ project, progress, isSelected, onSelect, o
 
   return (
     <div
-      className={`inventory-slot p-2 cursor-pointer ${isSelected ? 'armed-glow' : ''}`}
+      className={`group inventory-slot p-2 cursor-pointer ${isSelected ? 'armed-glow' : ''}`}
       onClick={onSelect}
     >
       <div className="flex items-start justify-between gap-2 mb-1">
@@ -40,7 +40,7 @@ export default function ProjectCard({ project, progress, isSelected, onSelect, o
             </div>
           )}
         </div>
-        <div className="flex gap-1 flex-shrink-0">
+        <div className="flex gap-1 flex-shrink-0 max-w-0 overflow-hidden opacity-0 group-hover:max-w-xs group-hover:opacity-100 transition-all">
           <PixelButton
             size="xs"
             variant="primary"

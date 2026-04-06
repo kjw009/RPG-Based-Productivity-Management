@@ -25,7 +25,7 @@ export default function TodoCard({ todo, project, isOverdue, onComplete, onDelet
 
   return (
     <div
-      className={`inventory-slot px-2 py-1.5 ${
+      className={`group inventory-slot px-2 py-1.5 ${
         todo.completed ? 'completed-dim' : isOverdue ? 'overdue-glow' : ''
       }`}
     >
@@ -47,7 +47,7 @@ export default function TodoCard({ todo, project, isOverdue, onComplete, onDelet
             <PixelButton size="xs" variant="primary" onClick={() => setConfirm(false)}>✗</PixelButton>
           </div>
         ) : (
-          <div className="flex gap-0.5 flex-shrink-0">
+          <div className="flex gap-0.5 flex-shrink-0 max-w-0 overflow-hidden opacity-0 group-hover:max-w-xs group-hover:opacity-100 transition-all">
             {!todo.completed && (
               <PixelButton size="xs" variant="primary" onClick={() => onEdit(todo)}>✎</PixelButton>
             )}

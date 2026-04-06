@@ -26,7 +26,7 @@ export default function DailyTaskCard({ task, onComplete, onDelete, onEdit, isCo
   const goldPreview = calculateDailyGold(task.difficulty, task.streak)
 
   return (
-    <div className={`inventory-slot px-2 py-1.5 ${isDone ? 'completed-dim' : ''}`}>
+    <div className={`group inventory-slot px-2 py-1.5 ${isDone ? 'completed-dim' : ''}`}>
       <div className="flex items-center gap-1.5">
         <input
           type="checkbox"
@@ -45,7 +45,7 @@ export default function DailyTaskCard({ task, onComplete, onDelete, onEdit, isCo
             <PixelButton size="xs" variant="primary" onClick={() => setConfirm(false)}>✗</PixelButton>
           </div>
         ) : (
-          <div className="flex gap-0.5 flex-shrink-0">
+          <div className="flex gap-0.5 flex-shrink-0 max-w-0 overflow-hidden opacity-0 group-hover:max-w-xs group-hover:opacity-100 transition-all">
             <PixelButton size="xs" variant="primary" onClick={() => onEdit(task)}>✎</PixelButton>
             <PixelButton size="xs" variant="danger" onClick={() => setConfirm(true)}>×</PixelButton>
           </div>
