@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { supabase } from '../lib/supabase'
-import { calculateTodoGold, todayStr } from '../lib/gameRules'
+import { calculateTodoGold, todayStr, calcDoomScore } from '../lib/gameRules'
 import { useGameEconomy } from './useGameEconomy'
 import type { Todo } from '../types'
 
@@ -9,7 +9,6 @@ async function fetchTodos(userId: string): Promise<Todo[]> {
     .from('todos')
     .select('*')
     .eq('user_id', userId)
-    .order('due_date', { ascending: true, nullsFirst: false })
   if (error) throw error
   return data ?? []
 }
@@ -90,10 +89,24 @@ export function useTodos(userId: string) {
 
   const today = todayStr()
 
+  // Sort active todos by doom score desc (most urgent first),
+  // break ties by difficulty desc (hardest first).
+  // Completed todos are appended after, preserving their relative order.
+  const raw = query.data ?? []
+  const active = raw
+    .filter((t) => !t.completed)
+    .slice()
+    .sort((a, b) => {
+      const diff = calcDoomScore(b.due_date, today) - calcDoomScore(a.due_date, today)
+      return diff !== 0 ? diff : b.difficulty - a.difficulty
+    })
+  const completed = raw.filter((t) => t.completed)
+  const sortedData: Todo[] = [...active, ...completed]
+
   function isOverdue(todo: Todo): boolean {
     if (todo.completed || !todo.due_date) return false
     return todo.due_date < today
   }
 
-  return { ...query, completeTodo, addTodo, deleteTodo, updateTodo, markOverdueChecked, isOverdue }
+  return { ...query, data: sortedData, completeTodo, addTodo, deleteTodo, updateTodo, markOverdueChecked, isOverdue }
 }

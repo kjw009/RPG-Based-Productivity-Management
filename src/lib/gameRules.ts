@@ -66,6 +66,18 @@ export function calculateOverdueTodoHP(difficulty: number): number {
 export const HEALTH_POTION_RESTORE = 25
 export const PICKPOCKET_GOLD_RECOVERY = 30 // gold saved on KO when Pickpocket is armed
 
+// ── Quest Doom Score ──────────────────────────────────────────────────────────
+// Hidden urgency rating used to sort the quest log. Higher = needs doing sooner.
+// Baseline of 10 000 means "due today". Every day further out subtracts 1;
+// every day overdue adds 1 (pushing overdue quests above 10 000 so they always
+// float to the top). Quests with no due date score 0 and sink to the bottom.
+export function calcDoomScore(dueDate: string | null, today: string): number {
+  if (!dueDate) return 0
+  const MS_PER_DAY = 1000 * 60 * 60 * 24
+  const daysUntilDue = Math.round((Date.parse(dueDate) - Date.parse(today)) / MS_PER_DAY)
+  return 10000 - daysUntilDue
+}
+
 // ── Date helpers ──────────────────────────────────────────────────────────────
 
 // Returns today's date as a YYYY-MM-DD string (local time).
