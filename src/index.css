@@ -771,4 +771,32 @@ body {
   color: #a0c4f0;
   border-radius: 2px;
   text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+  min-width: 0;
+}
+
+/* Quest due-date all-day pills — shown in the day header for quests with
+   a due date but no scheduled time block. Uses the quest's difficulty color
+   on the left border to visually distinguish from gcal all-day events. */
+/* Constrain pills to their column so long titles don't bleed into
+   adjacent day columns. overflow + max-width + min-width: 0 ensure
+   the truncate utility and flex containment work correctly. */
+.calendar-quest-allday {
+  font-family: 'VT323', monospace;
+  font-size: 13px;
+  line-height: 1.3;
+  padding: 1px 4px;
+  background: rgba(42,26,10,0.5);
+  border-left: 3px solid;
+  color: #e2d6c6;
+  border-radius: 2px;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+  min-width: 0;
 }
