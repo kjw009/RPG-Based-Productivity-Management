@@ -2,6 +2,7 @@ import { useState } from 'react'
 import PixelPanel from '../shared/PixelPanel'
 import PixelButton from '../shared/PixelButton'
 import AreaSelector from '../shared/AreaSelector'
+import PixelDatePicker from '../shared/PixelDatePicker'
 import type { Project } from '../../types'
 
 interface Props {
@@ -26,7 +27,7 @@ export default function TodoForm({ userId, projects, defaultProjectId, onAdd, on
   const [projectId, setProjectId] = useState<string>(defaultProjectId ?? '')
   const [areas, setAreas] = useState<string[]>([])
   const [difficulty, setDifficulty] = useState(1)
-  const [dueDate, setDueDate] = useState('')
+  const [dueDate, setDueDate] = useState<string | null>(null)
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -37,7 +38,7 @@ export default function TodoForm({ userId, projects, defaultProjectId, onAdd, on
       project_id: projectId || null,
       areas,
       difficulty,
-      due_date: dueDate || null,
+      due_date: dueDate,
     })
   }
 
@@ -88,7 +89,7 @@ export default function TodoForm({ userId, projects, defaultProjectId, onAdd, on
 
         <div>
           <div className="font-pixel text-pixel-xs text-rpg-muted mb-2">DUE DATE</div>
-          <input type="date" className="pixel-input" value={dueDate} onChange={(e) => setDueDate(e.target.value)} />
+          <PixelDatePicker value={dueDate} onChange={setDueDate} />
         </div>
 
         <div className="flex gap-2 mt-1">
