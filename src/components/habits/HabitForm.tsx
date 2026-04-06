@@ -9,9 +9,10 @@ interface Props {
   onCancel: () => void
   isLoading: boolean
   defaultType?: 'good' | 'bad'
+  error?: string | null
 }
 
-export default function HabitForm({ userId, onAdd, onCancel, isLoading, defaultType = 'good' }: Props) {
+export default function HabitForm({ userId, onAdd, onCancel, isLoading, defaultType = 'good', error }: Props) {
   const [title, setTitle] = useState('')
   const [type, setType] = useState<'good' | 'bad'>(defaultType)
   const [difficulty, setDifficulty] = useState(1)
@@ -52,9 +53,16 @@ export default function HabitForm({ userId, onAdd, onCancel, isLoading, defaultT
           </div>
         </div>
         <AreaSelector userId={userId} selected={areas} onChange={setAreas} />
+
+        {error && (
+          <div className="pixel-panel-crimson p-2">
+            <p className="font-pixel text-pixel-xs text-rpg-hp">{error}</p>
+          </div>
+        )}
+
         <div className="flex gap-2 mt-1">
           <PixelButton type="submit" variant="success" size="sm" disabled={isLoading || !title.trim()}>
-            {isLoading ? '...' : 'ADD'}
+            {isLoading ? 'SAVING...' : 'ADD'}
           </PixelButton>
           <PixelButton type="button" variant="danger" size="sm" onClick={onCancel}>CANCEL</PixelButton>
         </div>

@@ -11,6 +11,7 @@ interface Props { userId: string }
 export default function HabitSection({ userId }: Props) {
   const [showForm, setShowForm] = useState(false)
   const [formType, setFormType] = useState<'good' | 'bad'>('good')
+  const [formError, setFormError] = useState<string | null>(null)
   const { habitsQuery, consistencyPct, logHabit, addHabit, deleteHabit } = useHabits(userId)
 
   const habits = habitsQuery.data ?? []
@@ -19,7 +20,19 @@ export default function HabitSection({ userId }: Props) {
 
   function openForm(type: 'good' | 'bad') {
     setFormType(type)
+    setFormError(null)
     setShowForm(true)
+  }
+
+  async function handleAdd(payload: Parameters<typeof addHabit.mutate>[0]) {
+    setFormError(null)
+    try {
+      await addHabit.mutateAsync(payload)
+      setShowForm(false)
+    } catch (err) {
+      setFormError(err instanceof Error ? err.message : 'Failed to save. Check console for details.')
+      console.error('[addHabit]', err)
+    }
   }
 
   function HabitColumn({ type, list }: { type: 'good' | 'bad'; list: Habit[] }) {
@@ -61,10 +74,11 @@ export default function HabitSection({ userId }: Props) {
         <div className="mt-3">
           <HabitForm
             userId={userId}
-            onAdd={(payload) => { addHabit.mutate(payload); setShowForm(false) }}
-            onCancel={() => setShowForm(false)}
+            onAdd={handleAdd}
+            onCancel={() => { setShowForm(false); setFormError(null) }}
             isLoading={addHabit.isPending}
             defaultType={formType}
+            error={formError}
           />
         </div>
       )}

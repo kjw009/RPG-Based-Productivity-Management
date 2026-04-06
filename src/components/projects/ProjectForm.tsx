@@ -8,9 +8,10 @@ interface Props {
   onAdd: (payload: { title: string; description: string; areas: string[] }) => void
   onCancel: () => void
   isLoading: boolean
+  error?: string | null
 }
 
-export default function ProjectForm({ userId, onAdd, onCancel, isLoading }: Props) {
+export default function ProjectForm({ userId, onAdd, onCancel, isLoading, error }: Props) {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [areas, setAreas] = useState<string[]>([])
@@ -43,9 +44,16 @@ export default function ProjectForm({ userId, onAdd, onCancel, isLoading }: Prop
           rows={2}
         />
         <AreaSelector userId={userId} selected={areas} onChange={setAreas} />
+
+        {error && (
+          <div className="pixel-panel-crimson p-2">
+            <p className="font-pixel text-pixel-xs text-rpg-hp">{error}</p>
+          </div>
+        )}
+
         <div className="flex gap-2">
           <PixelButton type="submit" variant="success" size="sm" disabled={isLoading || !title.trim()}>
-            {isLoading ? '...' : 'CREATE'}
+            {isLoading ? 'SAVING...' : 'CREATE'}
           </PixelButton>
           <PixelButton type="button" variant="danger" size="sm" onClick={onCancel}>CANCEL</PixelButton>
         </div>

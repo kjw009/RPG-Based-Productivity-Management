@@ -11,10 +11,22 @@ interface Props { userId: string }
 
 export default function DailyTaskList({ userId }: Props) {
   const [showForm, setShowForm] = useState(false)
+  const [formError, setFormError] = useState<string | null>(null)
   const { todaysTasks, isLoading, completeTask, addTask, deleteTask } = useDailies(userId)
 
   const today = todayStr()
   const completed = todaysTasks.filter((t) => t.last_completed_date === today).length
+
+  async function handleAdd(payload: Parameters<typeof addTask.mutate>[0]) {
+    setFormError(null)
+    try {
+      await addTask.mutateAsync(payload)
+      setShowForm(false)
+    } catch (err) {
+      setFormError(err instanceof Error ? err.message : 'Failed to save. Check console for details.')
+      console.error('[addTask]', err)
+    }
+  }
 
   return (
     <section>
@@ -24,7 +36,7 @@ export default function DailyTaskList({ userId }: Props) {
         <div className="font-body text-body-base text-rpg-muted p-4">Loading quests...</div>
       )}
 
-      {!isLoading && todaysTasks.length === 0 && (
+      {!isLoading && todaysTasks.length === 0 && !showForm && (
         <PixelPanel className="mb-2">
           <p className="font-body text-body-base text-rpg-muted">
             No daily tasks scheduled for today. Add one below!
@@ -47,9 +59,10 @@ export default function DailyTaskList({ userId }: Props) {
       {showForm ? (
         <AddDailyForm
           userId={userId}
-          onAdd={(payload) => { addTask.mutate(payload); setShowForm(false) }}
-          onCancel={() => setShowForm(false)}
+          onAdd={handleAdd}
+          onCancel={() => { setShowForm(false); setFormError(null) }}
           isLoading={addTask.isPending}
+          error={formError}
         />
       ) : (
         <PixelButton size="sm" variant="success" onClick={() => setShowForm(true)}>

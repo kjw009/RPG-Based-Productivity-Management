@@ -16,6 +16,7 @@ interface Props {
 export default function TodoList({ userId, filterProjectId }: Props) {
   const [showForm, setShowForm] = useState(false)
   const [showCompleted, setShowCompleted] = useState(false)
+  const [formError, setFormError] = useState<string | null>(null)
 
   const { data: todos, isLoading, completeTodo, addTodo, deleteTodo, isOverdue } = useTodos(userId)
   const { data: projects } = useProjects(userId)
@@ -29,11 +30,21 @@ export default function TodoList({ userId, filterProjectId }: Props) {
 
   const active = filtered.filter((t) => !t.completed)
   const completed = filtered.filter((t) => t.completed)
-
   const overdue = active.filter((t) => isOverdue(t))
   const upcoming = active.filter((t) => !isOverdue(t))
 
   const selectedProject = filterProjectId ? projectMap.get(filterProjectId) : null
+
+  async function handleAdd(payload: Parameters<typeof addTodo.mutate>[0]) {
+    setFormError(null)
+    try {
+      await addTodo.mutateAsync(payload)
+      setShowForm(false)
+    } catch (err) {
+      setFormError(err instanceof Error ? err.message : 'Failed to save. Check console for details.')
+      console.error('[addTodo]', err)
+    }
+  }
 
   return (
     <section>
@@ -98,11 +109,7 @@ export default function TodoList({ userId, filterProjectId }: Props) {
       {/* Completed toggle */}
       {completed.length > 0 && (
         <div className="mb-3">
-          <PixelButton
-            size="sm"
-            variant="primary"
-            onClick={() => setShowCompleted((v) => !v)}
-          >
+          <PixelButton size="sm" variant="primary" onClick={() => setShowCompleted((v) => !v)}>
             {showCompleted ? '▼' : '▶'} COMPLETED ({completed.length})
           </PixelButton>
           {showCompleted && (
@@ -128,9 +135,10 @@ export default function TodoList({ userId, filterProjectId }: Props) {
           userId={userId}
           projects={projects ?? []}
           defaultProjectId={filterProjectId}
-          onAdd={(payload) => { addTodo.mutate(payload); setShowForm(false) }}
-          onCancel={() => setShowForm(false)}
+          onAdd={handleAdd}
+          onCancel={() => { setShowForm(false); setFormError(null) }}
           isLoading={addTodo.isPending}
+          error={formError}
         />
       ) : (
         <PixelButton size="sm" variant="success" onClick={() => setShowForm(true)}>

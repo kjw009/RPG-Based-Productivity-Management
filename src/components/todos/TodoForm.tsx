@@ -19,9 +19,10 @@ interface Props {
   }) => void
   onCancel: () => void
   isLoading: boolean
+  error?: string | null
 }
 
-export default function TodoForm({ userId, projects, defaultProjectId, onAdd, onCancel, isLoading }: Props) {
+export default function TodoForm({ userId, projects, defaultProjectId, onAdd, onCancel, isLoading, error }: Props) {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [projectId, setProjectId] = useState<string>(defaultProjectId ?? '')
@@ -92,9 +93,15 @@ export default function TodoForm({ userId, projects, defaultProjectId, onAdd, on
           <PixelDatePicker value={dueDate} onChange={setDueDate} />
         </div>
 
+        {error && (
+          <div className="pixel-panel-crimson p-2">
+            <p className="font-pixel text-pixel-xs text-rpg-hp">{error}</p>
+          </div>
+        )}
+
         <div className="flex gap-2 mt-1">
           <PixelButton type="submit" variant="success" size="sm" disabled={isLoading || !title.trim()}>
-            {isLoading ? '...' : 'ADD QUEST'}
+            {isLoading ? 'SAVING...' : 'ADD QUEST'}
           </PixelButton>
           <PixelButton type="button" variant="danger" size="sm" onClick={onCancel}>CANCEL</PixelButton>
         </div>

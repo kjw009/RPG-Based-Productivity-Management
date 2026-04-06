@@ -30,9 +30,7 @@ export default function AreaSelector({ userId, selected, onChange }: Props) {
     }
   }
 
-  async function handleCreate(e: React.FormEvent) {
-    e.preventDefault()
-    e.stopPropagation() // prevent submit bubbling to parent form
+  async function handleCreate() {
     const name = newName.trim()
     if (!name) return
 
@@ -42,6 +40,14 @@ export default function AreaSelector({ userId, selected, onChange }: Props) {
     setNewName('')
     setNewColor(AREA_COLOR_PRESETS[0])
     setShowCreate(false)
+  }
+
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      e.stopPropagation()
+      handleCreate()
+    }
   }
 
   return (
@@ -82,21 +88,18 @@ export default function AreaSelector({ userId, selected, onChange }: Props) {
         )}
       </div>
 
-      {/* Inline create form */}
+      {/* Inline create form — deliberately not a <form> to avoid nested form issues */}
       {showCreate && (
-        <form
-          onSubmit={handleCreate}
-          className="pixel-panel p-3 flex flex-col gap-2"
-        >
+        <div className="pixel-panel p-3 flex flex-col gap-2">
           <div className="font-pixel text-pixel-xs text-rpg-gold">NEW AREA</div>
           <input
             className="pixel-input"
             placeholder="e.g. Learning, Health, Work..."
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
+            onKeyDown={handleKeyDown}
             maxLength={30}
             autoFocus
-            required
           />
 
           {/* Colour presets */}
@@ -119,9 +122,10 @@ export default function AreaSelector({ userId, selected, onChange }: Props) {
 
           <div className="flex gap-2">
             <button
-              type="submit"
+              type="button"
               className="pixel-btn pixel-btn-success pixel-btn-xs"
               disabled={addArea.isPending || !newName.trim()}
+              onClick={handleCreate}
             >
               {addArea.isPending ? '...' : 'CREATE'}
             </button>
@@ -133,7 +137,7 @@ export default function AreaSelector({ userId, selected, onChange }: Props) {
               CANCEL
             </button>
           </div>
-        </form>
+        </div>
       )}
 
       {/* Manage existing areas (delete) */}

@@ -13,7 +13,19 @@ interface Props {
 
 export default function ProjectGrid({ userId, selectedProjectId, onSelectProject }: Props) {
   const [showForm, setShowForm] = useState(false)
+  const [formError, setFormError] = useState<string | null>(null)
   const { data: projects, isLoading, addProject, deleteProject, projectProgress } = useProjects(userId)
+
+  async function handleAdd(payload: Parameters<typeof addProject.mutate>[0]) {
+    setFormError(null)
+    try {
+      await addProject.mutateAsync(payload)
+      setShowForm(false)
+    } catch (err) {
+      setFormError(err instanceof Error ? err.message : 'Failed to save. Check console for details.')
+      console.error('[addProject]', err)
+    }
+  }
 
   return (
     <section>
@@ -45,9 +57,10 @@ export default function ProjectGrid({ userId, selectedProjectId, onSelectProject
       {showForm ? (
         <ProjectForm
           userId={userId}
-          onAdd={(payload) => { addProject.mutate(payload); setShowForm(false) }}
-          onCancel={() => setShowForm(false)}
+          onAdd={handleAdd}
+          onCancel={() => { setShowForm(false); setFormError(null) }}
           isLoading={addProject.isPending}
+          error={formError}
         />
       ) : (
         <PixelButton size="sm" variant="success" onClick={() => setShowForm(true)}>
