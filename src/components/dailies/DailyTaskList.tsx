@@ -5,6 +5,7 @@ import PixelButton from '../shared/PixelButton'
 import DailyTaskCard from './DailyTaskCard'
 import AddDailyForm from './AddDailyForm'
 import { useDailies } from '../../hooks/useDailies'
+import { todayStr } from '../../lib/gameRules'
 
 interface Props { userId: string }
 
@@ -12,9 +13,8 @@ export default function DailyTaskList({ userId }: Props) {
   const [showForm, setShowForm] = useState(false)
   const { todaysTasks, isLoading, completeTask, addTask, deleteTask } = useDailies(userId)
 
-  const completed = todaysTasks.filter(
-    (t) => t.last_completed_date === new Date().toISOString().split('T')[0]
-  ).length
+  const today = todayStr()
+  const completed = todaysTasks.filter((t) => t.last_completed_date === today).length
 
   return (
     <section>
@@ -46,10 +46,8 @@ export default function DailyTaskList({ userId }: Props) {
 
       {showForm ? (
         <AddDailyForm
-          onAdd={(payload) => {
-            addTask.mutate(payload)
-            setShowForm(false)
-          }}
+          userId={userId}
+          onAdd={(payload) => { addTask.mutate(payload); setShowForm(false) }}
           onCancel={() => setShowForm(false)}
           isLoading={addTask.isPending}
         />

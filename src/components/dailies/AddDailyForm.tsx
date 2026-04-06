@@ -1,20 +1,23 @@
 import { useState } from 'react'
 import PixelPanel from '../shared/PixelPanel'
 import PixelButton from '../shared/PixelButton'
+import AreaSelector from '../shared/AreaSelector'
 
 const DAY_LABELS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
 const WEEKDAYS = [1, 2, 3, 4, 5]
 
 interface Props {
-  onAdd: (payload: { title: string; recurrence_days: number[]; difficulty: number }) => void
+  userId: string
+  onAdd: (payload: { title: string; recurrence_days: number[]; difficulty: number; areas: string[] }) => void
   onCancel: () => void
   isLoading: boolean
 }
 
-export default function AddDailyForm({ onAdd, onCancel, isLoading }: Props) {
+export default function AddDailyForm({ userId, onAdd, onCancel, isLoading }: Props) {
   const [title, setTitle] = useState('')
   const [days, setDays] = useState<number[]>(WEEKDAYS)
   const [difficulty, setDifficulty] = useState(1)
+  const [areas, setAreas] = useState<string[]>([])
 
   function toggleDay(d: number) {
     setDays((prev) => prev.includes(d) ? prev.filter((x) => x !== d) : [...prev, d].sort())
@@ -23,7 +26,7 @@ export default function AddDailyForm({ onAdd, onCancel, isLoading }: Props) {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!title.trim() || days.length === 0) return
-    onAdd({ title: title.trim(), recurrence_days: days, difficulty })
+    onAdd({ title: title.trim(), recurrence_days: days, difficulty, areas })
   }
 
   return (
@@ -41,7 +44,6 @@ export default function AddDailyForm({ onAdd, onCancel, isLoading }: Props) {
           autoFocus
         />
 
-        {/* Day selector */}
         <div>
           <div className="font-pixel text-pixel-xs text-rpg-muted mb-2">RECURRENCE</div>
           <div className="flex gap-1 flex-wrap">
@@ -50,9 +52,7 @@ export default function AddDailyForm({ onAdd, onCancel, isLoading }: Props) {
                 type="button"
                 key={i}
                 onClick={() => toggleDay(i)}
-                className={`pixel-btn pixel-btn-sm ${
-                  days.includes(i) ? 'pixel-btn-gold' : 'pixel-btn-primary'
-                }`}
+                className={`pixel-btn pixel-btn-sm ${days.includes(i) ? 'pixel-btn-gold' : 'pixel-btn-primary'}`}
               >
                 {label}
               </button>
@@ -60,7 +60,6 @@ export default function AddDailyForm({ onAdd, onCancel, isLoading }: Props) {
           </div>
         </div>
 
-        {/* Difficulty */}
         <div>
           <div className="font-pixel text-pixel-xs text-rpg-muted mb-2">DIFFICULTY</div>
           <div className="flex gap-1">
@@ -76,6 +75,8 @@ export default function AddDailyForm({ onAdd, onCancel, isLoading }: Props) {
             ))}
           </div>
         </div>
+
+        <AreaSelector userId={userId} selected={areas} onChange={setAreas} />
 
         <div className="flex gap-2 mt-1">
           <PixelButton type="submit" variant="success" size="sm" disabled={isLoading || !title.trim()}>

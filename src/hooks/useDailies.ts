@@ -39,25 +39,19 @@ export function useDailies(userId: string) {
 
   const completeTask = useMutation({
     mutationFn: async (task: DailyTask) => {
-      // Guard: already completed today
       if (task.last_completed_date === today) return
 
       const newStreak = task.streak + 1
-
-      // Gold = base rate × streak multiplier (see gameRules.calculateDailyGold)
       let gold = calculateDailyGold(task.difficulty, task.streak)
 
-      // Backstab triples gold for the next streak completion, then auto-expires.
-      // It only applies when the player is already on a streak (streak > 0).
+      // Backstab triples gold for the next streak completion, then auto-expires
       if (task.streak > 0 && economy.hasActiveEffect('backstab')) {
         gold *= 3
         await economy.consumeEffect('backstab')
       }
 
-      // awardGold handles the Double Gold Scroll multiplier internally
       await economy.awardGold(gold)
 
-      // Milestone bonuses (7 / 30 / 100-day streaks)
       const bonus = getStreakBonus(newStreak)
       if (bonus > 0) await economy.awardGold(bonus)
 
@@ -75,6 +69,7 @@ export function useDailies(userId: string) {
       title: string
       recurrence_days: number[]
       difficulty: number
+      areas: string[]
     }) => {
       const { error } = await supabase
         .from('daily_tasks')

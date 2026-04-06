@@ -21,7 +21,6 @@ export function useProjects(userId: string) {
     enabled: !!userId,
   })
 
-  // Progress: get % complete from todos cache
   function projectProgress(projectId: string): { completed: number; total: number; pct: number } {
     const todos = qc.getQueryData<Todo[]>(['todos', userId]) ?? []
     const mine = todos.filter((t) => t.project_id === projectId)
@@ -34,7 +33,11 @@ export function useProjects(userId: string) {
   }
 
   const addProject = useMutation({
-    mutationFn: async (payload: { title: string; description: string }) => {
+    mutationFn: async (payload: {
+      title: string
+      description: string
+      areas: string[]
+    }) => {
       const { error } = await supabase.from('projects').insert({ user_id: userId, ...payload })
       if (error) throw error
     },

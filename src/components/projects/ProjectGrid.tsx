@@ -19,11 +19,8 @@ export default function ProjectGrid({ userId, selectedProjectId, onSelectProject
     <section>
       <SectionHeader title="PROJECTS" sub={projects ? `${projects.length}` : ''} />
 
-      {isLoading && (
-        <div className="font-body text-body-base text-rpg-muted p-2">Loading...</div>
-      )}
+      {isLoading && <div className="font-body text-body-base text-rpg-muted p-2">Loading...</div>}
 
-      {/* Filter controls */}
       {selectedProjectId && (
         <div className="mb-2">
           <PixelButton size="sm" variant="primary" onClick={() => onSelectProject(null)}>
@@ -32,7 +29,7 @@ export default function ProjectGrid({ userId, selectedProjectId, onSelectProject
         </div>
       )}
 
-      <div className="grid grid-cols-2 gap-2 mb-3" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))' }}>
+      <div className="grid gap-2 mb-3" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))' }}>
         {(projects ?? []).map((p) => (
           <ProjectCard
             key={p.id}
@@ -47,6 +44,7 @@ export default function ProjectGrid({ userId, selectedProjectId, onSelectProject
 
       {showForm ? (
         <ProjectForm
+          userId={userId}
           onAdd={(payload) => { addProject.mutate(payload); setShowForm(false) }}
           onCancel={() => setShowForm(false)}
           isLoading={addProject.isPending}

@@ -30,9 +30,7 @@ export default function HabitSection({ userId }: Props) {
           {isGood ? '▲ GOOD HABITS' : '▼ BAD HABITS'}
         </div>
         <div className="flex flex-col gap-2 mb-2">
-          {list.length === 0 && (
-            <p className="font-body text-body-sm text-rpg-muted">None tracked yet.</p>
-          )}
+          {list.length === 0 && <p className="font-body text-body-sm text-rpg-muted">None tracked yet.</p>}
           {list.map((h) => (
             <HabitCard
               key={h.id}
@@ -44,11 +42,7 @@ export default function HabitSection({ userId }: Props) {
             />
           ))}
         </div>
-        <PixelButton
-          size="sm"
-          variant={isGood ? 'success' : 'danger'}
-          onClick={() => openForm(type)}
-        >
+        <PixelButton size="sm" variant={isGood ? 'success' : 'danger'} onClick={() => openForm(type)}>
           + ADD {type.toUpperCase()}
         </PixelButton>
       </div>
@@ -58,9 +52,7 @@ export default function HabitSection({ userId }: Props) {
   return (
     <section>
       <SectionHeader title="HABITS" />
-      {habitsQuery.isLoading && (
-        <div className="font-body text-body-base text-rpg-muted p-2">Loading...</div>
-      )}
+      {habitsQuery.isLoading && <div className="font-body text-body-base text-rpg-muted p-2">Loading...</div>}
       <div className="flex gap-4 flex-wrap">
         <HabitColumn type="good" list={goodHabits} />
         <HabitColumn type="bad" list={badHabits} />
@@ -68,6 +60,7 @@ export default function HabitSection({ userId }: Props) {
       {showForm && (
         <div className="mt-3">
           <HabitForm
+            userId={userId}
             onAdd={(payload) => { addHabit.mutate(payload); setShowForm(false) }}
             onCancel={() => setShowForm(false)}
             isLoading={addHabit.isPending}

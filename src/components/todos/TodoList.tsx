@@ -125,6 +125,7 @@ export default function TodoList({ userId, filterProjectId }: Props) {
 
       {showForm ? (
         <TodoForm
+          userId={userId}
           projects={projects ?? []}
           defaultProjectId={filterProjectId}
           onAdd={(payload) => { addTodo.mutate(payload); setShowForm(false) }}

@@ -12,6 +12,15 @@ export interface Player {
   created_at: string
 }
 
+// User-defined area tag (e.g. "Learning", "Health", "Work")
+export interface Area {
+  id: string
+  user_id: string
+  name: string
+  color: string
+  created_at: string
+}
+
 export interface DailyTask {
   id: string
   user_id: string
@@ -20,6 +29,7 @@ export interface DailyTask {
   difficulty: number
   streak: number
   last_completed_date: string | null
+  areas: string[]
   created_at: string
 }
 
@@ -30,6 +40,7 @@ export interface Habit {
   type: 'good' | 'bad'
   difficulty: number
   total_count: number
+  areas: string[]
   created_at: string
 }
 
@@ -45,6 +56,7 @@ export interface Project {
   user_id: string
   title: string
   description: string
+  areas: string[]
   created_at: string
 }
 
@@ -54,7 +66,7 @@ export interface Todo {
   project_id: string | null
   title: string
   description: string
-  area: string[]
+  areas: string[]
   difficulty: number
   due_date: string | null
   completed: boolean
@@ -96,9 +108,6 @@ export interface ActiveEffect {
   metadata?: Record<string, unknown> | null
 }
 
-export type PARA = 'Projects' | 'Areas' | 'Resources' | 'Archives'
-export const PARA_OPTIONS: PARA[] = ['Projects', 'Areas', 'Resources', 'Archives']
-
 export type EffectType =
   | 'health_potion'
   | 'double_gold'
@@ -107,3 +116,16 @@ export type EffectType =
   | 'smoke_bomb'
   | 'backstab'
   | 'custom'
+
+// Preset colors for new area tags
+export const AREA_COLOR_PRESETS = [
+  '#6366f1', // indigo
+  '#2563eb', // blue
+  '#0891b2', // cyan
+  '#16a34a', // green
+  '#d97706', // amber
+  '#dc2626', // red
+  '#7e22ce', // purple
+  '#db2777', // pink
+  '#6b7280', // grey
+]

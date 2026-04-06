@@ -27,13 +27,10 @@ export function useTodos(userId: string) {
   const completeTodo = useMutation({
     mutationFn: async (todo: Todo) => {
       if (todo.completed) return
-      const now = new Date().toISOString()
-
       await economy.awardGold(calculateTodoGold(todo.difficulty))
-
       const { error } = await supabase
         .from('todos')
-        .update({ completed: true, completed_at: now })
+        .update({ completed: true, completed_at: new Date().toISOString() })
         .eq('id', todo.id)
       if (error) throw error
     },
@@ -45,7 +42,7 @@ export function useTodos(userId: string) {
       title: string
       description: string
       project_id: string | null
-      area: string[]
+      areas: string[]
       difficulty: number
       due_date: string | null
     }) => {
@@ -63,23 +60,6 @@ export function useTodos(userId: string) {
     onSuccess: () => qc.invalidateQueries({ queryKey: ['todos', userId] }),
   })
 
-  /** Apply shadow step to a todo (extend due date by 3 days) */
-  const shadowStepTodo = useMutation({
-    mutationFn: async (todo: Todo) => {
-      const base = todo.due_date ? new Date(todo.due_date + 'T00:00:00') : new Date()
-      base.setDate(base.getDate() + 3)
-      const newDate = base.toISOString().split('T')[0]
-
-      const { error } = await supabase
-        .from('todos')
-        .update({ due_date: newDate, shadow_stepped: true })
-        .eq('id', todo.id)
-      if (error) throw error
-    },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['todos', userId] }),
-  })
-
-  /** Mark overdue todos as checked (HP already deducted). */
   const markOverdueChecked = useMutation({
     mutationFn: async (todoId: string) => {
       const { error } = await supabase
@@ -91,7 +71,6 @@ export function useTodos(userId: string) {
     onSuccess: () => qc.invalidateQueries({ queryKey: ['todos', userId] }),
   })
 
-  // Helpers
   const today = todayStr()
 
   function isOverdue(todo: Todo): boolean {
@@ -99,13 +78,5 @@ export function useTodos(userId: string) {
     return todo.due_date < today
   }
 
-  return {
-    ...query,
-    completeTodo,
-    addTodo,
-    deleteTodo,
-    shadowStepTodo,
-    markOverdueChecked,
-    isOverdue,
-  }
+  return { ...query, completeTodo, addTodo, deleteTodo, markOverdueChecked, isOverdue }
 }

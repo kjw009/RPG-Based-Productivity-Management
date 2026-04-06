@@ -17,7 +17,6 @@ async function fetchHabits(userId: string): Promise<Habit[]> {
 async function fetchHabitLogs(userId: string): Promise<HabitLog[]> {
   const thirtyDaysAgo = new Date()
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
-
   const { data, error } = await supabase
     .from('habit_logs')
     .select('*')
@@ -44,22 +43,18 @@ export function useHabits(userId: string) {
     enabled: !!userId,
   })
 
-  // 30-day consistency % per habit
   function consistencyPct(habitId: string): number {
-    const logs = logsQuery.data ?? []
-    const count = logs.filter((l) => l.habit_id === habitId).length
+    const count = (logsQuery.data ?? []).filter((l) => l.habit_id === habitId).length
     return Math.min(Math.round((count / 30) * 100), 100)
   }
 
   const logHabit = useMutation({
     mutationFn: async (habit: Habit) => {
-      // Insert log
       const { error: logError } = await supabase
         .from('habit_logs')
         .insert({ habit_id: habit.id, user_id: userId })
       if (logError) throw logError
 
-      // Increment total_count
       const { error: countError } = await supabase
         .from('habits')
         .update({ total_count: habit.total_count + 1 })
@@ -69,10 +64,8 @@ export function useHabits(userId: string) {
       if (habit.type === 'good') {
         await economy.awardGold(calculateHabitGold(habit.difficulty))
       } else {
-        // Bad habit — check Smoke Bomb
         if (economy.hasActiveEffect('smoke_bomb')) {
           await economy.consumeEffect('smoke_bomb')
-          // No HP deduction
         } else {
           await economy.deductHP(calculateBadHabitHP(habit.difficulty))
         }
@@ -85,7 +78,12 @@ export function useHabits(userId: string) {
   })
 
   const addHabit = useMutation({
-    mutationFn: async (payload: { title: string; type: 'good' | 'bad'; difficulty: number }) => {
+    mutationFn: async (payload: {
+      title: string
+      type: 'good' | 'bad'
+      difficulty: number
+      areas: string[]
+    }) => {
       const { error } = await supabase.from('habits').insert({ user_id: userId, ...payload })
       if (error) throw error
     },
