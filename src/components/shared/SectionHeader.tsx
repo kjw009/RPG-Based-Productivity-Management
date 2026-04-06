@@ -1,7 +1,10 @@
+import { ReactNode } from 'react'
+
 interface Props {
   title: string
   sub?: string
   icon?: string
+  actions?: ReactNode
 }
 
 // Map section titles to thematic icons
@@ -16,7 +19,7 @@ const SECTION_ICONS: Record<string, string> = {
   'INBOX':       '📥',
 }
 
-export default function SectionHeader({ title, sub, icon }: Props) {
+export default function SectionHeader({ title, sub, icon, actions }: Props) {
   const sectionIcon = icon ?? SECTION_ICONS[title] ?? '✦'
 
   return (
@@ -24,6 +27,7 @@ export default function SectionHeader({ title, sub, icon }: Props) {
       <span className="mr-2 text-sm opacity-80">{sectionIcon}</span>
       <span>{title}</span>
       {sub && <span className="text-rpg-gold ml-3 font-grimoire text-grimoire-sm opacity-80">{sub}</span>}
+      {actions && <div className="ml-auto flex items-center gap-1">{actions}</div>}
     </div>
   )
 }

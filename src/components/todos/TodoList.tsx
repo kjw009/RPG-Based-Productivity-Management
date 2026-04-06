@@ -4,6 +4,7 @@ import PixelButton from '../shared/PixelButton'
 import PixelPanel from '../shared/PixelPanel'
 import TodoCard from './TodoCard'
 import TodoForm from './TodoForm'
+import WeeklyCalendarModal from '../calendar/WeeklyCalendarModal'
 import { useTodos } from '../../hooks/useTodos'
 import { useProjects } from '../../hooks/useProjects'
 import type { Project } from '../../types'
@@ -20,6 +21,7 @@ export default function TodoList({ userId, filterProjectId, filterArea }: Props)
   const [formError, setFormError] = useState<string | null>(null)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editError, setEditError] = useState<string | null>(null)
+  const [calendarMode, setCalendarMode] = useState<'schedule' | 'view' | null>(null)
 
   const { data: todos, isLoading, completeTodo, addTodo, deleteTodo, updateTodo, isOverdue } = useTodos(userId)
   const { data: projects } = useProjects(userId)
@@ -73,6 +75,16 @@ export default function TodoList({ userId, filterProjectId, filterArea }: Props)
             : filterArea
             ? `[${filterArea}] ${active.length} active`
             : `${active.length} active`
+        }
+        actions={
+          <>
+            <PixelButton size="xs" variant="gold" onClick={() => setCalendarMode('schedule')}>
+              📅 Plan
+            </PixelButton>
+            <PixelButton size="xs" variant="primary" onClick={() => setCalendarMode('view')}>
+              📅 View
+            </PixelButton>
+          </>
         }
       />
 
@@ -161,6 +173,15 @@ export default function TodoList({ userId, filterProjectId, filterArea }: Props)
         <PixelButton size="sm" variant="success" onClick={() => setShowForm(true)}>
           + ADD QUEST
         </PixelButton>
+      )}
+
+      {calendarMode && (
+        <WeeklyCalendarModal
+          mode={calendarMode}
+          todos={todos ?? []}
+          projects={projectMap}
+          onClose={() => setCalendarMode(null)}
+        />
       )}
     </section>
   )
