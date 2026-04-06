@@ -5,8 +5,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { supabase } from '../lib/supabase'
 import type { Project, Todo } from '../types'
 
-async function fetchProjects(userId: string): Promise<
-  // Load project records for the current user from Supabase.Project[]> {
+async function fetchProjects(userId: string): Promise<Project[]> {
   const { data, error } = await supabase
     .from('projects')
     .select('*')
