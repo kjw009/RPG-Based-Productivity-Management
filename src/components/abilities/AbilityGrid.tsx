@@ -22,7 +22,7 @@ export default function AbilityGrid({ userId }: Props) {
       {abilitiesQuery.isLoading && (
         <div className="font-grimoire text-grimoire-sm text-rpg-muted p-2">Loading...</div>
       )}
-      <div className="flex flex-col gap-1 max-h-[425px] overflow-y-auto pr-1 scrollbar-thin">
+      <div className="flex flex-col gap-1 max-h-[440px] overflow-y-auto pr-1 scrollbar-thin">
         {abilities.map((ability) => (
           <AbilityCard
             key={ability.id}

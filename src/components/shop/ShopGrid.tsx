@@ -34,7 +34,7 @@ export default function ShopGrid({ userId }: Props) {
         <div className="font-grimoire text-grimoire-sm text-rpg-muted p-2">Loading...</div>
       )}
 
-      <div className="flex flex-col gap-1 mb-2 max-h-[300px] overflow-y-auto pr-1 scrollbar-thin">
+      <div className="flex flex-col gap-1 mb-2 max-h-[400px] overflow-y-auto pr-1 scrollbar-thin">
         {(items ?? []).map((item) => (
           <ShopItemCard
             key={item.id}
