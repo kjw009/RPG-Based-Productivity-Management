@@ -37,7 +37,7 @@ export interface Habit {
   id: string
   user_id: string
   title: string
-  type: 'good' | 'bad'
+  type: 'good' | 'bad' | 'both'
   difficulty: number
   total_count: number
   areas: string[]

@@ -49,7 +49,8 @@ export function useHabits(userId: string) {
   }
 
   const logHabit = useMutation({
-    mutationFn: async (habit: Habit) => {
+    // direction: which side to log — for 'both' habits the caller specifies; for 'good'/'bad' it matches the type
+    mutationFn: async ({ habit, direction }: { habit: Habit; direction: 'good' | 'bad' }) => {
       const { error: logError } = await supabase
         .from('habit_logs')
         .insert({ habit_id: habit.id, user_id: userId })
@@ -61,7 +62,7 @@ export function useHabits(userId: string) {
         .eq('id', habit.id)
       if (countError) throw countError
 
-      if (habit.type === 'good') {
+      if (direction === 'good') {
         await economy.awardGold(calculateHabitGold(habit.difficulty))
       } else {
         if (economy.hasActiveEffect('smoke_bomb')) {
@@ -80,7 +81,7 @@ export function useHabits(userId: string) {
   const addHabit = useMutation({
     mutationFn: async (payload: {
       title: string
-      type: 'good' | 'bad'
+      type: 'good' | 'bad' | 'both'
       difficulty: number
       areas: string[]
     }) => {
