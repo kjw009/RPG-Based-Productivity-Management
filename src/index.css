@@ -382,6 +382,9 @@ body {
   box-shadow: 0 0 0 1px #f59e0b !important;
 }
 
+.scrollbar-thin::-webkit-scrollbar { width: 4px; }
+.scrollbar-thin::-webkit-scrollbar-thumb { background: #2a2a5e; border: none; }
+
 .notice-board {
   background: linear-gradient(135deg, #1a1400 0%, #2a1f00 100%);
   border: 3px solid #92400e;

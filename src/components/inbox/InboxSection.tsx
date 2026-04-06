@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from 'react'
-import SectionHeader from '../shared/SectionHeader'
 import PixelButton from '../shared/PixelButton'
 import PixelPanel from '../shared/PixelPanel'
 import InboxItemCard from './InboxItemCard'
@@ -13,6 +12,8 @@ interface Props {
 }
 
 export default function InboxSection({ userId }: Props) {
+  const [expanded, setExpanded] = useState(false)
+  const [showCapture, setShowCapture] = useState(false)
   const [draft, setDraft] = useState('')
   const [processingItem, setProcessingItem] = useState<InboxItem | null>(null)
   const [showTokenSetup, setShowTokenSetup] = useState(false)
@@ -24,7 +25,6 @@ export default function InboxSection({ userId }: Props) {
 
   const count = items?.length ?? 0
 
-  // Auto-resize textarea as user types
   useEffect(() => {
     const el = textareaRef.current
     if (!el) return
@@ -32,17 +32,27 @@ export default function InboxSection({ userId }: Props) {
     el.style.height = `${el.scrollHeight}px`
   }, [draft])
 
+  useEffect(() => {
+    if (showCapture && textareaRef.current) {
+      textareaRef.current.focus()
+    }
+  }, [showCapture])
+
   function handleCapture() {
     if (!draft.trim()) return
     addItem.mutate(draft.trim())
     setDraft('')
+    setShowCapture(false)
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
-    // Ctrl/Cmd + Enter submits
     if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
       e.preventDefault()
       handleCapture()
+    }
+    if (e.key === 'Escape') {
+      setShowCapture(false)
+      setDraft('')
     }
   }
 
@@ -60,110 +70,126 @@ export default function InboxSection({ userId }: Props) {
 
   return (
     <section>
-      <SectionHeader
-        title="INBOX"
-        sub={count > 0 ? `${count} to process` : 'clear'}
-      />
+      {/* Collapsed header bar */}
+      <div className="flex items-center gap-2 mb-2">
+        <button
+          onClick={() => setExpanded((v) => !v)}
+          className="section-header flex-1 flex items-center gap-2 cursor-pointer hover:brightness-110 transition-all mb-0"
+        >
+          <span>{expanded ? '▼' : '▶'}</span>
+          <span>INBOX</span>
+          {count > 0 && (
+            <span className="ml-1 inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full bg-red-600 text-white font-pixel text-[10px] leading-none">
+              {count}
+            </span>
+          )}
+        </button>
+        <button
+          onClick={(e) => { e.stopPropagation(); setShowCapture((v) => !v) }}
+          className="flex items-center justify-center w-7 h-7 rounded border-2 border-rpg-border bg-rpg-surface text-rpg-gold font-pixel text-pixel-base hover:bg-rpg-border hover:text-white transition-colors flex-shrink-0"
+          title="Quick capture"
+        >
+          +
+        </button>
+      </div>
 
-      {/* Capture input */}
-      <PixelPanel className="mb-3">
-        <div className="flex flex-col gap-2">
-          <textarea
-            ref={textareaRef}
-            className="pixel-input resize-none overflow-hidden"
-            placeholder="Capture a thought, idea, or note… (Ctrl+Enter to add)"
-            value={draft}
-            onChange={(e) => setDraft(e.target.value)}
-            onKeyDown={handleKeyDown}
-            rows={1}
-            maxLength={500}
-          />
-          <div className="flex items-center gap-2">
+      {/* Quick capture inline */}
+      {showCapture && (
+        <PixelPanel className="mb-2">
+          <div className="flex gap-2">
+            <textarea
+              ref={textareaRef}
+              className="pixel-input resize-none overflow-hidden flex-1"
+              placeholder="Capture a thought… (Ctrl+Enter)"
+              value={draft}
+              onChange={(e) => setDraft(e.target.value)}
+              onKeyDown={handleKeyDown}
+              rows={1}
+              maxLength={500}
+            />
             <PixelButton
-              size="sm"
+              size="xs"
               variant="gold"
               onClick={handleCapture}
               disabled={!draft.trim() || addItem.isPending}
             >
-              {addItem.isPending ? 'SAVING...' : '+ CAPTURE'}
+              {addItem.isPending ? '...' : '↵'}
             </PixelButton>
-            {addItem.isError && (
-              <span className="font-pixel text-pixel-xs text-rpg-hp">Failed to save.</span>
-            )}
           </div>
-        </div>
-      </PixelPanel>
-
-      {/* Items */}
-      {isLoading && (
-        <div className="font-body text-body-base text-rpg-muted p-2">Loading inbox...</div>
-      )}
-
-      {!isLoading && count === 0 && (
-        <PixelPanel className="mb-3">
-          <p className="font-body text-body-base text-rpg-muted">Inbox is empty. Capture something!</p>
         </PixelPanel>
       )}
 
-      {count > 0 && (
-        <div className="flex flex-col gap-2 mb-3">
-          {(items ?? []).map((item) =>
-            processingItem?.id === item.id ? (
-              <ProcessInboxItem
-                key={item.id}
-                item={item}
-                userId={userId}
-                onDone={() => setProcessingItem(null)}
-              />
-            ) : (
-              <InboxItemCard
-                key={item.id}
-                item={item}
-                onProcess={(i) => setProcessingItem(i)}
-                onDiscard={handleDiscard}
-              />
-            )
+      {/* Expanded item list */}
+      {expanded && (
+        <div className="flex flex-col gap-1">
+          {isLoading && (
+            <div className="font-body text-body-sm text-rpg-muted p-2">Loading...</div>
           )}
+
+          {!isLoading && count === 0 && (
+            <PixelPanel className="mb-1">
+              <p className="font-body text-body-sm text-rpg-muted">Inbox empty.</p>
+            </PixelPanel>
+          )}
+
+          {count > 0 && (
+            <div className="flex flex-col gap-1 max-h-[400px] overflow-y-auto pr-1 scrollbar-thin">
+              {(items ?? []).map((item) =>
+                processingItem?.id === item.id ? (
+                  <ProcessInboxItem
+                    key={item.id}
+                    item={item}
+                    userId={userId}
+                    onDone={() => setProcessingItem(null)}
+                  />
+                ) : (
+                  <InboxItemCard
+                    key={item.id}
+                    item={item}
+                    onProcess={(i) => setProcessingItem(i)}
+                    onDiscard={handleDiscard}
+                  />
+                )
+              )}
+            </div>
+          )}
+
+          {/* Sync token setup */}
+          <div className="mt-1">
+            <PixelButton
+              size="xs"
+              variant="primary"
+              onClick={() => setShowTokenSetup((v) => !v)}
+            >
+              {showTokenSetup ? '▼' : '▶'} SYNC SETUP
+            </PixelButton>
+
+            {showTokenSetup && (
+              <PixelPanel className="mt-2">
+                <div className="font-pixel text-pixel-xs text-rpg-gold mb-2">GOOGLE APPS SCRIPT SYNC</div>
+                <p className="font-body text-body-sm text-rpg-muted mb-3">
+                  Paste this token into the Apps Script&apos;s Script Properties as{' '}
+                  <code className="font-pixel text-pixel-xs text-rpg-text">HUB_SYNC_TOKEN</code>.
+                </p>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <code className="font-pixel text-pixel-xs text-rpg-text bg-rpg-bg px-2 py-1 border border-rpg-border select-all break-all">
+                    {player?.sync_token ?? '…'}
+                  </code>
+                  <PixelButton size="xs" variant="success" onClick={copyToken}>
+                    {tokenCopied ? '✓ COPIED' : 'COPY'}
+                  </PixelButton>
+                </div>
+                <div className="font-pixel text-pixel-xs text-rpg-muted mt-3 leading-relaxed">
+                  Script Properties needed:{' '}
+                  <span className="text-rpg-text">SUPABASE_URL</span>,{' '}
+                  <span className="text-rpg-text">SUPABASE_ANON_KEY</span>,{' '}
+                  <span className="text-rpg-text">HUB_SYNC_TOKEN</span>
+                </div>
+              </PixelPanel>
+            )}
+          </div>
         </div>
       )}
-
-      {/* Apps Script sync token setup */}
-      <div className="mt-1">
-        <PixelButton
-          size="xs"
-          variant="primary"
-          onClick={() => setShowTokenSetup((v) => !v)}
-        >
-          {showTokenSetup ? '▼' : '▶'} SYNC SETUP
-        </PixelButton>
-
-        {showTokenSetup && (
-          <PixelPanel className="mt-2">
-            <div className="font-pixel text-pixel-xs text-rpg-gold mb-2">GOOGLE APPS SCRIPT SYNC</div>
-            <p className="font-body text-body-sm text-rpg-muted mb-3">
-              Paste this token into the Apps Script&apos;s Script Properties as{' '}
-              <code className="font-pixel text-pixel-xs text-rpg-text">HUB_SYNC_TOKEN</code>.
-              It lets the script insert items without exposing your account credentials.
-            </p>
-
-            <div className="flex items-center gap-2 flex-wrap">
-              <code className="font-pixel text-pixel-xs text-rpg-text bg-rpg-bg px-2 py-1 border border-rpg-border select-all break-all">
-                {player?.sync_token ?? '…'}
-              </code>
-              <PixelButton size="xs" variant="success" onClick={copyToken}>
-                {tokenCopied ? '✓ COPIED' : 'COPY'}
-              </PixelButton>
-            </div>
-
-            <div className="font-pixel text-pixel-xs text-rpg-muted mt-3 leading-relaxed">
-              Script Properties needed:{' '}
-              <span className="text-rpg-text">SUPABASE_URL</span>,{' '}
-              <span className="text-rpg-text">SUPABASE_ANON_KEY</span>,{' '}
-              <span className="text-rpg-text">HUB_SYNC_TOKEN</span>
-            </div>
-          </PixelPanel>
-        )}
-      </div>
     </section>
   )
 }

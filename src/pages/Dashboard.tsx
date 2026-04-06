@@ -118,9 +118,7 @@ export default function Dashboard({ userId }: Props) {
       {/* Main content */}
       <main className="flex-1 overflow-y-auto p-4 flex flex-col gap-6 min-w-0">
         <DailyQuote />
-        <InboxSection userId={userId} />
         <DailyTaskList userId={userId} />
-        <HabitSection userId={userId} />
         <ProjectGrid
           userId={userId}
           selectedProjectId={selectedProjectId}
@@ -130,6 +128,18 @@ export default function Dashboard({ userId }: Props) {
         <ShopGrid userId={userId} />
         <div className="h-4" />
       </main>
+
+      {/* Right sidebar — Inbox & Habits */}
+      <aside
+        className="sticky top-0 h-screen overflow-y-auto flex-shrink-0 border-l-2 border-rpg-border"
+        style={{ width: 280 }}
+      >
+        <div className="p-3 flex flex-col gap-4 h-full">
+          <InboxSection userId={userId} />
+          <HabitSection userId={userId} />
+          <div className="flex-1" />
+        </div>
+      </aside>
     </div>
   )
 }
