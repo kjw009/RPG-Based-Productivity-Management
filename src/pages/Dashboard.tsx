@@ -14,6 +14,7 @@ import AbilityGrid from '../components/abilities/AbilityGrid'
 import GoldCounter from '../components/player/GoldCounter'
 import HPBar from '../components/player/HPBar'
 import ManaBar from '../components/player/ManaBar'
+import InboxSection from '../components/inbox/InboxSection'
 
 interface Props {
   userId: string
@@ -74,6 +75,7 @@ export default function Dashboard({ userId }: Props) {
         {/* Scrollable content */}
         <div className="flex-1 overflow-y-auto p-3 flex flex-col gap-6">
           <DailyQuote />
+          <InboxSection userId={userId} />
           <PlayerPanel player={player} />
           <DailyTaskList userId={userId} />
           <HabitSection userId={userId} />
@@ -116,6 +118,7 @@ export default function Dashboard({ userId }: Props) {
       {/* Main content */}
       <main className="flex-1 overflow-y-auto p-4 flex flex-col gap-6 min-w-0">
         <DailyQuote />
+        <InboxSection userId={userId} />
         <DailyTaskList userId={userId} />
         <HabitSection userId={userId} />
         <ProjectGrid

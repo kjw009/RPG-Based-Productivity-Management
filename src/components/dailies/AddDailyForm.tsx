@@ -16,13 +16,14 @@ interface DailyFormValues {
 interface Props {
   userId: string
   initialValues?: DailyFormValues
+  label?: string
   onAdd: (payload: DailyFormValues) => void
   onCancel: () => void
   isLoading: boolean
   error?: string | null
 }
 
-export default function AddDailyForm({ userId, initialValues, onAdd, onCancel, isLoading, error }: Props) {
+export default function AddDailyForm({ userId, initialValues, label, onAdd, onCancel, isLoading, error }: Props) {
   const [title, setTitle] = useState(initialValues?.title ?? '')
   const [days, setDays] = useState<number[]>(initialValues?.recurrence_days ?? WEEKDAYS)
   const [difficulty, setDifficulty] = useState(initialValues?.difficulty ?? 1)
@@ -41,7 +42,7 @@ export default function AddDailyForm({ userId, initialValues, onAdd, onCancel, i
   return (
     <PixelPanel>
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-        <div className="font-pixel text-pixel-xs text-rpg-gold mb-1">{initialValues ? 'EDIT DAILY TASK' : 'NEW DAILY TASK'}</div>
+        <div className="font-pixel text-pixel-xs text-rpg-gold mb-1">{label ?? (initialValues ? 'EDIT DAILY TASK' : 'NEW DAILY TASK')}</div>
 
         <input
           className="pixel-input"

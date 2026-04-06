@@ -9,6 +9,17 @@ export interface Player {
   mana: number
   max_mana: number
   gold: number
+  sync_token: string
+  created_at: string
+}
+
+export interface InboxItem {
+  id: string
+  user_id: string
+  content: string
+  source: 'manual' | 'tasks' | 'gmail'
+  source_id: string | null
+  source_meta: Record<string, string> | null
   created_at: string
 }
 

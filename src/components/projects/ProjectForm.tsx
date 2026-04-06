@@ -12,13 +12,14 @@ interface ProjectFormValues {
 interface Props {
   userId: string
   initialValues?: ProjectFormValues
+  label?: string
   onAdd: (payload: ProjectFormValues) => void
   onCancel: () => void
   isLoading: boolean
   error?: string | null
 }
 
-export default function ProjectForm({ userId, initialValues, onAdd, onCancel, isLoading, error }: Props) {
+export default function ProjectForm({ userId, initialValues, label, onAdd, onCancel, isLoading, error }: Props) {
   const [title, setTitle] = useState(initialValues?.title ?? '')
   const [description, setDescription] = useState(initialValues?.description ?? '')
   const [areas, setAreas] = useState<string[]>(initialValues?.areas ?? [])
@@ -32,7 +33,7 @@ export default function ProjectForm({ userId, initialValues, onAdd, onCancel, is
   return (
     <PixelPanel>
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-        <div className="font-pixel text-pixel-xs text-rpg-gold mb-1">{initialValues ? 'EDIT PROJECT' : 'NEW PROJECT'}</div>
+        <div className="font-pixel text-pixel-xs text-rpg-gold mb-1">{label ?? (initialValues ? 'EDIT PROJECT' : 'NEW PROJECT')}</div>
         <input
           className="pixel-input"
           placeholder="Project name..."

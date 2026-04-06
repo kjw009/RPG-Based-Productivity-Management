@@ -19,13 +19,14 @@ interface Props {
   projects: Project[]
   defaultProjectId?: string | null
   initialValues?: TodoFormValues
+  label?: string
   onAdd: (payload: TodoFormValues) => void
   onCancel: () => void
   isLoading: boolean
   error?: string | null
 }
 
-export default function TodoForm({ userId, projects, defaultProjectId, initialValues, onAdd, onCancel, isLoading, error }: Props) {
+export default function TodoForm({ userId, projects, defaultProjectId, initialValues, label, onAdd, onCancel, isLoading, error }: Props) {
   const [title, setTitle] = useState(initialValues?.title ?? '')
   const [description, setDescription] = useState(initialValues?.description ?? '')
   const [projectId, setProjectId] = useState<string>(initialValues?.project_id ?? defaultProjectId ?? '')
@@ -49,7 +50,7 @@ export default function TodoForm({ userId, projects, defaultProjectId, initialVa
   return (
     <PixelPanel>
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-        <div className="font-pixel text-pixel-xs text-rpg-gold mb-1">{initialValues ? 'EDIT QUEST' : 'NEW QUEST'}</div>
+        <div className="font-pixel text-pixel-xs text-rpg-gold mb-1">{label ?? (initialValues ? 'EDIT QUEST' : 'NEW QUEST')}</div>
 
         <input
           className="pixel-input"

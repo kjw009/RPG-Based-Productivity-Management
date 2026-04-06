@@ -13,13 +13,14 @@ interface HabitFormValues {
 interface Props {
   userId: string
   initialValues?: HabitFormValues
+  label?: string
   onAdd: (payload: HabitFormValues) => void
   onCancel: () => void
   isLoading: boolean
   error?: string | null
 }
 
-export default function HabitForm({ userId, initialValues, onAdd, onCancel, isLoading, error }: Props) {
+export default function HabitForm({ userId, initialValues, label, onAdd, onCancel, isLoading, error }: Props) {
   const [title, setTitle] = useState(initialValues?.title ?? '')
   const [type, setType] = useState<'good' | 'bad' | 'both'>(initialValues?.type ?? 'good')
   const [difficulty, setDifficulty] = useState(initialValues?.difficulty ?? 1)
@@ -34,7 +35,7 @@ export default function HabitForm({ userId, initialValues, onAdd, onCancel, isLo
   return (
     <PixelPanel>
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-        <div className="font-pixel text-pixel-xs text-rpg-gold mb-1">{initialValues ? 'EDIT HABIT' : 'NEW HABIT'}</div>
+        <div className="font-pixel text-pixel-xs text-rpg-gold mb-1">{label ?? (initialValues ? 'EDIT HABIT' : 'NEW HABIT')}</div>
 
         <input
           className="pixel-input"
