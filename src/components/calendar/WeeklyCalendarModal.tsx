@@ -314,19 +314,22 @@ export default function WeeklyCalendarModal({ mode, todos, projects, onClose }: 
 
   /**
    * For view mode: groups active todos by their due_date string.
-   * Only includes todos that have a due date set.
+   * Only includes todos that have a due date AND no scheduled time block —
+   * these are shown as all-day pills in the day header rather than occupying
+   * time slots on the grid. Todos with blocks are already rendered by renderQuestBlocks.
    */
-  const todosByDate = useMemo(() => {
+  const unblockedTodosByDate = useMemo(() => {
     const m = new Map<string, Todo[]>()
     activeTodos.forEach(t => {
-      if (t.due_date) {
+      // Only include todos with a due date that haven't been time-blocked
+      if (t.due_date && !scheduledIds.has(t.id)) {
         const arr = m.get(t.due_date) || []
         arr.push(t)
         m.set(t.due_date, arr)
       }
     })
     return m
-  }, [activeTodos])
+  }, [activeTodos, scheduledIds])
 
   /** Human-readable label for the current week (e.g. "Apr 6 — Apr 12, 2026") */
   const weekLabel = `${weekDates[0].toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} — ${weekDates[6].toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`
@@ -590,7 +593,8 @@ export default function WeeklyCalendarModal({ mode, todos, projects, onClose }: 
 
   /**
    * Renders a single day column header with the day name, date number,
-   * and any all-day Google Calendar events as compact pills.
+   * any all-day Google Calendar events as compact pills, and (in view mode)
+   * unblocked due-date quests as all-day quest pills.
    *
    * @param date - The Date object for this column
    * @param idx  - Column index (used as React key)
@@ -599,24 +603,42 @@ export default function WeeklyCalendarModal({ mode, todos, projects, onClose }: 
     const ds = toDateStr(date)
     const isToday = ds === todayStr
     const dayAllDay = allDayEvents.get(ds) || []
+    // Quests due on this date that have no time block — shown as all-day pills in view mode
+    const dayQuestsDue = mode === 'view' ? (unblockedTodosByDate.get(ds) || []) : []
+    const hasHeaderPills = dayAllDay.length > 0 || dayQuestsDue.length > 0
     return (
       <div
         key={idx}
-        className={`flex-1 text-center border-b-2 border-rpg-border font-grimoire text-grimoire-sm ${isToday ? 'text-rpg-gold' : 'text-rpg-muted'}`}
+        className={`flex-1 min-w-0 overflow-hidden text-center border-b-2 border-rpg-border font-grimoire text-grimoire-sm ${isToday ? 'text-rpg-gold' : 'text-rpg-muted'}`}
       >
         <div className="py-2">
           <div>{DAY_NAMES[date.getDay()]}</div>
           {/* Highlight today's date number with bold */}
           <div className={`text-lg ${isToday ? 'font-bold' : ''}`}>{date.getDate()}</div>
         </div>
-        {/* All-day event pills stacked below the date */}
-        {dayAllDay.length > 0 && (
+        {/* All-day pills: Google Calendar events + unblocked due-date quests */}
+        {hasHeaderPills && (
           <div className="px-1 pb-1 space-y-0.5">
+            {/* Google Calendar all-day events — mana-blue style */}
             {dayAllDay.map(ev => (
               <div key={ev.id} className="calendar-gcal-allday truncate">
                 {ev.summary}
               </div>
             ))}
+            {/* Quest due-date pills — difficulty-colored, distinct from gcal events */}
+            {dayQuestsDue.map(todo => {
+              const color = DIFF_COLORS[todo.difficulty] || '#6b7280'
+              return (
+                <div
+                  key={todo.id}
+                  className="calendar-quest-allday truncate"
+                  style={{ borderLeftColor: color }}
+                  title={`${todo.title}${todo.project_id && projects.get(todo.project_id) ? ` — ${projects.get(todo.project_id)!.title}` : ''}`}
+                >
+                  {todo.title}
+                </div>
+              )
+            })}
           </div>
         )}
       </div>
@@ -793,13 +815,14 @@ export default function WeeklyCalendarModal({ mode, todos, projects, onClose }: 
 
   /**
    * Renders the read-only view mode calendar.
-   * Similar to the time grid but without drop targets. Shows quest cards by due date
-   * pinned to the top of each day column, plus gcal events and scheduled blocks.
+   * Similar to the time grid but without drop targets. Unblocked due-date quests
+   * appear as all-day pills in the day header (via renderDayHeader). Time-blocked
+   * quests and gcal events are shown on the grid as usual.
    */
   function renderViewMode() {
     return (
       <div className="flex-1 overflow-auto calendar-scroll">
-        {/* Sticky header row (no hour label spacer in view mode) */}
+        {/* Sticky header row — due-date quest pills are rendered inside renderDayHeader */}
         <div className="flex sticky top-0 z-10 bg-rpg-bg">
           {weekDates.map((date, i) => renderDayHeader(date, i))}
         </div>
@@ -812,11 +835,9 @@ export default function WeeklyCalendarModal({ mode, todos, projects, onClose }: 
               </div>
             ))}
           </div>
-          {/* 7 day columns with quests, gcal events, and time indicator */}
+          {/* 7 day columns — only time-blocked quests and gcal events on the grid */}
           {weekDates.map((date, dayIdx) => {
-            const ds = toDateStr(date)
-            const dayTodos = todosByDate.get(ds) || [] // Todos due on this date
-            const isToday = ds === todayStr
+            const isToday = toDateStr(date) === todayStr
             return (
               <div key={dayIdx} className={`flex-1 relative ${isToday ? 'bg-rpg-gold/[0.03]' : ''}`} style={{ height: HOURS.length * CELL_H }}>
                 {/* Hour grid lines (read-only, no drag handlers) */}
@@ -827,23 +848,6 @@ export default function WeeklyCalendarModal({ mode, todos, projects, onClose }: 
                 ))}
                 {renderGCalBlocks(dayIdx)}
                 {renderQuestBlocks(dayIdx)}
-                {/* Quest cards pinned to top of the day column (by due date) */}
-                {dayTodos.length > 0 && (
-                  <div className="absolute left-1 right-1 top-1 z-10 space-y-0.5">
-                    {dayTodos.map(todo => {
-                      const color = DIFF_COLORS[todo.difficulty] || '#6b7280'
-                      return (
-                        <div key={todo.id} className="calendar-view-card" style={{ borderLeftColor: color }}>
-                          <span className="truncate font-body text-body-sm text-rpg-text leading-tight">{todo.title}</span>
-                          {/* Show project name if the quest belongs to a project */}
-                          {todo.project_id && projects.get(todo.project_id) && (
-                            <span className="font-body text-xs text-rpg-muted truncate">{projects.get(todo.project_id)!.title}</span>
-                          )}
-                        </div>
-                      )
-                    })}
-                  </div>
-                )}
                 {renderCurrentTimeLine(dayIdx)}
               </div>
             )
