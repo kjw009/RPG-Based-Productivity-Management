@@ -8,6 +8,13 @@ interface GameContextType {
 
 const GameContext = createContext<GameContextType | null>(null)
 
+/**
+ * Provides KO overlay state to the entire component tree.
+ *
+ * useGameEconomy calls triggerKO() after writing the KO state to the DB.
+ * KOOverlay reads showKO and renders the fullscreen overlay.
+ * The overlay auto-dismisses after 3 seconds, or immediately on tap/click.
+ */
 export function GameProvider({ children }: { children: ReactNode }) {
   const [showKO, setShowKO] = useState(false)
 

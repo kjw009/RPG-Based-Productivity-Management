@@ -16,13 +16,20 @@ import type { DailyTask, Todo, Player, ActiveEffect } from '../types'
 const LAST_CHECK_KEY = 'rpg_last_daily_check'
 
 /**
- * Runs once per session per day.
- * Batches all HP deductions into a single DB write to avoid stale-cache races.
+ * Runs the "midnight check" once per calendar day, on the first app load
+ * of that day. Tracks the last run date in localStorage so it never runs
+ * twice in the same day even if the page reloads.
+ *
+ * Why batch instead of calling deductHP in a loop?
+ * Each deductHP call reads the player from the React Query cache. After the
+ * first write the cache invalidation is async, so subsequent reads would see
+ * stale (pre-deduction) HP. Batching calculates the total loss upfront and
+ * makes a single DB write, avoiding that race.
  */
 export function useDailyReset(userId: string) {
   const qc = useQueryClient()
   const { triggerKO } = useGameContext()
-  const ran = useRef(false)
+  const ran = useRef(false) // prevents double-run in React Strict Mode
 
   useEffect(() => {
     if (!userId || ran.current) return
@@ -31,16 +38,18 @@ export function useDailyReset(userId: string) {
     const today = todayStr()
     const lastCheck = localStorage.getItem(LAST_CHECK_KEY)
 
+    // Already ran today — nothing to do
     if (lastCheck === today) return
 
-    // Mark as run for today immediately to prevent double-run
+    // Mark as run immediately so a mid-run reload doesn't double-penalise
     localStorage.setItem(LAST_CHECK_KEY, today)
 
     async function runReset() {
       const yesterday = yesterdayStr()
       const yesterdayDow = yesterdayWeekday()
 
-      // Fetch fresh player data directly from DB
+      // Fetch fresh player directly from DB (not cache — cache may be empty
+      // on first load before usePlayer has resolved)
       const { data: playerData } = await supabase
         .from('player')
         .select('*')
@@ -48,27 +57,29 @@ export function useDailyReset(userId: string) {
         .single()
 
       const player = playerData as Player | null
-      if (!player) return
+      if (!player) return // player row not seeded yet
 
       let totalHPLoss = 0
 
-      // ── Daily task reset ────────────────────────────────────────
+      // ── Check missed daily tasks ─────────────────────────────────────────
       const { data: dailies } = await supabase
         .from('daily_tasks')
         .select('*')
         .eq('user_id', userId)
 
-      const allDailies: DailyTask[] = dailies ?? []
       const missedIds: string[] = []
 
-      for (const task of allDailies) {
+      for (const task of (dailies ?? []) as DailyTask[]) {
+        // Skip tasks not scheduled for yesterday
         if (!task.recurrence_days.includes(yesterdayDow)) continue
+        // Skip tasks completed yesterday
         if (task.last_completed_date === yesterday) continue
+
         totalHPLoss += calculateMissedDailyHP(task.difficulty)
         missedIds.push(task.id)
       }
 
-      // Reset streaks for missed dailies
+      // Reset streaks for all missed tasks in one query
       if (missedIds.length > 0) {
         await supabase
           .from('daily_tasks')
@@ -76,7 +87,8 @@ export function useDailyReset(userId: string) {
           .in('id', missedIds)
       }
 
-      // ── Overdue todos ───────────────────────────────────────────
+      // ── Check overdue todos ──────────────────────────────────────────────
+      // Only fetch todos that haven't had the penalty applied yet
       const { data: todos } = await supabase
         .from('todos')
         .select('*')
@@ -85,17 +97,17 @@ export function useDailyReset(userId: string) {
         .eq('overdue_checked', false)
         .lt('due_date', today)
 
-      const overdueTodos: Todo[] = todos ?? []
       const overdueIds: string[] = []
 
-      for (const todo of overdueTodos) {
+      for (const todo of (todos ?? []) as Todo[]) {
+        // Shadow-stepped todos had their deadline extended — skip penalty
         if (!todo.shadow_stepped) {
           totalHPLoss += calculateOverdueTodoHP(todo.difficulty)
         }
         overdueIds.push(todo.id)
       }
 
-      // Mark overdue todos as checked
+      // Mark all checked in one query regardless of shadow_step status
       if (overdueIds.length > 0) {
         await supabase
           .from('todos')
@@ -103,12 +115,12 @@ export function useDailyReset(userId: string) {
           .in('id', overdueIds)
       }
 
-      // ── Apply HP loss ───────────────────────────────────────────
+      // ── Apply total HP loss ──────────────────────────────────────────────
       if (totalHPLoss > 0) {
         const newHP = player.hp - totalHPLoss
 
         if (newHP <= 0) {
-          // KO sequence
+          // KO — check for Pickpocket before zeroing gold
           const { data: effectsData } = await supabase
             .from('active_effects')
             .select('*')
@@ -140,7 +152,7 @@ export function useDailyReset(userId: string) {
         }
       }
 
-      // Refresh all relevant data
+      // Refresh all affected queries so the UI shows current values
       qc.invalidateQueries({ queryKey: ['player', userId] })
       qc.invalidateQueries({ queryKey: ['dailies', userId] })
       qc.invalidateQueries({ queryKey: ['todos', userId] })

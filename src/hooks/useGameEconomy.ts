@@ -10,7 +10,14 @@ import type { Player, ActiveEffect } from '../types'
 
 /**
  * Central hook for all gold/HP/mana transactions.
- * Reads current player + effects from React Query cache.
+ *
+ * Reads player and active effects directly from the React Query cache
+ * (via getQueryData) so it doesn't need its own useQuery call — this
+ * avoids creating extra subscriptions and keeps it composable inside
+ * other hooks (useDailies, useHabits, etc.).
+ *
+ * After every DB write it invalidates the relevant query keys so the
+ * UI re-renders with fresh data.
  */
 export function useGameEconomy(userId: string) {
   const qc = useQueryClient()
@@ -24,40 +31,47 @@ export function useGameEconomy(userId: string) {
     return qc.getQueryData<ActiveEffect[]>(['activeEffects', userId]) ?? []
   }
 
+  /** Returns true if a non-expired effect of the given type exists in cache. */
   function hasActiveEffect(type: string): boolean {
-    const effects = getActiveEffects()
-    return effects.some((e) => e.effect_type === type && isEffectActive(e.expires_at))
+    return getActiveEffects().some(
+      (e) => e.effect_type === type && isEffectActive(e.expires_at)
+    )
   }
 
+  /** Deletes the first matching active effect from the DB and refreshes cache. */
   async function consumeEffect(type: string) {
-    const effects = getActiveEffects()
-    const effect = effects.find((e) => e.effect_type === type && isEffectActive(e.expires_at))
+    const effect = getActiveEffects().find(
+      (e) => e.effect_type === type && isEffectActive(e.expires_at)
+    )
     if (!effect) return
     await supabase.from('active_effects').delete().eq('id', effect.id)
     qc.invalidateQueries({ queryKey: ['activeEffects', userId] })
   }
 
-  /** Award gold to player. Returns actual gold awarded (after multipliers). */
+  /**
+   * Awards gold to the player.
+   * Automatically applies the Double Gold Scroll multiplier (×2) if active.
+   * Also updates lifetime_gold (used for rank) and recalculates rank_title.
+   * Returns the final amount awarded after multipliers.
+   */
   async function awardGold(baseAmount: number): Promise<number> {
     const player = getPlayer()
     if (!player) return 0
 
     let amount = baseAmount
 
-    // Double Gold Scroll multiplier
+    // Double Gold Scroll stacks on top of any other multiplier already applied
     if (hasActiveEffect('double_gold')) {
       amount *= 2
     }
 
-    const newGold = player.gold + amount
-    const newLifetime = player.lifetime_gold + amount
-
     const { error } = await supabase
       .from('player')
       .update({
-        gold: newGold,
-        lifetime_gold: newLifetime,
-        rank_title: getRankTitle(newLifetime),
+        gold: player.gold + amount,
+        lifetime_gold: player.lifetime_gold + amount,
+        // Rank is derived from lifetime gold so it always stays current
+        rank_title: getRankTitle(player.lifetime_gold + amount),
       })
       .eq('user_id', userId)
 
@@ -66,7 +80,11 @@ export function useGameEconomy(userId: string) {
     return amount
   }
 
-  /** Deduct HP. Triggers KO flow if HP reaches 0. */
+  /**
+   * Deducts HP from the player.
+   * If the result would be ≤ 0, triggers the full KO sequence instead
+   * of setting HP to a negative number.
+   */
   async function deductHP(amount: number) {
     const player = getPlayer()
     if (!player) return
@@ -85,14 +103,19 @@ export function useGameEconomy(userId: string) {
     }
   }
 
-  /** Full KO sequence: Pickpocket check → zero gold → reset HP → show overlay */
+  /**
+   * KO sequence:
+   * 1. Check if Pickpocket is armed → save 30 gold before zeroing
+   * 2. Set gold = 0 (or 30 if Pickpocket), reset HP to max_hp
+   * 3. Consume the Pickpocket effect so it doesn't re-trigger
+   * 4. Show the KO overlay via GameContext
+   */
   async function handleKO() {
     const player = getPlayer()
     if (!player) return
 
     let goldToKeep = 0
 
-    // Pickpocket: recover 30 gold before zeroing
     if (hasActiveEffect('pickpocket')) {
       goldToKeep = PICKPOCKET_GOLD_RECOVERY
       await consumeEffect('pickpocket')
@@ -109,27 +132,25 @@ export function useGameEconomy(userId: string) {
     triggerKO()
   }
 
-  /** Deduct mana for ability use. */
+  /** Deducts mana when an ability is activated. Floored at 0. */
   async function deductMana(amount: number) {
     const player = getPlayer()
     if (!player) return
-    const newMana = Math.max(0, player.mana - amount)
     const { error } = await supabase
       .from('player')
-      .update({ mana: newMana })
+      .update({ mana: Math.max(0, player.mana - amount) })
       .eq('user_id', userId)
     if (error) throw error
     qc.invalidateQueries({ queryKey: ['player', userId] })
   }
 
-  /** Restore HP (health potion etc). Cannot exceed max_hp. */
+  /** Restores HP (e.g. Health Potion). Clamped to max_hp. */
   async function restoreHP(amount: number) {
     const player = getPlayer()
     if (!player) return
-    const newHP = Math.min(player.hp + amount, player.max_hp)
     const { error } = await supabase
       .from('player')
-      .update({ hp: newHP })
+      .update({ hp: Math.min(player.hp + amount, player.max_hp) })
       .eq('user_id', userId)
     if (error) throw error
     qc.invalidateQueries({ queryKey: ['player', userId] })

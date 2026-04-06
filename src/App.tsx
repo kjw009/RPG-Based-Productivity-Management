@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { supabase } from './lib/supabase'
 import Dashboard from './pages/Dashboard'
 import { GameProvider } from './context/GameContext'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -10,7 +10,20 @@ const queryClient = new QueryClient({
   },
 })
 
+/**
+ * App shell — handles the Supabase anonymous auth lifecycle.
+ *
+ * On first ever load: signInAnonymously() creates a persistent anonymous
+ * session stored in localStorage by the Supabase client. Subsequent loads
+ * restore that session via getSession(), so the same anonymous user_id is
+ * reused and their data persists across page refreshes and app restarts.
+ *
+ * There is no login screen — the app opens directly into the dashboard.
+ * Requires "Allow anonymous sign-ins" to be enabled in:
+ *   Supabase Dashboard → Authentication → Providers → Anonymous
+ */
 export default function App() {
+  // undefined = still resolving, null = failed, string = ready
   const [userId, setUserId] = useState<string | null | undefined>(undefined)
   const [error, setError] = useState<string | null>(null)
 
@@ -23,10 +36,10 @@ export default function App() {
         return
       }
 
-      // No session — sign in anonymously (enable in Supabase: Auth → Providers → Anonymous)
+      // No existing session — create a new anonymous one
       const { data, error: signInError } = await supabase.auth.signInAnonymously()
       if (signInError || !data.session) {
-        setError(signInError?.message ?? 'Could not connect. Check your .env Supabase credentials.')
+        setError(signInError?.message ?? 'Could not connect. Check .env Supabase credentials.')
         setUserId(null)
         return
       }
@@ -35,6 +48,7 @@ export default function App() {
 
     init()
 
+    // Keep userId in sync if the session changes (e.g. token refresh)
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session) setUserId(session.user.id)
     })
@@ -57,7 +71,7 @@ export default function App() {
           <p className="font-pixel text-pixel-sm text-rpg-hp">CONNECTION ERROR</p>
           {error && <p className="font-body text-body-base text-rpg-text">{error}</p>}
           <p className="font-body text-body-sm text-rpg-muted">
-            Check that your <code>.env</code> file has valid VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY values,
+            Check your <code>.env</code> has valid VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY,
             and that Anonymous sign-in is enabled in Supabase → Auth → Providers.
           </p>
           <button className="pixel-btn pixel-btn-primary" onClick={() => window.location.reload()}>
