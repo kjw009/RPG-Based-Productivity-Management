@@ -1,3 +1,6 @@
+/**
+ * Shows a full-screen knockout overlay when the player is defeated.
+ */
 import { useGameContext } from '../../context/GameContext'
 
 export default function KOOverlay() {

@@ -1,3 +1,6 @@
+/**
+ * Styled panel wrapper for consistent section presentation.
+ */
 import { ReactNode } from 'react'
 
 interface Props {

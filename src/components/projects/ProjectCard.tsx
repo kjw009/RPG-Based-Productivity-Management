@@ -1,3 +1,6 @@
+/**
+ * Displays project details, progress, and action buttons in a project card.
+ */
 import ProgressBar from '../shared/ProgressBar'
 import PixelButton from '../shared/PixelButton'
 import AreaTag from '../shared/AreaTag'

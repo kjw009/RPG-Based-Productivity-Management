@@ -1,3 +1,6 @@
+/**
+ * Renders the list of daily tasks and controls task interactions.
+ */
 import { useState } from 'react'
 import SectionHeader from '../shared/SectionHeader'
 import PixelPanel from '../shared/PixelPanel'

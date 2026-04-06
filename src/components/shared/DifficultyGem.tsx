@@ -1,3 +1,6 @@
+/**
+ * Visual badge representing task difficulty with a color-coded gem.
+ */
 interface Props {
   difficulty: number
   showAll?: boolean

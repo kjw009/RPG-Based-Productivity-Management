@@ -1,3 +1,6 @@
+/**
+ * Form for adding or editing project details and area assignments.
+ */
 import { useState } from 'react'
 import PixelPanel from '../shared/PixelPanel'
 import PixelButton from '../shared/PixelButton'

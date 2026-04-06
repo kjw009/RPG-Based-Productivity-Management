@@ -1,8 +1,12 @@
+/**
+ * React Query hook to fetch projects and derive project progress metrics.
+ */
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { supabase } from '../lib/supabase'
 import type { Project, Todo } from '../types'
 
-async function fetchProjects(userId: string): Promise<Project[]> {
+async function fetchProjects(userId: string): Promise<
+  // Load project records for the current user from Supabase.Project[]> {
   const { data, error } = await supabase
     .from('projects')
     .select('*')
@@ -22,6 +26,7 @@ export function useProjects(userId: string) {
   })
 
   function projectProgress(projectId: string): { completed: number; total: number; pct: number } {
+  // Compute the completion percentage for a project using cached todo data.
     const todos = qc.getQueryData<Todo[]>(['todos', userId]) ?? []
     const mine = todos.filter((t) => t.project_id === projectId)
     const done = mine.filter((t) => t.completed).length

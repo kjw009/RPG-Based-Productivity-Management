@@ -1,3 +1,6 @@
+/**
+ * Card display for a daily task, including status and action buttons.
+ */
 import { useState } from 'react'
 import DifficultyGem from '../shared/DifficultyGem'
 import StreakCounter from '../shared/StreakCounter'

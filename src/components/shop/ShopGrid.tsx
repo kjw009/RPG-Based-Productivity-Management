@@ -1,3 +1,6 @@
+/**
+ * Grid layout for displaying shop reward items.
+ */
 import { useState } from 'react'
 import SectionHeader from '../shared/SectionHeader'
 import PixelButton from '../shared/PixelButton'

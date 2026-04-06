@@ -1,3 +1,6 @@
+/**
+ * Displays a single inbox item with metadata and process/discard actions.
+ */
 import PixelButton from '../shared/PixelButton'
 import type { InboxItem } from '../../types'
 

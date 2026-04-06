@@ -1,3 +1,6 @@
+/**
+ * Custom pixel-style button component with variant and size options.
+ */
 import { ButtonHTMLAttributes, ReactNode } from 'react'
 
 type Variant = 'primary' | 'success' | 'danger' | 'gold' | 'purple'

@@ -1,3 +1,6 @@
+/**
+ * Form used to add new rewards to the in-app shop.
+ */
 import { useState } from 'react'
 import PixelPanel from '../shared/PixelPanel'
 import PixelButton from '../shared/PixelButton'

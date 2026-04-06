@@ -1,3 +1,6 @@
+/**
+ * Reusable progress bar component for completion metrics.
+ */
 interface Props {
   value: number      // 0–100
   variant?: 'hp' | 'mana' | 'xp' | 'gold'

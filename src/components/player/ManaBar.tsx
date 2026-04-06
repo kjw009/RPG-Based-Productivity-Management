@@ -1,3 +1,6 @@
+/**
+ * Displays a segmented mana bar showing current and max mana.
+ */
 import { daysUntilNextMonday } from '../../lib/gameRules'
 
 interface Props {

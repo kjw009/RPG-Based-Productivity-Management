@@ -33,6 +33,7 @@ export function useAreas(userId: string) {
 
   const deleteArea = useMutation({
     mutationFn: async (areaId: string) => {
+      // Area cleanup for linked records is handled in the database layer.
       const { error } = await supabase.from('areas').delete().eq('id', areaId)
       if (error) throw error
     },

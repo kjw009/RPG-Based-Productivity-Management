@@ -1,3 +1,6 @@
+/**
+ * Displays the player's gold balance in compact or full format.
+ */
 interface Props {
   gold: number
   compact?: boolean

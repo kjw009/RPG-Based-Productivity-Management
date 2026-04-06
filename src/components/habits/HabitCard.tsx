@@ -1,3 +1,6 @@
+/**
+ * Displays a habit entry with logging options and delete/edit controls.
+ */
 import { useState } from 'react'
 import DifficultyGem from '../shared/DifficultyGem'
 import PixelButton from '../shared/PixelButton'

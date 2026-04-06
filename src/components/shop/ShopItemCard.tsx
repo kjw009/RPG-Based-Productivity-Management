@@ -1,3 +1,6 @@
+/**
+ * Displays a shop reward item with purchase and info details.
+ */
 import PixelButton from '../shared/PixelButton'
 import type { ShopItem, Player } from '../../types'
 

@@ -1,3 +1,6 @@
+/**
+ * Renders a todo item with completion toggle and action buttons.
+ */
 import { useState } from 'react'
 import DifficultyGem from '../shared/DifficultyGem'
 import PixelButton from '../shared/PixelButton'

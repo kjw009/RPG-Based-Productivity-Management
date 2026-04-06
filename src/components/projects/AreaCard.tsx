@@ -1,3 +1,6 @@
+/**
+ * Card view for an area, showing project counts and styling by area color.
+ */
 import type { Area } from '../../types'
 
 interface Props {

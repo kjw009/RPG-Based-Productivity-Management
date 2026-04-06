@@ -40,6 +40,7 @@ const QUOTE_DATE_KEY = 'rpg_daily_quote_date'
 interface Quote { content: string; author: string }
 
 function getFallbackQuote(): Quote {
+  // Deterministic rotation keeps the offline quote stable for the whole day.
   const dayOfYear = Math.floor(
     (Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000
   )
@@ -54,12 +55,14 @@ export default function DailyQuote() {
     const cached = localStorage.getItem(QUOTE_KEY)
     const cachedDate = localStorage.getItem(QUOTE_DATE_KEY)
 
+    // Reuse today's quote so the card does not change on every refresh.
     if (cached && cachedDate === today) {
       setQuote(JSON.parse(cached))
       return
     }
 
-    // Try external API
+    // Fetch once per day, then fall back to the built-in rotation if the API
+    // is unavailable or blocked.
     fetch('https://api.quotable.io/random?maxLength=120')
       .then((r) => r.json())
       .then((data) => {

@@ -1,3 +1,6 @@
+/**
+ * Form to add or edit a daily task with title, difficulty, and due date input.
+ */
 import { useState } from 'react'
 import PixelPanel from '../shared/PixelPanel'
 import PixelButton from '../shared/PixelButton'

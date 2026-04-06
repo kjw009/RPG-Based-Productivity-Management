@@ -1,3 +1,6 @@
+/**
+ * Displays the current streak count for a habit or daily.
+ */
 interface Props {
   streak: number
   size?: 'sm' | 'md'

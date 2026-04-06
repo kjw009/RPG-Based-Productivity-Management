@@ -23,6 +23,8 @@ interface Props {
 export default function Dashboard({ userId }: Props) {
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null)
   const [selectedArea, setSelectedArea] = useState<string | null>(null)
+  // The layout diverges significantly between mobile and desktop, so we
+  // track the breakpoint in state instead of relying on CSS alone.
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
 
   const { data: player, isLoading: playerLoading } = usePlayer(userId)
@@ -31,12 +33,15 @@ export default function Dashboard({ userId }: Props) {
   useDailyReset(userId)
 
   useEffect(() => {
+    // Brand-new anonymous users do not have a player row yet, so seed one
+    // once the initial player query confirms there is nothing to load.
     if (!player && !playerLoading) {
       seedPlayer.mutate('Hero')
     }
   }, [player, playerLoading]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
+    // Keep the layout mode in sync after the initial render.
     const handler = () => setIsMobile(window.innerWidth < 768)
     window.addEventListener('resize', handler)
     return () => window.removeEventListener('resize', handler)

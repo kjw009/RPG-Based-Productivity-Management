@@ -1,3 +1,6 @@
+/**
+ * Grid layout for ability cards, used to display the player's active and available abilities.
+ */
 import SectionHeader from '../shared/SectionHeader'
 import AbilityCard from './AbilityCard'
 import { useAbilities } from '../../hooks/useAbilities'

@@ -1,3 +1,6 @@
+/**
+ * Habit section wrapper that shows habit cards and the add/edit habit form.
+ */
 import { useState } from 'react'
 import SectionHeader from '../shared/SectionHeader'
 import PixelButton from '../shared/PixelButton'

@@ -1,3 +1,6 @@
+/**
+ * Health bar component showing current HP relative to max HP.
+ */
 interface Props {
   hp: number
   maxHp: number
