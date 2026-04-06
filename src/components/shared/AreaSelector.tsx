@@ -32,6 +32,7 @@ export default function AreaSelector({ userId, selected, onChange }: Props) {
 
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault()
+    e.stopPropagation() // prevent submit bubbling to parent form
     const name = newName.trim()
     if (!name) return
 
