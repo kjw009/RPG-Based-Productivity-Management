@@ -153,41 +153,6 @@ export default function InboxSection({ userId }: Props) {
               )}
             </div>
           )}
-
-          {/* Sync token setup */}
-          <div className="mt-1">
-            <PixelButton
-              size="xs"
-              variant="primary"
-              onClick={() => setShowTokenSetup((v) => !v)}
-            >
-              {showTokenSetup ? '▼' : '▶'} SYNC SETUP
-            </PixelButton>
-
-            {showTokenSetup && (
-              <PixelPanel className="mt-2">
-                <div className="font-grimoire text-grimoire-sm text-rpg-gold mb-2">GOOGLE APPS SCRIPT SYNC</div>
-                <p className="font-grimoire text-grimoire-sm text-rpg-muted mb-3">
-                  Paste this token into the Apps Script&apos;s Script Properties as{' '}
-                  <code className="font-grimoire text-grimoire-sm ink-text">HUB_SYNC_TOKEN</code>.
-                </p>
-                <div className="flex items-center gap-2 flex-wrap">
-                  <code className="font-grimoire text-grimoire-sm ink-text bg-rpg-bg px-2 py-1 border border-rpg-border select-all break-all">
-                    {player?.sync_token ?? '…'}
-                  </code>
-                  <PixelButton size="xs" variant="success" onClick={copyToken}>
-                    {tokenCopied ? '✓ COPIED' : 'COPY'}
-                  </PixelButton>
-                </div>
-                <div className="font-grimoire text-grimoire-sm text-rpg-muted mt-3 leading-relaxed">
-                  Script Properties needed:{' '}
-                  <span className="text-rpg-text">SUPABASE_URL</span>,{' '}
-                  <span className="text-rpg-text">SUPABASE_ANON_KEY</span>,{' '}
-                  <span className="text-rpg-text">HUB_SYNC_TOKEN</span>
-                </div>
-              </PixelPanel>
-            )}
-          </div>
         </div>
       )}
     </section>
