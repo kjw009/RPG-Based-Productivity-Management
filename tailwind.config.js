@@ -56,7 +56,7 @@ export default {
         'body-lg': ['22px', { lineHeight: '1.4' }],
         'body-xl': ['28px', { lineHeight: '1.3' }],
         'grimoire-sm': ['14px', { lineHeight: '1.4' }],
-        'grimoire-base': ['18px', { lineHeight: '1.4' }],
+        'grimoire-base': ['16px', { lineHeight: '1.4' }],
         'grimoire-lg': ['24px', { lineHeight: '1.3' }],
         'grimoire-xl': ['32px', { lineHeight: '1.2' }],
       },
