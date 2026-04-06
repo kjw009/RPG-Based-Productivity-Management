@@ -11,7 +11,9 @@ interface Props { userId: string }
 export default function HabitSection({ userId }: Props) {
   const [showForm, setShowForm] = useState(false)
   const [formError, setFormError] = useState<string | null>(null)
-  const { habitsQuery, consistencyPct, logHabit, addHabit, deleteHabit } = useHabits(userId)
+  const [editingId, setEditingId] = useState<string | null>(null)
+  const [editError, setEditError] = useState<string | null>(null)
+  const { habitsQuery, consistencyPct, logHabit, addHabit, deleteHabit, updateHabit } = useHabits(userId)
 
   const habits = habitsQuery.data ?? []
 
@@ -23,6 +25,17 @@ export default function HabitSection({ userId }: Props) {
     } catch (err) {
       setFormError(err instanceof Error ? err.message : 'Failed to save. Check console for details.')
       console.error('[addHabit]', err)
+    }
+  }
+
+  async function handleUpdate(id: string, payload: Parameters<typeof addHabit.mutate>[0]) {
+    setEditError(null)
+    try {
+      await updateHabit.mutateAsync({ id, ...payload })
+      setEditingId(null)
+    } catch (err) {
+      setEditError(err instanceof Error ? err.message : 'Failed to save. Check console for details.')
+      console.error('[updateHabit]', err)
     }
   }
 
@@ -39,13 +52,24 @@ export default function HabitSection({ userId }: Props) {
       )}
 
       <div className="flex flex-col gap-2 mb-3">
-        {habits.map((h) => (
+        {habits.map((h) => editingId === h.id ? (
+          <HabitForm
+            key={h.id}
+            userId={userId}
+            initialValues={{ title: h.title, type: h.type, difficulty: h.difficulty, areas: h.areas }}
+            onAdd={(payload) => handleUpdate(h.id, payload)}
+            onCancel={() => { setEditingId(null); setEditError(null) }}
+            isLoading={updateHabit.isPending}
+            error={editError}
+          />
+        ) : (
           <HabitCard
             key={h.id}
             habit={h}
             consistencyPct={consistencyPct(h.id)}
             onLog={(habit, direction) => logHabit.mutate({ habit, direction })}
             onDelete={(id) => deleteHabit.mutate(id)}
+            onEdit={(habit) => { setEditingId(habit.id); setShowForm(false) }}
             isLogging={logHabit.isPending}
           />
         ))}

@@ -3,18 +3,25 @@ import PixelPanel from '../shared/PixelPanel'
 import PixelButton from '../shared/PixelButton'
 import AreaSelector from '../shared/AreaSelector'
 
+interface ProjectFormValues {
+  title: string
+  description: string
+  areas: string[]
+}
+
 interface Props {
   userId: string
-  onAdd: (payload: { title: string; description: string; areas: string[] }) => void
+  initialValues?: ProjectFormValues
+  onAdd: (payload: ProjectFormValues) => void
   onCancel: () => void
   isLoading: boolean
   error?: string | null
 }
 
-export default function ProjectForm({ userId, onAdd, onCancel, isLoading, error }: Props) {
-  const [title, setTitle] = useState('')
-  const [description, setDescription] = useState('')
-  const [areas, setAreas] = useState<string[]>([])
+export default function ProjectForm({ userId, initialValues, onAdd, onCancel, isLoading, error }: Props) {
+  const [title, setTitle] = useState(initialValues?.title ?? '')
+  const [description, setDescription] = useState(initialValues?.description ?? '')
+  const [areas, setAreas] = useState<string[]>(initialValues?.areas ?? [])
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -25,7 +32,7 @@ export default function ProjectForm({ userId, onAdd, onCancel, isLoading, error 
   return (
     <PixelPanel>
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-        <div className="font-pixel text-pixel-xs text-rpg-gold mb-1">NEW PROJECT</div>
+        <div className="font-pixel text-pixel-xs text-rpg-gold mb-1">{initialValues ? 'EDIT PROJECT' : 'NEW PROJECT'}</div>
         <input
           className="pixel-input"
           placeholder="Project name..."
@@ -53,7 +60,7 @@ export default function ProjectForm({ userId, onAdd, onCancel, isLoading, error 
 
         <div className="flex gap-2">
           <PixelButton type="submit" variant="success" size="sm" disabled={isLoading || !title.trim()}>
-            {isLoading ? 'SAVING...' : 'CREATE'}
+            {isLoading ? 'SAVING...' : initialValues ? 'SAVE CHANGES' : 'CREATE'}
           </PixelButton>
           <PixelButton type="button" variant="danger" size="sm" onClick={onCancel}>CANCEL</PixelButton>
         </div>

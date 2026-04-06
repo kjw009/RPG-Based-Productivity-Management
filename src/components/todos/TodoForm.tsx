@@ -5,30 +5,33 @@ import AreaSelector from '../shared/AreaSelector'
 import PixelDatePicker from '../shared/PixelDatePicker'
 import type { Project } from '../../types'
 
+interface TodoFormValues {
+  title: string
+  description: string
+  project_id: string | null
+  areas: string[]
+  difficulty: number
+  due_date: string | null
+}
+
 interface Props {
   userId: string
   projects: Project[]
   defaultProjectId?: string | null
-  onAdd: (payload: {
-    title: string
-    description: string
-    project_id: string | null
-    areas: string[]
-    difficulty: number
-    due_date: string | null
-  }) => void
+  initialValues?: TodoFormValues
+  onAdd: (payload: TodoFormValues) => void
   onCancel: () => void
   isLoading: boolean
   error?: string | null
 }
 
-export default function TodoForm({ userId, projects, defaultProjectId, onAdd, onCancel, isLoading, error }: Props) {
-  const [title, setTitle] = useState('')
-  const [description, setDescription] = useState('')
-  const [projectId, setProjectId] = useState<string>(defaultProjectId ?? '')
-  const [areas, setAreas] = useState<string[]>([])
-  const [difficulty, setDifficulty] = useState(1)
-  const [dueDate, setDueDate] = useState<string | null>(null)
+export default function TodoForm({ userId, projects, defaultProjectId, initialValues, onAdd, onCancel, isLoading, error }: Props) {
+  const [title, setTitle] = useState(initialValues?.title ?? '')
+  const [description, setDescription] = useState(initialValues?.description ?? '')
+  const [projectId, setProjectId] = useState<string>(initialValues?.project_id ?? defaultProjectId ?? '')
+  const [areas, setAreas] = useState<string[]>(initialValues?.areas ?? [])
+  const [difficulty, setDifficulty] = useState(initialValues?.difficulty ?? 1)
+  const [dueDate, setDueDate] = useState<string | null>(initialValues?.due_date ?? null)
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -46,7 +49,7 @@ export default function TodoForm({ userId, projects, defaultProjectId, onAdd, on
   return (
     <PixelPanel>
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-        <div className="font-pixel text-pixel-xs text-rpg-gold mb-1">NEW QUEST</div>
+        <div className="font-pixel text-pixel-xs text-rpg-gold mb-1">{initialValues ? 'EDIT QUEST' : 'NEW QUEST'}</div>
 
         <input
           className="pixel-input"
@@ -101,7 +104,7 @@ export default function TodoForm({ userId, projects, defaultProjectId, onAdd, on
 
         <div className="flex gap-2 mt-1">
           <PixelButton type="submit" variant="success" size="sm" disabled={isLoading || !title.trim()}>
-            {isLoading ? 'SAVING...' : 'ADD QUEST'}
+            {isLoading ? 'SAVING...' : initialValues ? 'SAVE CHANGES' : 'ADD QUEST'}
           </PixelButton>
           <PixelButton type="button" variant="danger" size="sm" onClick={onCancel}>CANCEL</PixelButton>
         </div>

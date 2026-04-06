@@ -6,19 +6,27 @@ import AreaSelector from '../shared/AreaSelector'
 const DAY_LABELS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
 const WEEKDAYS = [1, 2, 3, 4, 5]
 
+interface DailyFormValues {
+  title: string
+  recurrence_days: number[]
+  difficulty: number
+  areas: string[]
+}
+
 interface Props {
   userId: string
-  onAdd: (payload: { title: string; recurrence_days: number[]; difficulty: number; areas: string[] }) => void
+  initialValues?: DailyFormValues
+  onAdd: (payload: DailyFormValues) => void
   onCancel: () => void
   isLoading: boolean
   error?: string | null
 }
 
-export default function AddDailyForm({ userId, onAdd, onCancel, isLoading, error }: Props) {
-  const [title, setTitle] = useState('')
-  const [days, setDays] = useState<number[]>(WEEKDAYS)
-  const [difficulty, setDifficulty] = useState(1)
-  const [areas, setAreas] = useState<string[]>([])
+export default function AddDailyForm({ userId, initialValues, onAdd, onCancel, isLoading, error }: Props) {
+  const [title, setTitle] = useState(initialValues?.title ?? '')
+  const [days, setDays] = useState<number[]>(initialValues?.recurrence_days ?? WEEKDAYS)
+  const [difficulty, setDifficulty] = useState(initialValues?.difficulty ?? 1)
+  const [areas, setAreas] = useState<string[]>(initialValues?.areas ?? [])
 
   function toggleDay(d: number) {
     setDays((prev) => prev.includes(d) ? prev.filter((x) => x !== d) : [...prev, d].sort())
@@ -33,7 +41,7 @@ export default function AddDailyForm({ userId, onAdd, onCancel, isLoading, error
   return (
     <PixelPanel>
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-        <div className="font-pixel text-pixel-xs text-rpg-gold mb-1">NEW DAILY TASK</div>
+        <div className="font-pixel text-pixel-xs text-rpg-gold mb-1">{initialValues ? 'EDIT DAILY TASK' : 'NEW DAILY TASK'}</div>
 
         <input
           className="pixel-input"
@@ -79,7 +87,7 @@ export default function AddDailyForm({ userId, onAdd, onCancel, isLoading, error
 
         <div className="flex gap-2 mt-1">
           <PixelButton type="submit" variant="success" size="sm" disabled={isLoading || !title.trim()}>
-            {isLoading ? 'SAVING...' : 'ADD'}
+            {isLoading ? 'SAVING...' : initialValues ? 'SAVE CHANGES' : 'ADD'}
           </PixelButton>
           <PixelButton type="button" variant="danger" size="sm" onClick={onCancel}>
             CANCEL

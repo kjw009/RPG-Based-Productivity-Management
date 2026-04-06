@@ -13,6 +13,7 @@ interface Props {
   // direction is which side was pressed — 'good' awards gold, 'bad' deducts HP
   onLog: (habit: Habit, direction: 'good' | 'bad') => void
   onDelete: (habitId: string) => void
+  onEdit: (habit: Habit) => void
   isLogging: boolean
 }
 
@@ -23,7 +24,7 @@ function borderColor(type: Habit['type']) {
   return '#3730a3' // both — indigo
 }
 
-export default function HabitCard({ habit, consistencyPct, onLog, onDelete, isLogging }: Props) {
+export default function HabitCard({ habit, consistencyPct, onLog, onDelete, onEdit, isLogging }: Props) {
   const [confirm, setConfirm] = useState(false)
   const { colorFor } = useAreas(habit.user_id)
 
@@ -52,14 +53,17 @@ export default function HabitCard({ habit, consistencyPct, onLog, onDelete, isLo
           )}
         </div>
 
-        {/* Delete button */}
+        {/* Delete / edit buttons */}
         {confirm ? (
           <div className="flex gap-1 flex-shrink-0">
             <PixelButton size="xs" variant="danger" onClick={() => onDelete(habit.id)}>✓</PixelButton>
             <PixelButton size="xs" variant="primary" onClick={() => setConfirm(false)}>✗</PixelButton>
           </div>
         ) : (
-          <PixelButton size="xs" variant="danger" onClick={() => setConfirm(true)} className="flex-shrink-0">×</PixelButton>
+          <div className="flex gap-1 flex-shrink-0">
+            <PixelButton size="xs" variant="primary" onClick={() => onEdit(habit)}>✎</PixelButton>
+            <PixelButton size="xs" variant="danger" onClick={() => setConfirm(true)}>×</PixelButton>
+          </div>
         )}
       </div>
 

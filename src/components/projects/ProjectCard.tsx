@@ -10,9 +10,10 @@ interface Props {
   isSelected: boolean
   onSelect: () => void
   onDelete: (id: string) => void
+  onEdit: (project: Project) => void
 }
 
-export default function ProjectCard({ project, progress, isSelected, onSelect, onDelete }: Props) {
+export default function ProjectCard({ project, progress, isSelected, onSelect, onDelete, onEdit }: Props) {
   const { colorFor } = useAreas(project.user_id)
 
   return (
@@ -36,14 +37,22 @@ export default function ProjectCard({ project, progress, isSelected, onSelect, o
             </div>
           )}
         </div>
-        <PixelButton
-          size="xs"
-          variant="danger"
-          onClick={(e) => { e.stopPropagation(); onDelete(project.id) }}
-          className="flex-shrink-0"
-        >
-          ×
-        </PixelButton>
+        <div className="flex gap-1 flex-shrink-0">
+          <PixelButton
+            size="xs"
+            variant="primary"
+            onClick={(e) => { e.stopPropagation(); onEdit(project) }}
+          >
+            ✎
+          </PixelButton>
+          <PixelButton
+            size="xs"
+            variant="danger"
+            onClick={(e) => { e.stopPropagation(); onDelete(project.id) }}
+          >
+            ×
+          </PixelButton>
+        </div>
       </div>
 
       <ProgressBar value={progress.pct} variant="xp" height={10} segmented />

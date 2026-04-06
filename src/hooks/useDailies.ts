@@ -87,5 +87,20 @@ export function useDailies(userId: string) {
     onSuccess: () => qc.invalidateQueries({ queryKey: ['dailies', userId] }),
   })
 
-  return { ...query, todaysTasks, completeTask, addTask, deleteTask }
+  const updateTask = useMutation({
+    mutationFn: async (payload: {
+      id: string
+      title: string
+      recurrence_days: number[]
+      difficulty: number
+      areas: string[]
+    }) => {
+      const { id, ...updates } = payload
+      const { error } = await supabase.from('daily_tasks').update(updates).eq('id', id)
+      if (error) throw error
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['dailies', userId] }),
+  })
+
+  return { ...query, todaysTasks, completeTask, addTask, deleteTask, updateTask }
 }

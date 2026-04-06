@@ -12,10 +12,11 @@ interface Props {
   isOverdue: boolean
   onComplete: (todo: Todo) => void
   onDelete: (id: string) => void
+  onEdit: (todo: Todo) => void
   isCompleting: boolean
 }
 
-export default function TodoCard({ todo, project, isOverdue, onComplete, onDelete, isCompleting }: Props) {
+export default function TodoCard({ todo, project, isOverdue, onComplete, onDelete, onEdit, isCompleting }: Props) {
   const [confirm, setConfirm] = useState(false)
   const { colorFor } = useAreas(todo.user_id)
 
@@ -78,7 +79,12 @@ export default function TodoCard({ todo, project, isOverdue, onComplete, onDelet
           <PixelButton size="xs" variant="primary" onClick={() => setConfirm(false)}>✗</PixelButton>
         </div>
       ) : (
-        <PixelButton size="xs" variant="danger" onClick={() => setConfirm(true)} className="flex-shrink-0">×</PixelButton>
+        <div className="flex gap-1 flex-shrink-0">
+          {!todo.completed && (
+            <PixelButton size="xs" variant="primary" onClick={() => onEdit(todo)}>✎</PixelButton>
+          )}
+          <PixelButton size="xs" variant="danger" onClick={() => setConfirm(true)}>×</PixelButton>
+        </div>
       )}
     </div>
   )

@@ -60,6 +60,23 @@ export function useTodos(userId: string) {
     onSuccess: () => qc.invalidateQueries({ queryKey: ['todos', userId] }),
   })
 
+  const updateTodo = useMutation({
+    mutationFn: async (payload: {
+      id: string
+      title: string
+      description: string
+      project_id: string | null
+      areas: string[]
+      difficulty: number
+      due_date: string | null
+    }) => {
+      const { id, ...updates } = payload
+      const { error } = await supabase.from('todos').update(updates).eq('id', id)
+      if (error) throw error
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['todos', userId] }),
+  })
+
   const markOverdueChecked = useMutation({
     mutationFn: async (todoId: string) => {
       const { error } = await supabase
@@ -78,5 +95,5 @@ export function useTodos(userId: string) {
     return todo.due_date < today
   }
 
-  return { ...query, completeTodo, addTodo, deleteTodo, markOverdueChecked, isOverdue }
+  return { ...query, completeTodo, addTodo, deleteTodo, updateTodo, markOverdueChecked, isOverdue }
 }

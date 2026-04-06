@@ -3,19 +3,27 @@ import PixelPanel from '../shared/PixelPanel'
 import PixelButton from '../shared/PixelButton'
 import AreaSelector from '../shared/AreaSelector'
 
+interface HabitFormValues {
+  title: string
+  type: 'good' | 'bad' | 'both'
+  difficulty: number
+  areas: string[]
+}
+
 interface Props {
   userId: string
-  onAdd: (payload: { title: string; type: 'good' | 'bad' | 'both'; difficulty: number; areas: string[] }) => void
+  initialValues?: HabitFormValues
+  onAdd: (payload: HabitFormValues) => void
   onCancel: () => void
   isLoading: boolean
   error?: string | null
 }
 
-export default function HabitForm({ userId, onAdd, onCancel, isLoading, error }: Props) {
-  const [title, setTitle] = useState('')
-  const [type, setType] = useState<'good' | 'bad' | 'both'>('good')
-  const [difficulty, setDifficulty] = useState(1)
-  const [areas, setAreas] = useState<string[]>([])
+export default function HabitForm({ userId, initialValues, onAdd, onCancel, isLoading, error }: Props) {
+  const [title, setTitle] = useState(initialValues?.title ?? '')
+  const [type, setType] = useState<'good' | 'bad' | 'both'>(initialValues?.type ?? 'good')
+  const [difficulty, setDifficulty] = useState(initialValues?.difficulty ?? 1)
+  const [areas, setAreas] = useState<string[]>(initialValues?.areas ?? [])
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -26,7 +34,7 @@ export default function HabitForm({ userId, onAdd, onCancel, isLoading, error }:
   return (
     <PixelPanel>
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-        <div className="font-pixel text-pixel-xs text-rpg-gold mb-1">NEW HABIT</div>
+        <div className="font-pixel text-pixel-xs text-rpg-gold mb-1">{initialValues ? 'EDIT HABIT' : 'NEW HABIT'}</div>
 
         <input
           className="pixel-input"
@@ -98,7 +106,7 @@ export default function HabitForm({ userId, onAdd, onCancel, isLoading, error }:
 
         <div className="flex gap-2 mt-1">
           <PixelButton type="submit" variant="success" size="sm" disabled={isLoading || !title.trim()}>
-            {isLoading ? 'SAVING...' : 'ADD'}
+            {isLoading ? 'SAVING...' : initialValues ? 'SAVE CHANGES' : 'ADD'}
           </PixelButton>
           <PixelButton type="button" variant="danger" size="sm" onClick={onCancel}>CANCEL</PixelButton>
         </div>

@@ -11,12 +11,13 @@ interface Props {
   task: DailyTask
   onComplete: (task: DailyTask) => void
   onDelete: (taskId: string) => void
+  onEdit: (task: DailyTask) => void
   isCompleting: boolean
 }
 
 const DAY_LABELS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
 
-export default function DailyTaskCard({ task, onComplete, onDelete, isCompleting }: Props) {
+export default function DailyTaskCard({ task, onComplete, onDelete, onEdit, isCompleting }: Props) {
   const [confirm, setConfirm] = useState(false)
   const { colorFor } = useAreas(task.user_id)
   const today = todayStr()
@@ -80,7 +81,10 @@ export default function DailyTaskCard({ task, onComplete, onDelete, isCompleting
           <PixelButton size="xs" variant="primary" onClick={() => setConfirm(false)}>✗</PixelButton>
         </div>
       ) : (
-        <PixelButton size="xs" variant="danger" onClick={() => setConfirm(true)}>×</PixelButton>
+        <div className="flex gap-1">
+          <PixelButton size="xs" variant="primary" onClick={() => onEdit(task)}>✎</PixelButton>
+          <PixelButton size="xs" variant="danger" onClick={() => setConfirm(true)}>×</PixelButton>
+        </div>
       )}
     </div>
   )

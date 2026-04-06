@@ -14,7 +14,9 @@ interface Props {
 export default function ProjectGrid({ userId, selectedProjectId, onSelectProject }: Props) {
   const [showForm, setShowForm] = useState(false)
   const [formError, setFormError] = useState<string | null>(null)
-  const { data: projects, isLoading, addProject, deleteProject, projectProgress } = useProjects(userId)
+  const [editingId, setEditingId] = useState<string | null>(null)
+  const [editError, setEditError] = useState<string | null>(null)
+  const { data: projects, isLoading, addProject, deleteProject, updateProject, projectProgress } = useProjects(userId)
 
   async function handleAdd(payload: Parameters<typeof addProject.mutate>[0]) {
     setFormError(null)
@@ -24,6 +26,17 @@ export default function ProjectGrid({ userId, selectedProjectId, onSelectProject
     } catch (err) {
       setFormError(err instanceof Error ? err.message : 'Failed to save. Check console for details.')
       console.error('[addProject]', err)
+    }
+  }
+
+  async function handleUpdate(id: string, payload: Parameters<typeof addProject.mutate>[0]) {
+    setEditError(null)
+    try {
+      await updateProject.mutateAsync({ id, ...payload })
+      setEditingId(null)
+    } catch (err) {
+      setEditError(err instanceof Error ? err.message : 'Failed to save. Check console for details.')
+      console.error('[updateProject]', err)
     }
   }
 
@@ -42,7 +55,17 @@ export default function ProjectGrid({ userId, selectedProjectId, onSelectProject
       )}
 
       <div className="grid gap-2 mb-3" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))' }}>
-        {(projects ?? []).map((p) => (
+        {(projects ?? []).map((p) => editingId === p.id ? (
+          <ProjectForm
+            key={p.id}
+            userId={userId}
+            initialValues={{ title: p.title, description: p.description, areas: p.areas }}
+            onAdd={(payload) => handleUpdate(p.id, payload)}
+            onCancel={() => { setEditingId(null); setEditError(null) }}
+            isLoading={updateProject.isPending}
+            error={editError}
+          />
+        ) : (
           <ProjectCard
             key={p.id}
             project={p}
@@ -50,6 +73,7 @@ export default function ProjectGrid({ userId, selectedProjectId, onSelectProject
             isSelected={selectedProjectId === p.id}
             onSelect={() => onSelectProject(selectedProjectId === p.id ? null : p.id)}
             onDelete={(id) => deleteProject.mutate(id)}
+            onEdit={(project) => { setEditingId(project.id); setShowForm(false) }}
           />
         ))}
       </div>

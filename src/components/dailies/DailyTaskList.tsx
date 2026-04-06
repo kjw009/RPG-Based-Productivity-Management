@@ -12,7 +12,9 @@ interface Props { userId: string }
 export default function DailyTaskList({ userId }: Props) {
   const [showForm, setShowForm] = useState(false)
   const [formError, setFormError] = useState<string | null>(null)
-  const { todaysTasks, isLoading, completeTask, addTask, deleteTask } = useDailies(userId)
+  const [editingId, setEditingId] = useState<string | null>(null)
+  const [editError, setEditError] = useState<string | null>(null)
+  const { todaysTasks, isLoading, completeTask, addTask, deleteTask, updateTask } = useDailies(userId)
 
   const today = todayStr()
   const completed = todaysTasks.filter((t) => t.last_completed_date === today).length
@@ -25,6 +27,17 @@ export default function DailyTaskList({ userId }: Props) {
     } catch (err) {
       setFormError(err instanceof Error ? err.message : 'Failed to save. Check console for details.')
       console.error('[addTask]', err)
+    }
+  }
+
+  async function handleUpdate(id: string, payload: Parameters<typeof addTask.mutate>[0]) {
+    setEditError(null)
+    try {
+      await updateTask.mutateAsync({ id, ...payload })
+      setEditingId(null)
+    } catch (err) {
+      setEditError(err instanceof Error ? err.message : 'Failed to save. Check console for details.')
+      console.error('[updateTask]', err)
     }
   }
 
@@ -45,12 +58,23 @@ export default function DailyTaskList({ userId }: Props) {
       )}
 
       <div className="flex flex-col gap-2 mb-3">
-        {todaysTasks.map((task) => (
+        {todaysTasks.map((task) => editingId === task.id ? (
+          <AddDailyForm
+            key={task.id}
+            userId={userId}
+            initialValues={{ title: task.title, recurrence_days: task.recurrence_days, difficulty: task.difficulty, areas: task.areas }}
+            onAdd={(payload) => handleUpdate(task.id, payload)}
+            onCancel={() => { setEditingId(null); setEditError(null) }}
+            isLoading={updateTask.isPending}
+            error={editError}
+          />
+        ) : (
           <DailyTaskCard
             key={task.id}
             task={task}
             onComplete={(t) => completeTask.mutate(t)}
             onDelete={(id) => deleteTask.mutate(id)}
+            onEdit={(t) => { setEditingId(t.id); setShowForm(false) }}
             isCompleting={completeTask.isPending}
           />
         ))}

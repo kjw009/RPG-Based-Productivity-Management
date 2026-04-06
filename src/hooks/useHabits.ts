@@ -99,5 +99,20 @@ export function useHabits(userId: string) {
     onSuccess: () => qc.invalidateQueries({ queryKey: ['habits', userId] }),
   })
 
-  return { habitsQuery, logsQuery, consistencyPct, logHabit, addHabit, deleteHabit }
+  const updateHabit = useMutation({
+    mutationFn: async (payload: {
+      id: string
+      title: string
+      type: 'good' | 'bad' | 'both'
+      difficulty: number
+      areas: string[]
+    }) => {
+      const { id, ...updates } = payload
+      const { error } = await supabase.from('habits').update(updates).eq('id', id)
+      if (error) throw error
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['habits', userId] }),
+  })
+
+  return { habitsQuery, logsQuery, consistencyPct, logHabit, addHabit, deleteHabit, updateHabit }
 }

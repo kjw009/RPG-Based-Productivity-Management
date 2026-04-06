@@ -55,5 +55,19 @@ export function useProjects(userId: string) {
     },
   })
 
-  return { ...query, projectProgress, addProject, deleteProject }
+  const updateProject = useMutation({
+    mutationFn: async (payload: {
+      id: string
+      title: string
+      description: string
+      areas: string[]
+    }) => {
+      const { id, ...updates } = payload
+      const { error } = await supabase.from('projects').update(updates).eq('id', id)
+      if (error) throw error
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['projects', userId] }),
+  })
+
+  return { ...query, projectProgress, addProject, deleteProject, updateProject }
 }
