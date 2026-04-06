@@ -23,7 +23,7 @@ export default function DifficultyGem({ difficulty, showAll = false }: Props) {
   return (
     <span className="flex items-center gap-1" title={`Difficulty ${difficulty}`}>
       <span className={`gem gem-${difficulty}`} />
-      <span className="font-pixel text-pixel-xs text-rpg-muted">{LABELS[difficulty]}</span>
+      <span className="font-grimoire text-grimoire-sm ink-muted">{LABELS[difficulty]}</span>
     </span>
   )
 }

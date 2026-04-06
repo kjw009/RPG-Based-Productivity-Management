@@ -77,12 +77,12 @@ export default function TodoList({ userId, filterProjectId, filterArea }: Props)
       />
 
       {isLoading && (
-        <div className="font-body text-body-sm text-rpg-muted p-2">Loading...</div>
+        <div className="font-grimoire text-grimoire-sm text-rpg-muted p-2">Loading...</div>
       )}
 
       {active.length === 0 && !isLoading && (
         <PixelPanel className="mb-2">
-          <p className="font-body text-body-sm text-rpg-muted">
+          <p className="font-grimoire text-grimoire-sm text-rpg-muted">
             {filterProjectId ? 'No active quests for this project.' : 'Quest log is clear.'}
           </p>
         </PixelPanel>
@@ -90,7 +90,7 @@ export default function TodoList({ userId, filterProjectId, filterArea }: Props)
 
       {/* Overdue label */}
       {overdue.length > 0 && (
-        <div className="font-pixel text-pixel-xs text-rpg-hp mb-1">⚠ OVERDUE ({overdue.length})</div>
+        <div className="font-grimoire text-grimoire-sm text-rpg-hp mb-1 font-bold">⚠ Overdue ({overdue.length})</div>
       )}
 
       {/* All active quests in a scrollable grid */}

@@ -16,9 +16,9 @@ interface Props {
 }
 
 function borderColor(type: Habit['type']) {
-  if (type === 'good') return '#14532d'
-  if (type === 'bad') return '#7f1d1d'
-  return '#3730a3'
+  if (type === 'good') return '#3a6a2a'
+  if (type === 'bad') return '#8b1a1a'
+  return '#4a3a7a'
 }
 
 export default function HabitCard({ habit, consistencyPct, onLog, onDelete, onEdit, isLogging }: Props) {
@@ -30,9 +30,8 @@ export default function HabitCard({ habit, consistencyPct, onLog, onDelete, onEd
 
   return (
     <div className="inventory-slot px-2 py-1.5" style={{ borderColor: borderColor(habit.type) }}>
-      {/* Row 1: title + actions */}
       <div className="flex items-center gap-1.5">
-        <span className="font-body text-body-base text-rpg-text flex-1 min-w-0 truncate leading-tight">
+        <span className="font-grimoire text-grimoire-base ink-text flex-1 min-w-0 truncate leading-tight">
           {habit.title}
         </span>
         {confirm ? (
@@ -48,17 +47,16 @@ export default function HabitCard({ habit, consistencyPct, onLog, onDelete, onEd
         )}
       </div>
 
-      {/* Row 2: gem, count, gold/hp, consistency, areas, log buttons */}
       <div className="flex items-center gap-1.5 mt-1 flex-wrap">
         <DifficultyGem difficulty={habit.difficulty} />
-        <span className="font-pixel text-pixel-xs text-rpg-muted">×{habit.total_count}</span>
+        <span className="font-grimoire text-grimoire-sm ink-muted">×{habit.total_count}</span>
         {showPositive && (
-          <span className="font-pixel text-pixel-xs text-rpg-green">+{calculateHabitGold(habit.difficulty)}g</span>
+          <span className="font-grimoire text-grimoire-sm ink-green font-bold">+{calculateHabitGold(habit.difficulty)}g</span>
         )}
         {showNegative && (
-          <span className="font-pixel text-pixel-xs text-rpg-hp">-{calculateBadHabitHP(habit.difficulty)}hp</span>
+          <span className="font-grimoire text-grimoire-sm ink-hp font-bold">-{calculateBadHabitHP(habit.difficulty)}hp</span>
         )}
-        <span className="font-pixel text-pixel-xs text-rpg-muted">{consistencyPct}%</span>
+        <span className="font-grimoire text-grimoire-sm ink-muted">{consistencyPct}%</span>
         {habit.areas.map((a) => (
           <AreaTag key={a} name={a} color={colorFor(a)} />
         ))}

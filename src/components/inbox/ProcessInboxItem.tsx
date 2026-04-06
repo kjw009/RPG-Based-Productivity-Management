@@ -106,17 +106,17 @@ export default function ProcessInboxItem({ item, userId, onDone }: Props) {
   // Mode selection panel
   return (
     <PixelPanel variant="gold">
-      <div className="font-pixel text-pixel-xs text-rpg-muted mb-3 truncate">
-        ▶ "{item.content}"
+      <div className="font-grimoire text-grimoire-sm ink-muted mb-3 truncate italic">
+        ▶ &ldquo;{item.content}&rdquo;
       </div>
-      <div className="font-pixel text-pixel-xs text-rpg-gold mb-2">CONVERT TO:</div>
+      <div className="font-grimoire text-grimoire-sm ink-gold mb-2 font-bold">Convert to:</div>
       <div className="grid grid-cols-2 gap-2 mb-2">
-        <PixelButton variant="gold"    size="sm" onClick={() => setMode('todo')}>⚔ QUEST</PixelButton>
-        <PixelButton variant="primary" size="sm" onClick={() => setMode('daily')}>↻ DAILY</PixelButton>
-        <PixelButton variant="success" size="sm" onClick={() => setMode('habit')}>♦ HABIT</PixelButton>
-        <PixelButton variant="purple"  size="sm" onClick={() => setMode('project')}>◈ PROJECT</PixelButton>
+        <PixelButton variant="gold"    size="sm" onClick={() => setMode('todo')}>⚔ Quest</PixelButton>
+        <PixelButton variant="primary" size="sm" onClick={() => setMode('daily')}>☀ Daily</PixelButton>
+        <PixelButton variant="success" size="sm" onClick={() => setMode('habit')}>♦ Habit</PixelButton>
+        <PixelButton variant="purple"  size="sm" onClick={() => setMode('project')}>📜 Project</PixelButton>
       </div>
-      <PixelButton variant="danger" size="sm" onClick={onDone}>CANCEL</PixelButton>
+      <PixelButton variant="danger" size="sm" onClick={onDone}>Cancel</PixelButton>
     </PixelPanel>
   )
 }

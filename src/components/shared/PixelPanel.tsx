@@ -20,7 +20,7 @@ export default function PixelPanel({
   padding = true,
 }: Props) {
   return (
-    <div className={`${panelClass[variant]} ${padding ? 'p-3' : ''} ${className}`}>
+    <div className={`${panelClass[variant]} ${padding ? 'p-3' : ''} ${className} relative`}>
       {children}
     </div>
   )

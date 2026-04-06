@@ -24,7 +24,6 @@ export default function DailyTaskCard({ task, onComplete, onDelete, onEdit, isCo
 
   return (
     <div className={`inventory-slot px-2 py-1.5 ${isDone ? 'completed-dim' : ''}`}>
-      {/* Top row: checkbox + title + actions */}
       <div className="flex items-center gap-1.5">
         <input
           type="checkbox"
@@ -34,7 +33,7 @@ export default function DailyTaskCard({ task, onComplete, onDelete, onEdit, isCo
           className="pixel-checkbox cursor-pointer flex-shrink-0"
           aria-label={`Complete ${task.title}`}
         />
-        <span className={`font-body text-body-base leading-tight flex-1 min-w-0 truncate ${isDone ? 'text-rpg-muted' : 'text-rpg-text'}`}>
+        <span className={`font-grimoire text-grimoire-base leading-tight flex-1 min-w-0 truncate ${isDone ? 'ink-muted' : 'ink-text'}`}>
           {task.title}
         </span>
         {confirm ? (
@@ -50,15 +49,14 @@ export default function DailyTaskCard({ task, onComplete, onDelete, onEdit, isCo
         )}
       </div>
 
-      {/* Bottom row: gem, streak, gold/done, area tags */}
       <div className="flex items-center gap-1.5 mt-1 flex-wrap">
         <DifficultyGem difficulty={task.difficulty} />
         <StreakCounter streak={task.streak} size="sm" />
         {!isDone && (
-          <span className="font-pixel text-pixel-xs text-rpg-gold">+{goldPreview}g</span>
+          <span className="font-grimoire text-grimoire-sm ink-gold font-bold">+{goldPreview}g</span>
         )}
         {isDone && (
-          <span className="font-pixel text-pixel-xs text-rpg-green">✓</span>
+          <span className="font-grimoire text-grimoire-sm ink-green font-bold">✓</span>
         )}
         {task.areas.map((a) => (
           <AreaTag key={a} name={a} color={colorFor(a)} />

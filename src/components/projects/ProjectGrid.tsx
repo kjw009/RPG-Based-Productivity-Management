@@ -82,7 +82,7 @@ export default function ProjectGrid({ userId, selectedProjectId, onSelectProject
           className={`bg-transparent border-none cursor-pointer font-inherit text-inherit p-0 ${
             viewMode === 'projects' ? 'text-rpg-text' : 'text-rpg-muted hover:text-rpg-gold'
           }`}
-          style={{ fontFamily: "'Press Start 2P', monospace", fontSize: 'inherit', letterSpacing: 'inherit' }}
+          style={{ fontFamily: "'MedievalSharp', cursive", fontSize: 'inherit', letterSpacing: 'inherit' }}
         >
           {projectsLabel}
         </button>
@@ -92,16 +92,16 @@ export default function ProjectGrid({ userId, selectedProjectId, onSelectProject
           className={`bg-transparent border-none cursor-pointer font-inherit text-inherit p-0 ${
             viewMode === 'areas' ? 'text-rpg-text' : 'text-rpg-muted hover:text-rpg-gold'
           }`}
-          style={{ fontFamily: "'Press Start 2P', monospace", fontSize: 'inherit', letterSpacing: 'inherit' }}
+          style={{ fontFamily: "'MedievalSharp', cursive", fontSize: 'inherit', letterSpacing: 'inherit' }}
         >
           {areasLabel}
         </button>
-        <span className="text-rpg-gold ml-2 font-pixel text-pixel-xs">
+        <span className="text-rpg-gold ml-2 font-grimoire text-grimoire-sm opacity-80">
           {viewMode === 'projects' ? allProjects.length : allAreas.length}
         </span>
       </div>
 
-      {isLoading && <div className="font-body text-body-sm text-rpg-muted p-2">Loading...</div>}
+      {isLoading && <div className="font-grimoire text-grimoire-sm text-rpg-muted p-2">Loading...</div>}
 
       {/* Clear filter button */}
       {(selectedProjectId || selectedArea) && (
@@ -163,7 +163,7 @@ export default function ProjectGrid({ userId, selectedProjectId, onSelectProject
       {viewMode === 'areas' && (
         <>
           {allAreas.length === 0 && !isLoading && (
-            <div className="font-body text-body-sm text-rpg-muted p-2">No areas defined yet.</div>
+            <div className="font-grimoire text-grimoire-sm text-rpg-muted p-2">No areas defined yet.</div>
           )}
           <div className="grid gap-1.5 mb-2" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))' }}>
             {allAreas.map((a) => (

@@ -86,7 +86,7 @@ export default function InboxSection({ userId }: Props) {
         </button>
         <button
           onClick={(e) => { e.stopPropagation(); setShowCapture((v) => !v) }}
-          className="flex items-center justify-center w-7 h-7 rounded border-2 border-rpg-border bg-rpg-surface text-rpg-gold font-pixel text-pixel-base hover:bg-rpg-border hover:text-white transition-colors flex-shrink-0"
+          className="flex items-center justify-center w-7 h-7 rounded border-2 border-rpg-border bg-rpg-surface text-rpg-gold font-grimoire text-grimoire-lg hover:bg-rpg-border hover:text-white transition-colors flex-shrink-0"
           title="Quick capture"
         >
           +
@@ -123,12 +123,12 @@ export default function InboxSection({ userId }: Props) {
       {expanded && (
         <div className="flex flex-col gap-1">
           {isLoading && (
-            <div className="font-body text-body-sm text-rpg-muted p-2">Loading...</div>
+            <div className="font-grimoire text-grimoire-sm text-rpg-muted p-2">Loading...</div>
           )}
 
           {!isLoading && count === 0 && (
             <PixelPanel className="mb-1">
-              <p className="font-body text-body-sm text-rpg-muted">Inbox empty.</p>
+              <p className="font-grimoire text-grimoire-sm text-rpg-muted">Inbox empty.</p>
             </PixelPanel>
           )}
 
@@ -166,20 +166,20 @@ export default function InboxSection({ userId }: Props) {
 
             {showTokenSetup && (
               <PixelPanel className="mt-2">
-                <div className="font-pixel text-pixel-xs text-rpg-gold mb-2">GOOGLE APPS SCRIPT SYNC</div>
-                <p className="font-body text-body-sm text-rpg-muted mb-3">
+                <div className="font-grimoire text-grimoire-sm text-rpg-gold mb-2">GOOGLE APPS SCRIPT SYNC</div>
+                <p className="font-grimoire text-grimoire-sm text-rpg-muted mb-3">
                   Paste this token into the Apps Script&apos;s Script Properties as{' '}
-                  <code className="font-pixel text-pixel-xs text-rpg-text">HUB_SYNC_TOKEN</code>.
+                  <code className="font-grimoire text-grimoire-sm ink-text">HUB_SYNC_TOKEN</code>.
                 </p>
                 <div className="flex items-center gap-2 flex-wrap">
-                  <code className="font-pixel text-pixel-xs text-rpg-text bg-rpg-bg px-2 py-1 border border-rpg-border select-all break-all">
+                  <code className="font-grimoire text-grimoire-sm ink-text bg-rpg-bg px-2 py-1 border border-rpg-border select-all break-all">
                     {player?.sync_token ?? '…'}
                   </code>
                   <PixelButton size="xs" variant="success" onClick={copyToken}>
                     {tokenCopied ? '✓ COPIED' : 'COPY'}
                   </PixelButton>
                 </div>
-                <div className="font-pixel text-pixel-xs text-rpg-muted mt-3 leading-relaxed">
+                <div className="font-grimoire text-grimoire-sm text-rpg-muted mt-3 leading-relaxed">
                   Script Properties needed:{' '}
                   <span className="text-rpg-text">SUPABASE_URL</span>,{' '}
                   <span className="text-rpg-text">SUPABASE_ANON_KEY</span>,{' '}

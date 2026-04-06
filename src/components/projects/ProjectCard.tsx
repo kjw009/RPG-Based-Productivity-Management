@@ -18,16 +18,16 @@ export default function ProjectCard({ project, progress, isSelected, onSelect, o
 
   return (
     <div
-      className={`inventory-slot p-3 cursor-pointer ${isSelected ? 'armed-glow' : ''}`}
+      className={`inventory-slot p-2 cursor-pointer ${isSelected ? 'armed-glow' : ''}`}
       onClick={onSelect}
     >
-      <div className="flex items-start justify-between gap-2 mb-2">
+      <div className="flex items-start justify-between gap-2 mb-1">
         <div className="min-w-0">
-          <div className="font-pixel text-pixel-xs text-rpg-text leading-relaxed truncate">
+          <div className="font-grimoire text-grimoire-base ink-text leading-tight truncate font-bold">
             {project.title}
           </div>
           {project.description && (
-            <div className="font-body text-body-sm text-rpg-muted mt-1 line-clamp-2">
+            <div className="font-grimoire text-grimoire-sm ink-muted mt-0.5 line-clamp-2 italic">
               {project.description}
             </div>
           )}
@@ -55,12 +55,12 @@ export default function ProjectCard({ project, progress, isSelected, onSelect, o
         </div>
       </div>
 
-      <ProgressBar value={progress.pct} variant="xp" height={10} segmented />
+      <ProgressBar value={progress.pct} variant="xp" height={8} segmented />
       <div className="flex justify-between mt-1">
-        <span className="font-pixel text-pixel-xs text-rpg-muted">{progress.completed}/{progress.total} tasks</span>
-        <span className="font-pixel text-pixel-xs text-rpg-green">{progress.pct}%</span>
+        <span className="font-grimoire text-grimoire-sm ink-muted">{progress.completed}/{progress.total} tasks</span>
+        <span className="font-grimoire text-grimoire-sm ink-green font-bold">{progress.pct}%</span>
       </div>
-      {isSelected && <div className="font-pixel text-pixel-xs text-rpg-gold mt-2">▶ SELECTED</div>}
+      {isSelected && <div className="font-grimoire text-grimoire-sm ink-gold mt-1 font-bold">▶ Selected</div>}
     </div>
   )
 }

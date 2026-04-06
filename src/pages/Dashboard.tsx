@@ -28,17 +28,14 @@ export default function Dashboard({ userId }: Props) {
   const { data: player, isLoading: playerLoading } = usePlayer(userId)
   const seedPlayer = useSeedPlayer(userId)
 
-  // Daily reset runs once per session per day
   useDailyReset(userId)
 
-  // Seed player row + default abilities + shop items on first ever load
   useEffect(() => {
     if (!player && !playerLoading) {
       seedPlayer.mutate('Hero')
     }
   }, [player, playerLoading]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Responsive detection
   useEffect(() => {
     const handler = () => setIsMobile(window.innerWidth < 768)
     window.addEventListener('resize', handler)
@@ -48,7 +45,7 @@ export default function Dashboard({ userId }: Props) {
   if (playerLoading || !player) {
     return (
       <div className="min-h-screen bg-rpg-bg flex items-center justify-center">
-        <p className="font-pixel text-pixel-base text-rpg-gold animate-blink">LOADING SAVE DATA...</p>
+        <p className="font-fraktur text-4xl text-rpg-gold animate-rune-glow">Opening Grimoire...</p>
       </div>
     )
   }
@@ -59,10 +56,14 @@ export default function Dashboard({ userId }: Props) {
       <div className="min-h-screen bg-rpg-bg flex flex-col">
         <KOOverlay />
 
-        {/* Sticky top bar */}
-        <div className="sticky top-0 z-10 bg-rpg-surface border-b-2 border-rpg-border px-3 py-2">
+        {/* Sticky top bar — leather strip */}
+        <div className="sticky top-0 z-10 px-3 py-2" style={{
+          background: 'linear-gradient(180deg, #3a2010 0%, #2a1508 100%)',
+          borderBottom: '2px solid #5a3820',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.4)',
+        }}>
           <div className="flex items-center gap-2">
-            <span className="font-pixel text-pixel-xs text-rpg-gold truncate max-w-[100px]">
+            <span className="font-grimoire text-grimoire-sm text-rpg-gold truncate max-w-[100px]">
               {player.name}
             </span>
             <div className="flex-1 min-w-0 flex flex-col gap-1">
@@ -73,8 +74,8 @@ export default function Dashboard({ userId }: Props) {
           </div>
         </div>
 
-        {/* Scrollable content */}
-        <div className="flex-1 overflow-y-auto p-3 flex flex-col gap-6">
+        {/* Scrollable parchment */}
+        <div className="flex-1 overflow-y-auto p-3 flex flex-col gap-6 grimoire-page">
           <DailyQuote />
           <InboxSection userId={userId} />
           <PlayerPanel player={player} />
@@ -96,55 +97,68 @@ export default function Dashboard({ userId }: Props) {
     )
   }
 
-  // ─── DESKTOP LAYOUT ────────────────────────────────────────────────────────
+  // ─── DESKTOP LAYOUT — OPEN GRIMOIRE ────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-rpg-bg flex" style={{ minHeight: '100dvh' }}>
+    <div className="min-h-screen bg-rpg-bg flex items-start justify-center" style={{ minHeight: '100dvh' }}>
       <KOOverlay />
 
-      {/* Left sidebar — sticky */}
-      <aside
-        className="sticky top-0 h-screen overflow-y-auto flex-shrink-0"
-        style={{ width: 240 }}
-      >
-        <div className="p-3 flex flex-col gap-4 h-full">
-          <div className="font-pixel text-pixel-xs text-rpg-gold text-center py-2 border-b-2 border-rpg-border leading-relaxed">
-            ⚔ RPG HUB ⚔
+      {/* Grimoire outer cover */}
+      <div className="flex w-full min-h-screen">
+        {/* Left cover — leather binding */}
+        <aside className="grimoire-cover sticky top-0 h-screen overflow-y-auto flex-shrink-0" style={{ width: 250 }}>
+          <div className="p-3 flex flex-col gap-4 h-full relative z-10">
+            {/* Title emboss */}
+            <div className="text-center py-3 border-b border-rpg-gold/20">
+              <div className="font-fraktur text-2xl text-rpg-gold leading-tight" style={{
+                textShadow: '0 0 8px rgba(212,165,64,0.3), 0 2px 4px rgba(0,0,0,0.5)',
+              }}>
+                Grimoire
+              </div>
+              <div className="font-grimoire text-grimoire-sm text-rpg-gold/60 mt-1">of Productivity</div>
+            </div>
+
+            <PlayerPanel player={player} />
+            <AbilityGrid userId={userId} />
+            <div className="flex-1" />
+
+            {/* Bottom clasp decoration */}
+            <div className="text-center pb-2 opacity-40">
+              <span className="font-grimoire text-grimoire-sm text-rpg-gold">— ⟁ —</span>
+            </div>
           </div>
+        </aside>
 
-          <PlayerPanel player={player} />
-          <AbilityGrid userId={userId} />
+        {/* Spine binding */}
+        <div className="grimoire-spine sticky top-0 h-screen" />
 
-          <div className="flex-1" />
-        </div>
-      </aside>
+        {/* Main page — parchment left */}
+        <main className="grimoire-page grimoire-page-left flex-1 overflow-y-auto p-4 flex flex-col gap-6 min-w-0 relative">
+          <DailyQuote />
+          <DailyTaskList userId={userId} />
+          <ProjectGrid
+            userId={userId}
+            selectedProjectId={selectedProjectId}
+            onSelectProject={setSelectedProjectId}
+            selectedArea={selectedArea}
+            onSelectArea={setSelectedArea}
+          />
+          <TodoList userId={userId} filterProjectId={selectedProjectId} filterArea={selectedArea} />
+          <div className="h-4" />
+        </main>
 
-      {/* Main content */}
-      <main className="flex-1 overflow-y-auto p-4 flex flex-col gap-6 min-w-0">
-        <DailyQuote />
-        <DailyTaskList userId={userId} />
-        <ProjectGrid
-          userId={userId}
-          selectedProjectId={selectedProjectId}
-          onSelectProject={setSelectedProjectId}
-          selectedArea={selectedArea}
-          onSelectArea={setSelectedArea}
-        />
-        <TodoList userId={userId} filterProjectId={selectedProjectId} filterArea={selectedArea} />
-        <div className="h-4" />
-      </main>
+        {/* Spine binding */}
+        <div className="grimoire-spine sticky top-0 h-screen" />
 
-      {/* Right sidebar — Inbox, Habits & Shop */}
-      <aside
-        className="sticky top-0 h-screen overflow-y-auto flex-shrink-0 border-l-2 border-rpg-border"
-        style={{ width: 280 }}
-      >
-        <div className="p-3 flex flex-col gap-4 h-full">
-          <InboxSection userId={userId} />
-          <HabitSection userId={userId} />
-          <ShopGrid userId={userId} />
-          <div className="flex-1" />
-        </div>
-      </aside>
+        {/* Right page — parchment */}
+        <aside className="grimoire-page grimoire-page-right sticky top-0 h-screen overflow-y-auto flex-shrink-0" style={{ width: 290 }}>
+          <div className="p-3 flex flex-col gap-4 h-full relative">
+            <InboxSection userId={userId} />
+            <HabitSection userId={userId} />
+            <ShopGrid userId={userId} />
+            <div className="flex-1" />
+          </div>
+        </aside>
+      </div>
     </div>
   )
 }

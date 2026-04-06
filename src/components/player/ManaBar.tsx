@@ -12,12 +12,12 @@ export default function ManaBar({ mana, maxMana, showReset = false }: Props) {
   return (
     <div className="w-full">
       <div className="flex justify-between items-center mb-1">
-        <span className="font-pixel text-pixel-xs text-rpg-mana">MP</span>
-        <span className="font-pixel text-pixel-xs text-rpg-text">{mana} / {maxMana}</span>
+        <span className="font-grimoire text-grimoire-sm text-rpg-mana">Mana</span>
+        <span className="font-grimoire text-grimoire-sm text-rpg-text">{mana} / {maxMana}</span>
       </div>
       <div
         className="pixel-bar-track w-full"
-        style={{ height: 14 }}
+        style={{ height: 12 }}
         role="progressbar"
         aria-valuenow={mana}
         aria-valuemin={0}
@@ -29,8 +29,8 @@ export default function ManaBar({ mana, maxMana, showReset = false }: Props) {
         />
       </div>
       {showReset && (
-        <div className="font-body text-body-sm text-rpg-muted mt-1">
-          Resets in {daysUntilNextMonday()}d
+        <div className="font-grimoire text-grimoire-sm text-rpg-muted mt-1 italic">
+          Replenishes in {daysUntilNextMonday()}d
         </div>
       )}
     </div>

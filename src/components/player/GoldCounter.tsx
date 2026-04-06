@@ -6,7 +6,7 @@ interface Props {
 export default function GoldCounter({ gold, compact = false }: Props) {
   if (compact) {
     return (
-      <span className="flex items-center gap-1 font-pixel text-pixel-xs text-rpg-gold">
+      <span className="flex items-center gap-1 font-grimoire text-grimoire-sm text-rpg-gold">
         <span>🪙</span>
         <span>{gold.toLocaleString()}</span>
       </span>
@@ -17,8 +17,8 @@ export default function GoldCounter({ gold, compact = false }: Props) {
     <div className="flex items-center gap-2">
       <span className="text-xl">🪙</span>
       <div>
-        <div className="font-pixel text-pixel-xs text-rpg-muted">GOLD</div>
-        <div className="font-pixel text-pixel-base text-rpg-gold">{gold.toLocaleString()}</div>
+        <div className="font-grimoire text-grimoire-sm text-rpg-muted">Gold</div>
+        <div className="font-grimoire text-grimoire-lg text-rpg-gold">{gold.toLocaleString()}</div>
       </div>
     </div>
   )

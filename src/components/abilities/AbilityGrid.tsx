@@ -17,12 +17,9 @@ export default function AbilityGrid({ userId }: Props) {
     <section>
       <SectionHeader title="ABILITIES" />
       {abilitiesQuery.isLoading && (
-        <div className="font-body text-body-base text-rpg-muted p-2">Loading...</div>
+        <div className="font-grimoire text-grimoire-sm text-rpg-muted p-2">Loading...</div>
       )}
-      <div
-        className="grid gap-2"
-        style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))' }}
-      >
+      <div className="flex flex-col gap-1 max-h-[425px] overflow-y-auto pr-1 scrollbar-thin">
         {abilities.map((ability) => (
           <AbilityCard
             key={ability.id}

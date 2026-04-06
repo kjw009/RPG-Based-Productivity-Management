@@ -26,7 +26,6 @@ export default function TodoCard({ todo, project, isOverdue, onComplete, onDelet
         todo.completed ? 'completed-dim' : isOverdue ? 'overdue-glow' : ''
       }`}
     >
-      {/* Top row: checkbox + title + actions */}
       <div className="flex items-center gap-1.5">
         <input
           type="checkbox"
@@ -36,7 +35,7 @@ export default function TodoCard({ todo, project, isOverdue, onComplete, onDelet
           className="pixel-checkbox cursor-pointer flex-shrink-0"
           aria-label={`Complete ${todo.title}`}
         />
-        <span className={`font-body text-body-base leading-tight flex-1 min-w-0 truncate ${todo.completed ? 'text-rpg-muted' : 'text-rpg-text'}`}>
+        <span className={`font-grimoire text-grimoire-base leading-tight flex-1 min-w-0 truncate ${todo.completed ? 'ink-muted' : 'ink-text'}`}>
           {todo.title}
         </span>
         {confirm ? (
@@ -54,23 +53,20 @@ export default function TodoCard({ todo, project, isOverdue, onComplete, onDelet
         )}
       </div>
 
-      {/* Bottom row: gem, project, gold, due date, areas */}
       <div className="flex items-center gap-1.5 mt-1 flex-wrap">
         <DifficultyGem difficulty={todo.difficulty} />
         {project && (
-          <span className="font-pixel text-pixel-xs text-rpg-muted bg-rpg-surface px-1">
-            {project.title}
-          </span>
+          <span className="font-grimoire text-grimoire-sm ink-muted italic">{project.title}</span>
         )}
         {!todo.completed && (
-          <span className="font-pixel text-pixel-xs text-rpg-gold">+{calculateTodoGold(todo.difficulty)}g</span>
+          <span className="font-grimoire text-grimoire-sm ink-gold font-bold">+{calculateTodoGold(todo.difficulty)}g</span>
         )}
         {todo.shadow_stepped && (
-          <span className="font-pixel text-pixel-xs text-rpg-muted" title="Shadow stepped">👤+3d</span>
+          <span className="font-grimoire text-grimoire-sm ink-muted" title="Shadow stepped">👤+3d</span>
         )}
         {todo.due_date && (
-          <span className={`font-pixel text-pixel-xs ${isOverdue ? 'text-rpg-hp' : 'text-rpg-muted'}`}>
-            {isOverdue ? '⚠' : '⏰'}{todo.due_date}
+          <span className={`font-grimoire text-grimoire-sm ${isOverdue ? 'ink-hp font-bold' : 'ink-muted'}`}>
+            {isOverdue ? '⚠ ' : '⏰ '}{todo.due_date}
           </span>
         )}
         {todo.areas.map((a) => (

@@ -1,14 +1,8 @@
 import { useState } from 'react'
 import PixelButton from '../shared/PixelButton'
+import { getAbilityIcon } from './AbilityIcons'
 import type { Ability, ActiveEffect, Todo } from '../../types'
 import { isEffectActive } from '../../lib/gameRules'
-
-const ABILITY_ICONS: Record<string, string> = {
-  pickpocket:  '🪙',
-  shadow_step: '👤',
-  smoke_bomb:  '💨',
-  backstab:    '🗡️',
-}
 
 interface Props {
   ability: Ability
@@ -34,8 +28,6 @@ export default function AbilityCard({
     (e) => e.effect_type === ability.effect_type && isEffectActive(e.expires_at)
   )
 
-  const icon = ABILITY_ICONS[ability.effect_type] ?? '✨'
-
   function handleActivate() {
     if (ability.effect_type === 'shadow_step') {
       setShowTodoPicker(true)
@@ -52,33 +44,38 @@ export default function AbilityCard({
   }
 
   return (
-    <div className={`inventory-slot p-3 flex flex-col gap-2 ${armed ? 'armed-glow' : ''}`}>
-      <div className="flex items-start gap-2">
-        <span className="text-xl flex-shrink-0">{icon}</span>
-        <div className="min-w-0">
-          <div className="font-pixel text-pixel-xs text-rpg-text leading-relaxed">
+    <div className={`inventory-slot px-2 py-1.5 ${armed ? 'armed-glow' : ''}`}>
+      {/* Single row: icon + name + mana + activate */}
+      <div className="flex items-center gap-1.5">
+        <div className="flex-shrink-0 animate-rune-glow">{getAbilityIcon(ability.effect_type)}</div>
+        <div className="flex-1 min-w-0">
+          <div className="font-grimoire text-grimoire-base ink-text leading-tight font-bold truncate">
             {ability.name}
           </div>
-          <div className="font-pixel text-pixel-xs text-rpg-mana mt-0.5">
-            {ability.mana_cost} MP
-          </div>
+          <div className="font-grimoire text-grimoire-sm ink-mana">{ability.mana_cost} MP</div>
         </div>
+        {armed ? (
+          <span className="font-grimoire text-grimoire-sm ink-gold animate-blink font-bold flex-shrink-0">Armed</span>
+        ) : !showTodoPicker ? (
+          <PixelButton
+            size="xs"
+            variant={canActivate ? 'purple' : 'primary'}
+            onClick={handleActivate}
+            disabled={!canActivate || isPending || armed}
+          >
+            {isPending ? '...' : 'Cast'}
+          </PixelButton>
+        ) : null}
       </div>
 
-      <div className="font-body text-body-sm text-rpg-muted">
+      {/* Description */}
+      <div className="font-grimoire text-grimoire-sm ink-muted italic mt-1">
         {ability.description}
       </div>
 
-      {armed && (
-        <div className="font-pixel text-pixel-xs text-rpg-gold animate-blink">
-          ▶ ARMED
-        </div>
-      )}
-
-      {/* Shadow step todo picker */}
+      {/* Shadow step todo picker (expands below when needed) */}
       {showTodoPicker && (
-        <div className="flex flex-col gap-2">
-          <div className="font-pixel text-pixel-xs text-rpg-muted">PICK QUEST:</div>
+        <div className="flex flex-col gap-1.5 mt-1.5">
           <select
             className="pixel-select text-sm"
             value={selectedTodo}
@@ -91,25 +88,13 @@ export default function AbilityCard({
           </select>
           <div className="flex gap-1">
             <PixelButton size="xs" variant="success" onClick={confirmShadowStep} disabled={!selectedTodo}>
-              CONFIRM
+              Confirm
             </PixelButton>
             <PixelButton size="xs" variant="danger" onClick={() => setShowTodoPicker(false)}>
-              CANCEL
+              Cancel
             </PixelButton>
           </div>
         </div>
-      )}
-
-      {!showTodoPicker && (
-        <PixelButton
-          size="xs"
-          variant={canActivate ? 'purple' : 'primary'}
-          onClick={handleActivate}
-          disabled={!canActivate || isPending || armed}
-          title={!canActivate ? 'Not enough mana' : armed ? 'Already armed' : ''}
-        >
-          {isPending ? '...' : armed ? 'ARMED' : 'ACTIVATE'}
-        </PixelButton>
       )}
     </div>
   )

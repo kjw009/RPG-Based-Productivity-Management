@@ -46,12 +46,12 @@ export default function DailyTaskList({ userId }: Props) {
       <SectionHeader title="DAILY TASKS" sub={`${completed}/${todaysTasks.length}`} />
 
       {isLoading && (
-        <div className="font-body text-body-sm text-rpg-muted p-2">Loading...</div>
+        <div className="font-grimoire text-grimoire-sm text-rpg-muted p-2">Loading...</div>
       )}
 
       {!isLoading && todaysTasks.length === 0 && !showForm && (
         <PixelPanel className="mb-2">
-          <p className="font-body text-body-sm text-rpg-muted">
+          <p className="font-grimoire text-grimoire-sm text-rpg-muted">
             No dailies for today.
           </p>
         </PixelPanel>

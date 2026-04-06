@@ -81,9 +81,9 @@ export default function DailyQuote() {
   return (
     <div className="notice-board px-3 py-2 mb-2">
       <div className="flex items-baseline gap-2">
-        <span className="font-pixel text-pixel-xs text-rpg-gold flex-shrink-0">◆</span>
-        <blockquote className="font-body text-body-base text-rpg-text leading-snug min-w-0">
-          "{quote.content}" <cite className="text-rpg-muted not-italic">— {quote.author}</cite>
+        <span className="text-rpg-gold flex-shrink-0 text-sm opacity-60">✦</span>
+        <blockquote className="font-grimoire text-grimoire-base leading-snug min-w-0 italic">
+          &ldquo;{quote.content}&rdquo; <cite className="not-italic opacity-60">— {quote.author}</cite>
         </blockquote>
       </div>
     </div>

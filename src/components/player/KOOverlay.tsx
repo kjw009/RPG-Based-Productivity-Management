@@ -7,15 +7,15 @@ export default function KOOverlay() {
   return (
     <div className="ko-overlay" onClick={dismissKO} role="dialog" aria-label="KO!">
       <div className="text-center">
-        <div className="ko-text">KO!</div>
-        <div className="font-pixel text-pixel-base text-white mt-6" style={{ textShadow: '2px 2px 0 #000' }}>
-          YOU HAVE FALLEN
+        <div className="ko-text">Fallen</div>
+        <div className="font-grimoire text-grimoire-lg text-white mt-6" style={{ textShadow: '2px 2px 0 #000' }}>
+          Your body crumbles to dust...
         </div>
-        <div className="font-body text-body-lg text-red-300 mt-2">
-          All gold lost. HP restored.
+        <div className="font-grimoire text-grimoire-base text-red-300 mt-2 italic">
+          All gold lost. HP restored by mercy.
         </div>
-        <div className="font-pixel text-pixel-xs text-red-400 mt-6 animate-blink">
-          TAP TO CONTINUE
+        <div className="font-grimoire text-grimoire-sm text-red-400 mt-6 animate-blink">
+          — Tap to Rise Again —
         </div>
       </div>
     </div>

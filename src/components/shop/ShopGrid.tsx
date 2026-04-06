@@ -28,7 +28,7 @@ export default function ShopGrid({ userId }: Props) {
       <SectionHeader title="ITEM SHOP" sub={`${player.gold} 🪙`} />
 
       {isLoading && (
-        <div className="font-body text-body-sm text-rpg-muted p-2">Loading...</div>
+        <div className="font-grimoire text-grimoire-sm text-rpg-muted p-2">Loading...</div>
       )}
 
       <div className="flex flex-col gap-1 mb-2 max-h-[300px] overflow-y-auto pr-1 scrollbar-thin">
