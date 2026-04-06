@@ -79,16 +79,13 @@ export default function DailyQuote() {
   if (!quote) return null
 
   return (
-    <div className="notice-board p-4 mb-4">
-      <div className="font-pixel text-pixel-xs text-rpg-gold mb-2">
-        ◆ NOTICE BOARD ◆
+    <div className="notice-board px-3 py-2 mb-2">
+      <div className="flex items-baseline gap-2">
+        <span className="font-pixel text-pixel-xs text-rpg-gold flex-shrink-0">◆</span>
+        <blockquote className="font-body text-body-base text-rpg-text leading-snug min-w-0">
+          "{quote.content}" <cite className="text-rpg-muted not-italic">— {quote.author}</cite>
+        </blockquote>
       </div>
-      <blockquote className="font-body text-body-lg text-rpg-text leading-snug">
-        "{quote.content}"
-      </blockquote>
-      <cite className="font-body text-body-sm text-rpg-muted mt-2 block not-italic">
-        — {quote.author}
-      </cite>
     </div>
   )
 }
