@@ -11,9 +11,10 @@ import type { Project } from '../../types'
 interface Props {
   userId: string
   filterProjectId: string | null
+  filterArea: string | null
 }
 
-export default function TodoList({ userId, filterProjectId }: Props) {
+export default function TodoList({ userId, filterProjectId, filterArea }: Props) {
   const [showForm, setShowForm] = useState(false)
   const [showCompleted, setShowCompleted] = useState(false)
   const [formError, setFormError] = useState<string | null>(null)
@@ -28,6 +29,9 @@ export default function TodoList({ userId, filterProjectId }: Props) {
   let filtered = todos ?? []
   if (filterProjectId) {
     filtered = filtered.filter((t) => t.project_id === filterProjectId)
+  }
+  if (filterArea) {
+    filtered = filtered.filter((t) => t.areas.includes(filterArea))
   }
 
   const active = filtered.filter((t) => !t.completed)
@@ -66,50 +70,33 @@ export default function TodoList({ userId, filterProjectId }: Props) {
         sub={
           filterProjectId && selectedProject
             ? `[${selectedProject.title}] ${active.length} active`
+            : filterArea
+            ? `[${filterArea}] ${active.length} active`
             : `${active.length} active`
         }
       />
 
       {isLoading && (
-        <div className="font-body text-body-base text-rpg-muted p-2">Loading quests...</div>
+        <div className="font-body text-body-sm text-rpg-muted p-2">Loading...</div>
       )}
 
-      {/* Overdue */}
+      {active.length === 0 && !isLoading && (
+        <PixelPanel className="mb-2">
+          <p className="font-body text-body-sm text-rpg-muted">
+            {filterProjectId ? 'No active quests for this project.' : 'Quest log is clear.'}
+          </p>
+        </PixelPanel>
+      )}
+
+      {/* Overdue label */}
       {overdue.length > 0 && (
-        <div className="mb-3">
-          <div className="font-pixel text-pixel-xs text-rpg-hp mb-2">⚠ OVERDUE ({overdue.length})</div>
-          <div className="flex flex-col gap-2">
-            {overdue.map((t) => editingId === t.id ? (
-              <TodoForm
-                key={t.id}
-                userId={userId}
-                projects={projects ?? []}
-                initialValues={{ title: t.title, description: t.description, project_id: t.project_id, areas: t.areas, difficulty: t.difficulty, due_date: t.due_date }}
-                onAdd={(payload) => handleUpdate(t.id, payload)}
-                onCancel={() => { setEditingId(null); setEditError(null) }}
-                isLoading={updateTodo.isPending}
-                error={editError}
-              />
-            ) : (
-              <TodoCard
-                key={t.id}
-                todo={t}
-                project={t.project_id ? projectMap.get(t.project_id) : undefined}
-                isOverdue
-                onComplete={(todo) => completeTodo.mutate(todo)}
-                onDelete={(id) => deleteTodo.mutate(id)}
-                onEdit={(todo) => { setEditingId(todo.id); setShowForm(false) }}
-                isCompleting={completeTodo.isPending}
-              />
-            ))}
-          </div>
-        </div>
+        <div className="font-pixel text-pixel-xs text-rpg-hp mb-1">⚠ OVERDUE ({overdue.length})</div>
       )}
 
-      {/* Active */}
-      {upcoming.length > 0 && (
-        <div className="flex flex-col gap-2 mb-3">
-          {upcoming.map((t) => editingId === t.id ? (
+      {/* All active quests in a scrollable grid */}
+      {active.length > 0 && (
+        <div className="flex flex-col gap-1 mb-2 max-h-[360px] overflow-y-auto pr-1 scrollbar-thin">
+          {active.map((t) => editingId === t.id ? (
             <TodoForm
               key={t.id}
               userId={userId}
@@ -125,7 +112,7 @@ export default function TodoList({ userId, filterProjectId }: Props) {
               key={t.id}
               todo={t}
               project={t.project_id ? projectMap.get(t.project_id) : undefined}
-              isOverdue={false}
+              isOverdue={isOverdue(t)}
               onComplete={(todo) => completeTodo.mutate(todo)}
               onDelete={(id) => deleteTodo.mutate(id)}
               onEdit={(todo) => { setEditingId(todo.id); setShowForm(false) }}
@@ -135,22 +122,14 @@ export default function TodoList({ userId, filterProjectId }: Props) {
         </div>
       )}
 
-      {active.length === 0 && !isLoading && (
-        <PixelPanel className="mb-3">
-          <p className="font-body text-body-base text-rpg-muted">
-            {filterProjectId ? 'No active quests for this project.' : 'Quest log is clear. Add a new one!'}
-          </p>
-        </PixelPanel>
-      )}
-
       {/* Completed toggle */}
       {completed.length > 0 && (
-        <div className="mb-3">
-          <PixelButton size="sm" variant="primary" onClick={() => setShowCompleted((v) => !v)}>
+        <div className="mb-2">
+          <PixelButton size="xs" variant="primary" onClick={() => setShowCompleted((v) => !v)}>
             {showCompleted ? '▼' : '▶'} COMPLETED ({completed.length})
           </PixelButton>
           {showCompleted && (
-            <div className="flex flex-col gap-2 mt-2">
+            <div className="flex flex-col gap-1 mt-1 max-h-[240px] overflow-y-auto pr-1 scrollbar-thin">
               {completed.map((t) => (
                 <TodoCard
                   key={t.id}

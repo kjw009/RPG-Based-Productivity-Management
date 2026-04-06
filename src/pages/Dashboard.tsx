@@ -22,6 +22,7 @@ interface Props {
 
 export default function Dashboard({ userId }: Props) {
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null)
+  const [selectedArea, setSelectedArea] = useState<string | null>(null)
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
 
   const { data: player, isLoading: playerLoading } = usePlayer(userId)
@@ -83,8 +84,10 @@ export default function Dashboard({ userId }: Props) {
             userId={userId}
             selectedProjectId={selectedProjectId}
             onSelectProject={setSelectedProjectId}
+            selectedArea={selectedArea}
+            onSelectArea={setSelectedArea}
           />
-          <TodoList userId={userId} filterProjectId={selectedProjectId} />
+          <TodoList userId={userId} filterProjectId={selectedProjectId} filterArea={selectedArea} />
           <ShopGrid userId={userId} />
           <AbilityGrid userId={userId} />
           <div className="h-4" />
@@ -123,13 +126,14 @@ export default function Dashboard({ userId }: Props) {
           userId={userId}
           selectedProjectId={selectedProjectId}
           onSelectProject={setSelectedProjectId}
+          selectedArea={selectedArea}
+          onSelectArea={setSelectedArea}
         />
-        <TodoList userId={userId} filterProjectId={selectedProjectId} />
-        <ShopGrid userId={userId} />
+        <TodoList userId={userId} filterProjectId={selectedProjectId} filterArea={selectedArea} />
         <div className="h-4" />
       </main>
 
-      {/* Right sidebar — Inbox & Habits */}
+      {/* Right sidebar — Inbox, Habits & Shop */}
       <aside
         className="sticky top-0 h-screen overflow-y-auto flex-shrink-0 border-l-2 border-rpg-border"
         style={{ width: 280 }}
@@ -137,6 +141,7 @@ export default function Dashboard({ userId }: Props) {
         <div className="p-3 flex flex-col gap-4 h-full">
           <InboxSection userId={userId} />
           <HabitSection userId={userId} />
+          <ShopGrid userId={userId} />
           <div className="flex-1" />
         </div>
       </aside>

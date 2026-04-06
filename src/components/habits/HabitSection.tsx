@@ -43,15 +43,15 @@ export default function HabitSection({ userId }: Props) {
     <section>
       <SectionHeader title="HABITS" sub={`${habits.length}`} />
 
-      {habitsQuery.isLoading && <div className="font-body text-body-base text-rpg-muted p-2">Loading...</div>}
+      {habitsQuery.isLoading && <div className="font-body text-body-sm text-rpg-muted p-2">Loading...</div>}
 
       {habits.length === 0 && !habitsQuery.isLoading && (
-        <PixelPanel className="mb-3">
-          <p className="font-body text-body-base text-rpg-muted">No habits tracked yet.</p>
+        <PixelPanel className="mb-2">
+          <p className="font-body text-body-sm text-rpg-muted">No habits tracked yet.</p>
         </PixelPanel>
       )}
 
-      <div className="flex flex-col gap-2 mb-3">
+      <div className="flex flex-col gap-1 mb-2 max-h-[280px] overflow-y-auto pr-1 scrollbar-thin">
         {habits.map((h) => editingId === h.id ? (
           <HabitForm
             key={h.id}

@@ -28,13 +28,10 @@ export default function ShopGrid({ userId }: Props) {
       <SectionHeader title="ITEM SHOP" sub={`${player.gold} 🪙`} />
 
       {isLoading && (
-        <div className="font-body text-body-base text-rpg-muted p-2">Loading shop...</div>
+        <div className="font-body text-body-sm text-rpg-muted p-2">Loading...</div>
       )}
 
-      <div
-        className="grid gap-2 mb-3"
-        style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))' }}
-      >
+      <div className="flex flex-col gap-1 mb-2 max-h-[300px] overflow-y-auto pr-1 scrollbar-thin">
         {(items ?? []).map((item) => (
           <ShopItemCard
             key={item.id}
