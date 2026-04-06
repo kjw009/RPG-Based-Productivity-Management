@@ -15,8 +15,6 @@ interface Props {
   isCompleting: boolean
 }
 
-const DAY_LABELS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
-
 export default function DailyTaskCard({ task, onComplete, onDelete, onEdit, isCompleting }: Props) {
   const [confirm, setConfirm] = useState(false)
   const { colorFor } = useAreas(task.user_id)
@@ -25,67 +23,47 @@ export default function DailyTaskCard({ task, onComplete, onDelete, onEdit, isCo
   const goldPreview = calculateDailyGold(task.difficulty, task.streak)
 
   return (
-    <div className={`inventory-slot p-3 flex items-start gap-3 ${isDone ? 'completed-dim' : ''}`}>
-      <input
-        type="checkbox"
-        checked={isDone}
-        disabled={isDone || isCompleting}
-        onChange={() => !isDone && onComplete(task)}
-        className="pixel-checkbox mt-1 cursor-pointer"
-        aria-label={`Complete ${task.title}`}
-      />
-
-      <div className="flex-1 min-w-0">
-        <div className={`font-body text-body-base ${isDone ? 'text-rpg-muted' : 'text-rpg-text'}`}>
+    <div className={`inventory-slot px-2 py-1.5 ${isDone ? 'completed-dim' : ''}`}>
+      {/* Top row: checkbox + title + actions */}
+      <div className="flex items-center gap-1.5">
+        <input
+          type="checkbox"
+          checked={isDone}
+          disabled={isDone || isCompleting}
+          onChange={() => !isDone && onComplete(task)}
+          className="pixel-checkbox cursor-pointer flex-shrink-0"
+          aria-label={`Complete ${task.title}`}
+        />
+        <span className={`font-body text-body-base leading-tight flex-1 min-w-0 truncate ${isDone ? 'text-rpg-muted' : 'text-rpg-text'}`}>
           {task.title}
-        </div>
-
-        <div className="flex flex-wrap items-center gap-2 mt-1">
-          <DifficultyGem difficulty={task.difficulty} />
-          <StreakCounter streak={task.streak} size="sm" />
-          {!isDone && (
-            <span className="font-pixel text-pixel-xs text-rpg-gold">+{goldPreview}g</span>
-          )}
-          {isDone && (
-            <span className="font-pixel text-pixel-xs text-rpg-green">✓ DONE</span>
-          )}
-        </div>
-
-        {/* Area tags */}
-        {task.areas.length > 0 && (
-          <div className="flex flex-wrap gap-1 mt-1">
-            {task.areas.map((a) => (
-              <AreaTag key={a} name={a} color={colorFor(a)} />
-            ))}
+        </span>
+        {confirm ? (
+          <div className="flex gap-0.5 flex-shrink-0">
+            <PixelButton size="xs" variant="danger" onClick={() => onDelete(task.id)}>✓</PixelButton>
+            <PixelButton size="xs" variant="primary" onClick={() => setConfirm(false)}>✗</PixelButton>
+          </div>
+        ) : (
+          <div className="flex gap-0.5 flex-shrink-0">
+            <PixelButton size="xs" variant="primary" onClick={() => onEdit(task)}>✎</PixelButton>
+            <PixelButton size="xs" variant="danger" onClick={() => setConfirm(true)}>×</PixelButton>
           </div>
         )}
-
-        {/* Recurrence days */}
-        <div className="flex gap-1 mt-2">
-          {DAY_LABELS.map((label, i) => (
-            <span
-              key={i}
-              className={`font-pixel text-pixel-xs px-1 ${
-                task.recurrence_days.includes(i) ? 'text-rpg-gold bg-rpg-surface' : 'text-rpg-muted'
-              }`}
-            >
-              {label}
-            </span>
-          ))}
-        </div>
       </div>
 
-      {confirm ? (
-        <div className="flex gap-1">
-          <PixelButton size="xs" variant="danger" onClick={() => onDelete(task.id)}>✓</PixelButton>
-          <PixelButton size="xs" variant="primary" onClick={() => setConfirm(false)}>✗</PixelButton>
-        </div>
-      ) : (
-        <div className="flex gap-1">
-          <PixelButton size="xs" variant="primary" onClick={() => onEdit(task)}>✎</PixelButton>
-          <PixelButton size="xs" variant="danger" onClick={() => setConfirm(true)}>×</PixelButton>
-        </div>
-      )}
+      {/* Bottom row: gem, streak, gold/done, area tags */}
+      <div className="flex items-center gap-1.5 mt-1 flex-wrap">
+        <DifficultyGem difficulty={task.difficulty} />
+        <StreakCounter streak={task.streak} size="sm" />
+        {!isDone && (
+          <span className="font-pixel text-pixel-xs text-rpg-gold">+{goldPreview}g</span>
+        )}
+        {isDone && (
+          <span className="font-pixel text-pixel-xs text-rpg-green">✓</span>
+        )}
+        {task.areas.map((a) => (
+          <AreaTag key={a} name={a} color={colorFor(a)} />
+        ))}
+      </div>
     </div>
   )
 }

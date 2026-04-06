@@ -46,18 +46,21 @@ export default function DailyTaskList({ userId }: Props) {
       <SectionHeader title="DAILY TASKS" sub={`${completed}/${todaysTasks.length}`} />
 
       {isLoading && (
-        <div className="font-body text-body-base text-rpg-muted p-4">Loading quests...</div>
+        <div className="font-body text-body-sm text-rpg-muted p-2">Loading...</div>
       )}
 
       {!isLoading && todaysTasks.length === 0 && !showForm && (
         <PixelPanel className="mb-2">
-          <p className="font-body text-body-base text-rpg-muted">
-            No daily tasks scheduled for today. Add one below!
+          <p className="font-body text-body-sm text-rpg-muted">
+            No dailies for today.
           </p>
         </PixelPanel>
       )}
 
-      <div className="flex flex-col gap-2 mb-3">
+      <div
+        className="grid gap-1.5 mb-2 max-h-[360px] overflow-y-auto pr-1 scrollbar-thin"
+        style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))' }}
+      >
         {todaysTasks.map((task) => editingId === task.id ? (
           <AddDailyForm
             key={task.id}
