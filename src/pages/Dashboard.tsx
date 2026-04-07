@@ -18,9 +18,11 @@ import InboxSection from '../components/inbox/InboxSection'
 
 interface Props {
   userId: string
+  /** Called to sign the user out and return to the login screen. */
+  onSignOut: () => Promise<void>
 }
 
-export default function Dashboard({ userId }: Props) {
+export default function Dashboard({ userId, onSignOut }: Props) {
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null)
   const [selectedArea, setSelectedArea] = useState<string | null>(null)
   // The layout diverges significantly between mobile and desktop, so we
@@ -83,7 +85,7 @@ export default function Dashboard({ userId }: Props) {
         <div className="flex-1 overflow-y-auto p-3 flex flex-col gap-6 grimoire-page">
           <DailyQuote />
           <InboxSection userId={userId} />
-          <PlayerPanel player={player} />
+          <PlayerPanel player={player} onSignOut={onSignOut} />
           <DailyTaskList userId={userId} />
           <HabitSection userId={userId} />
           <ProjectGrid
@@ -122,7 +124,7 @@ export default function Dashboard({ userId }: Props) {
               <div className="font-grimoire text-grimoire-sm text-rpg-gold/60 mt-1">of Productivity</div>
             </div>
 
-            <PlayerPanel player={player} />
+            <PlayerPanel player={player} onSignOut={onSignOut} />
             <AbilityGrid userId={userId} />
             <div className="flex-1" />
 

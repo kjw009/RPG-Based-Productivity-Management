@@ -91,7 +91,33 @@ export default function InboxSection({ userId }: Props) {
         >
           +
         </button>
+        {/* Sync setup toggle */}
+        <button
+          onClick={(e) => { e.stopPropagation(); setShowTokenSetup((v) => !v) }}
+          className="flex items-center justify-center w-7 h-7 rounded border-2 border-rpg-border bg-rpg-surface text-rpg-muted font-grimoire text-grimoire-sm hover:bg-rpg-border hover:text-white transition-colors flex-shrink-0"
+          title="Sync setup"
+        >
+          ⚙
+        </button>
       </div>
+
+      {/* Sync setup panel — shows the HUB_SYNC_TOKEN for the Apps Script */}
+      {showTokenSetup && (
+        <PixelPanel className="mb-2 flex flex-col gap-2">
+          <p className="font-grimoire text-grimoire-sm text-rpg-gold">Sync Setup</p>
+          <p className="font-body text-body-sm text-rpg-muted">
+            Copy this token into your Apps Script as the <code>HUB_SYNC_TOKEN</code> script property.
+          </p>
+          <div className="flex gap-2 items-center">
+            <code className="flex-1 pixel-input font-body text-body-sm text-rpg-text truncate select-all">
+              {player?.sync_token ?? '— player not loaded —'}
+            </code>
+            <PixelButton size="xs" variant="gold" onClick={copyToken} disabled={!player?.sync_token}>
+              {tokenCopied ? '✓' : 'COPY'}
+            </PixelButton>
+          </div>
+        </PixelPanel>
+      )}
 
       {/* Quick capture inline */}
       {showCapture && (

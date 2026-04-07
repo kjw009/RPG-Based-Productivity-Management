@@ -7,9 +7,11 @@ import type { Player } from '../../types'
 interface Props {
   player: Player
   compact?: boolean
+  /** Sign out and return to the login screen. */
+  onSignOut?: () => Promise<void>
 }
 
-export default function PlayerPanel({ player, compact = false }: Props) {
+export default function PlayerPanel({ player, compact = false, onSignOut }: Props) {
   if (compact) {
     return (
       <div className="flex items-center gap-3 px-3 py-2" style={{
@@ -63,6 +65,18 @@ export default function PlayerPanel({ player, compact = false }: Props) {
           </span>
         </div>
       </div>
+
+      {/* Account controls */}
+      {onSignOut && (
+        <div className="border-t border-rpg-gold/20 pt-3">
+          <button
+            className="font-grimoire text-grimoire-sm text-rpg-muted hover:text-rpg-hp transition-colors w-full text-center"
+            onClick={onSignOut}
+          >
+            Sign out
+          </button>
+        </div>
+      )}
     </div>
   )
 }
