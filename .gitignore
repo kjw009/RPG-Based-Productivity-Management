@@ -34,3 +34,6 @@ pnpm-debug.log*
 *.tsbuildinfo
 .vercel
 .env*.local
+
+# Claude
+CLAUDE.md
