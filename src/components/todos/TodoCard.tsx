@@ -62,7 +62,7 @@ export default function TodoCard({ todo, project, isOverdue, onComplete, onDelet
           <span className="font-grimoire text-grimoire-sm ink-muted italic">{project.title}</span>
         )}
         {!todo.completed && (
-          <span className="font-grimoire text-grimoire-sm ink-gold font-bold">+{calculateTodoGold(todo.difficulty)}g</span>
+          <span className="font-grimoire text-grimoire-sm ink-gold font-bold">+{calculateTodoGold(todo.difficulty)} RS</span>
         )}
         {todo.shadow_stepped && (
           <span className="font-grimoire text-grimoire-sm ink-muted" title="Shadow stepped">👤+3d</span>

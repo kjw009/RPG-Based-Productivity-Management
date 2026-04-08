@@ -52,7 +52,7 @@ export default function AbilityCard({
           <div className="font-grimoire text-grimoire-base ink-text leading-tight font-bold truncate">
             {ability.name}
           </div>
-          <div className="font-grimoire text-grimoire-sm ink-mana">{ability.mana_cost} MP</div>
+          <div className="font-grimoire text-grimoire-sm ink-mana">{ability.mana_cost} SP</div>
         </div>
         {armed ? (
           <span className="font-grimoire text-grimoire-sm ink-gold animate-blink font-bold flex-shrink-0">Armed</span>
@@ -81,7 +81,7 @@ export default function AbilityCard({
             value={selectedTodo}
             onChange={(e) => setSelectedTodo(e.target.value)}
           >
-            <option value="">-- select quest --</option>
+            <option value="">-- select mission --</option>
             {incompleteTodos.map((t) => (
               <option key={t.id} value={t.id}>{t.title}</option>
             ))}

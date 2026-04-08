@@ -111,10 +111,10 @@ export default function ProcessInboxItem({ item, userId, onDone }: Props) {
       </div>
       <div className="font-grimoire text-grimoire-sm ink-gold mb-2 font-bold">Convert to:</div>
       <div className="grid grid-cols-2 gap-2 mb-2">
-        <PixelButton variant="gold"    size="sm" onClick={() => setMode('todo')}>⚔ Quest</PixelButton>
-        <PixelButton variant="primary" size="sm" onClick={() => setMode('daily')}>☀ Daily</PixelButton>
-        <PixelButton variant="success" size="sm" onClick={() => setMode('habit')}>♦ Habit</PixelButton>
-        <PixelButton variant="purple"  size="sm" onClick={() => setMode('project')}>📜 Project</PixelButton>
+        <PixelButton variant="gold"    size="sm" onClick={() => setMode('todo')}>▷ MISSION</PixelButton>
+        <PixelButton variant="primary" size="sm" onClick={() => setMode('daily')}>◈ DAILY OP</PixelButton>
+        <PixelButton variant="success" size="sm" onClick={() => setMode('habit')}>◎ CONDITIONING</PixelButton>
+        <PixelButton variant="purple"  size="sm" onClick={() => setMode('project')}>▦ CAMPAIGN</PixelButton>
       </div>
       <PixelButton variant="danger" size="sm" onClick={onDone}>Cancel</PixelButton>
     </PixelPanel>

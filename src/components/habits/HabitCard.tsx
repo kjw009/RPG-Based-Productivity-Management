@@ -19,9 +19,9 @@ interface Props {
 }
 
 function borderColor(type: Habit['type']) {
-  if (type === 'good') return '#3a6a2a'
-  if (type === 'bad') return '#8b1a1a'
-  return '#4a3a7a'
+  if (type === 'good') return '#2a7a3a'   // allied green
+  if (type === 'bad')  return '#6a1a1a'   // danger red
+  return '#2a3a7a'                         // Super Earth blue (both)
 }
 
 export default function HabitCard({ habit, consistencyPct, onLog, onDelete, onEdit, isLogging }: Props) {
@@ -54,10 +54,10 @@ export default function HabitCard({ habit, consistencyPct, onLog, onDelete, onEd
         <DifficultyGem difficulty={habit.difficulty} />
         <span className="font-grimoire text-grimoire-sm ink-muted">×{habit.total_count}</span>
         {showPositive && (
-          <span className="font-grimoire text-grimoire-sm ink-green font-bold">+{calculateHabitGold(habit.difficulty)}g</span>
+          <span className="font-grimoire text-grimoire-sm ink-green font-bold">+{calculateHabitGold(habit.difficulty)} RS</span>
         )}
         {showNegative && (
-          <span className="font-grimoire text-grimoire-sm ink-hp font-bold">-{calculateBadHabitHP(habit.difficulty)}hp</span>
+          <span className="font-grimoire text-grimoire-sm ink-hp font-bold">-{calculateBadHabitHP(habit.difficulty)} VIT</span>
         )}
         <span className="font-grimoire text-grimoire-sm ink-muted">{consistencyPct}%</span>
         {habit.areas.map((a) => (

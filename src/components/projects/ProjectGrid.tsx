@@ -82,7 +82,7 @@ export default function ProjectGrid({ userId, selectedProjectId, onSelectProject
           className={`bg-transparent border-none cursor-pointer font-inherit text-inherit p-0 ${
             viewMode === 'projects' ? 'text-rpg-text' : 'text-rpg-muted hover:text-rpg-gold'
           }`}
-          style={{ fontFamily: "'MedievalSharp', cursive", fontSize: 'inherit', letterSpacing: 'inherit' }}
+          style={{ fontFamily: "'Orbitron', monospace", fontSize: 'inherit', letterSpacing: 'inherit' }}
         >
           {projectsLabel}
         </button>
@@ -92,7 +92,7 @@ export default function ProjectGrid({ userId, selectedProjectId, onSelectProject
           className={`bg-transparent border-none cursor-pointer font-inherit text-inherit p-0 ${
             viewMode === 'areas' ? 'text-rpg-text' : 'text-rpg-muted hover:text-rpg-gold'
           }`}
-          style={{ fontFamily: "'MedievalSharp', cursive", fontSize: 'inherit', letterSpacing: 'inherit' }}
+          style={{ fontFamily: "'Orbitron', monospace", fontSize: 'inherit', letterSpacing: 'inherit' }}
         >
           {areasLabel}
         </button>

@@ -28,7 +28,7 @@ export default function AreaCard({ area, projectCount, questCount, isSelected, o
       </div>
       <div className="flex gap-3 mt-1">
         <span className="font-grimoire text-grimoire-sm ink-muted">{projectCount} proj</span>
-        <span className="font-grimoire text-grimoire-sm ink-muted">{questCount} quest{questCount !== 1 ? 's' : ''}</span>
+        <span className="font-grimoire text-grimoire-sm ink-muted">{questCount} mission{questCount !== 1 ? 's' : ''}</span>
       </div>
       {isSelected && <div className="font-grimoire text-grimoire-sm ink-gold mt-1 font-bold">▶ Selected</div>}
     </div>

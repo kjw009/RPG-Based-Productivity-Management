@@ -116,7 +116,7 @@ export default function PixelDatePicker({ value, onChange }: Props) {
           {/* Day-of-week labels */}
           <div className="grid grid-cols-7 mb-1">
             {DAY_LABELS.map((d) => (
-              <div key={d} className="font-pixel text-center py-0.5" style={{ fontSize: 8, color: '#64748b' }}>
+              <div key={d} className="font-pixel text-center py-0.5" style={{ fontSize: 8, color: '#2d5a7a' }}>
                 {d}
               </div>
             ))}
@@ -141,9 +141,9 @@ export default function PixelDatePicker({ value, onChange }: Props) {
                   style={{
                     fontSize: 9,
                     lineHeight: '1.8',
-                    backgroundColor: isSelected ? '#fbbf24' : isToday ? '#1e1b4b' : 'transparent',
-                    color: isSelected ? '#000000' : isPast ? '#3a3a6e' : '#e2e8f0',
-                    border: isToday && !isSelected ? '1px solid #4a4aae' : '1px solid transparent',
+                    backgroundColor: isSelected ? '#FFE710' : isToday ? '#1a3040' : 'transparent',
+                    color: isSelected ? '#000000' : isPast ? '#2d4a60' : '#c8d8e4',
+                    border: isToday && !isSelected ? '1px solid #2d5a7a' : '1px solid transparent',
                     cursor: 'pointer',
                   }}
                 >

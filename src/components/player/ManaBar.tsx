@@ -15,8 +15,8 @@ export default function ManaBar({ mana, maxMana, showReset = false }: Props) {
   return (
     <div className="w-full">
       <div className="flex justify-between items-center mb-1">
-        <span className="font-grimoire text-grimoire-sm text-rpg-mana">Mana</span>
-        <span className="font-grimoire text-grimoire-sm text-rpg-text">{mana} / {maxMana}</span>
+        <span className="font-pixel text-pixel-xs text-rpg-mana" style={{ letterSpacing: '0.1em' }}>STIMS</span>
+        <span className="font-pixel text-pixel-xs text-rpg-text">{mana} / {maxMana}</span>
       </div>
       <div
         className="pixel-bar-track w-full"
@@ -32,8 +32,8 @@ export default function ManaBar({ mana, maxMana, showReset = false }: Props) {
         />
       </div>
       {showReset && (
-        <div className="font-grimoire text-grimoire-sm text-rpg-muted mt-1 italic">
-          Replenishes in {daysUntilNextMonday()}d
+        <div className="font-pixel text-pixel-xs mt-1" style={{ color: '#2d5a7a', letterSpacing: '0.05em' }}>
+          RESUPPLY IN {daysUntilNextMonday()}D
         </div>
       )}
     </div>

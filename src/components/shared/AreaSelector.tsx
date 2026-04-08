@@ -66,8 +66,8 @@ export default function AreaSelector({ userId, selected, onChange }: Props) {
               className="inline-flex items-center gap-1 px-2 py-0.5 font-pixel text-pixel-xs transition-none"
               style={{
                 backgroundColor: isSelected ? area.color + '33' : 'transparent',
-                border: `2px solid ${isSelected ? area.color : '#2a2a5e'}`,
-                color: isSelected ? area.color : '#64748b',
+                border: `1px solid ${isSelected ? area.color : '#1a3040'}`,
+                color: isSelected ? area.color : '#4a6878',
               }}
             >
               {area.name}
@@ -81,7 +81,7 @@ export default function AreaSelector({ userId, selected, onChange }: Props) {
             type="button"
             onClick={() => setShowCreate(true)}
             className="inline-flex items-center px-2 py-0.5 font-pixel text-pixel-xs"
-            style={{ border: '2px dashed #2a2a5e', color: '#64748b' }}
+            style={{ border: '1px dashed #1a3040', color: '#4a6878' }}
           >
             + new
           </button>

@@ -38,7 +38,7 @@ export default function Dashboard({ userId, onSignOut }: Props) {
     // Brand-new anonymous users do not have a player row yet, so seed one
     // once the initial player query confirms there is nothing to load.
     if (!player && !playerLoading) {
-      seedPlayer.mutate('Hero')
+      seedPlayer.mutate('Helldiver')
     }
   }, [player, playerLoading]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -51,8 +51,27 @@ export default function Dashboard({ userId, onSignOut }: Props) {
 
   if (playerLoading || !player) {
     return (
-      <div className="min-h-screen bg-rpg-bg flex items-center justify-center">
-        <p className="font-fraktur text-4xl text-rpg-gold animate-rune-glow">Opening Grimoire...</p>
+      <div className="min-h-screen bg-rpg-bg flex flex-col items-center justify-center gap-4">
+        <div
+          className="font-pixel text-pixel-sm animate-blink"
+          style={{ color: '#FFE710', letterSpacing: '0.2em' }}
+        >
+          BOOTING COMMAND TERMINAL
+        </div>
+        <div className="flex gap-1">
+          {[0,1,2,3,4].map(i => (
+            <div
+              key={i}
+              style={{
+                width: 8,
+                height: 8,
+                background: '#1a3040',
+                animation: `blink 1s steps(1) infinite`,
+                animationDelay: `${i * 0.15}s`,
+              }}
+            />
+          ))}
+        </div>
       </div>
     )
   }
@@ -63,14 +82,29 @@ export default function Dashboard({ userId, onSignOut }: Props) {
       <div className="min-h-screen bg-rpg-bg flex flex-col">
         <KOOverlay />
 
-        {/* Sticky top bar — leather strip */}
-        <div className="sticky top-0 z-10 px-3 py-2" style={{
-          background: 'linear-gradient(180deg, #3a2010 0%, #2a1508 100%)',
-          borderBottom: '2px solid #5a3820',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.4)',
-        }}>
+        {/* Sticky top command strip */}
+        <div
+          className="sticky top-0 z-10 px-3 py-2"
+          style={{
+            background: 'linear-gradient(180deg, #0d1a24 0%, #070e14 100%)',
+            borderBottom: '1px solid #1a3040',
+            borderTop: '2px solid #FFE710',
+            boxShadow: '0 2px 12px rgba(0,0,0,0.6)',
+          }}
+        >
           <div className="flex items-center gap-2">
-            <span className="font-grimoire text-grimoire-sm text-rpg-gold truncate max-w-[100px]">
+            {/* Status dot */}
+            <div style={{
+              width: 6,
+              height: 6,
+              background: '#FFE710',
+              flexShrink: 0,
+              boxShadow: '0 0 4px rgba(255,231,16,0.8)',
+            }} />
+            <span
+              className="font-pixel text-pixel-xs truncate max-w-[90px]"
+              style={{ color: '#FFE710', letterSpacing: '0.1em' }}
+            >
               {player.name}
             </span>
             <div className="flex-1 min-w-0 flex flex-col gap-1">
@@ -81,8 +115,8 @@ export default function Dashboard({ userId, onSignOut }: Props) {
           </div>
         </div>
 
-        {/* Scrollable parchment */}
-        <div className="flex-1 overflow-y-auto p-3 flex flex-col gap-6 grimoire-page">
+        {/* Scrollable tactical content */}
+        <div className="flex-1 overflow-y-auto p-3 flex flex-col gap-5">
           <DailyQuote />
           <InboxSection userId={userId} />
           <PlayerPanel player={player} onSignOut={onSignOut} />
@@ -104,42 +138,74 @@ export default function Dashboard({ userId, onSignOut }: Props) {
     )
   }
 
-  // ─── DESKTOP LAYOUT — OPEN GRIMOIRE ────────────────────────────────────────
+  // ─── DESKTOP LAYOUT — TACTICAL COMMAND TERMINAL ───────────────────────────
   return (
-    <div className="min-h-screen bg-rpg-bg flex items-start justify-center" style={{ minHeight: '100dvh' }}>
+    <div className="min-h-screen bg-rpg-bg flex items-start" style={{ minHeight: '100dvh' }}>
       <KOOverlay />
 
-      {/* Grimoire outer cover */}
       <div className="flex w-full min-h-screen">
-        {/* Left cover — leather binding */}
-        <aside className="grimoire-cover sticky top-0 h-screen overflow-y-auto flex-shrink-0" style={{ width: 250 }}>
-          <div className="p-3 flex flex-col gap-4 h-full relative z-10">
-            {/* Title emboss */}
-            <div className="text-center py-3 border-b border-rpg-gold/20">
-              <div className="font-fraktur text-2xl text-rpg-gold leading-tight" style={{
-                textShadow: '0 0 8px rgba(212,165,64,0.3), 0 2px 4px rgba(0,0,0,0.5)',
-              }}>
-                Grimoire
-              </div>
-              <div className="font-grimoire text-grimoire-sm text-rpg-gold/60 mt-1">of Productivity</div>
-            </div>
 
+        {/* ── Left Sidebar — Helldiver Profile ── */}
+        <aside
+          className="grimoire-cover sticky top-0 h-screen overflow-y-auto flex-shrink-0"
+          style={{ width: 260 }}
+        >
+          {/* Header ID strip */}
+          <div style={{
+            marginTop: 3, /* offset for the hazard stripe ::before */
+            padding: '14px 14px 10px',
+            borderBottom: '1px solid #1a3040',
+          }}>
+            <div className="flex items-center gap-2 mb-1">
+              <div style={{
+                width: 6,
+                height: 6,
+                background: '#FFE710',
+                flexShrink: 0,
+                boxShadow: '0 0 4px rgba(255,231,16,0.8)',
+                animation: 'statusPulse 2s ease-in-out infinite',
+              }} />
+              <span
+                className="font-pixel text-pixel-xs tracking-widest"
+                style={{ color: '#FFE710' }}
+              >
+                HELLDIVER
+              </span>
+            </div>
+            <div
+              className="font-pixel text-pixel-xs tracking-widest"
+              style={{ color: '#2d5a7a', paddingLeft: 14 }}
+            >
+              PROFILE TERMINAL
+            </div>
+          </div>
+
+          <div className="p-3 flex flex-col gap-4 relative z-10">
             <PlayerPanel player={player} onSignOut={onSignOut} />
             <AbilityGrid userId={userId} />
             <div className="flex-1" />
 
-            {/* Bottom clasp decoration */}
-            <div className="text-center pb-2 opacity-40">
-              <span className="font-grimoire text-grimoire-sm text-rpg-gold">— ⟁ —</span>
+            {/* Bottom classification stamp */}
+            <div
+              className="text-center pb-2 font-pixel text-pixel-xs"
+              style={{ color: '#1a3040', letterSpacing: '0.15em', opacity: 0.7 }}
+            >
+              ◈ SUPER EARTH ◈
             </div>
           </div>
         </aside>
 
-        {/* Spine binding */}
+        {/* Tactical divider */}
         <div className="grimoire-spine sticky top-0 h-screen" />
 
-        {/* Main page — parchment left */}
-        <main className="grimoire-page grimoire-page-left flex-1 overflow-y-auto p-4 flex flex-col gap-6 min-w-0 relative">
+        {/* ── Main Content — Mission Board ── */}
+        <main
+          className="flex-1 overflow-y-auto p-4 flex flex-col gap-5 min-w-0 relative"
+          style={{
+            background: '#070a0d',
+            borderRight: '1px solid #0d1a24',
+          }}
+        >
           <DailyQuote />
           <DailyTaskList userId={userId} />
           <ProjectGrid
@@ -153,18 +219,50 @@ export default function Dashboard({ userId, onSignOut }: Props) {
           <div className="h-4" />
         </main>
 
-        {/* Spine binding */}
+        {/* Tactical divider */}
         <div className="grimoire-spine sticky top-0 h-screen" />
 
-        {/* Right page — parchment */}
-        <aside className="grimoire-page grimoire-page-right sticky top-0 h-screen overflow-y-auto flex-shrink-0" style={{ width: 290 }}>
-          <div className="p-3 flex flex-col gap-4 h-full relative">
+        {/* ── Right Sidebar — Command Intel ── */}
+        <aside
+          className="sticky top-0 h-screen overflow-y-auto flex-shrink-0"
+          style={{
+            width: 285,
+            background: 'linear-gradient(180deg, #0a1218 0%, #070a0d 100%)',
+            borderLeft: '1px solid #1a3040',
+            borderTop: '3px solid #41639C',
+          }}
+        >
+          {/* Header */}
+          <div style={{
+            padding: '12px 14px 10px',
+            borderBottom: '1px solid #1a3040',
+            background: 'rgba(65,99,156,0.05)',
+          }}>
+            <div className="flex items-center gap-2">
+              <div style={{
+                width: 6,
+                height: 6,
+                background: '#41639C',
+                flexShrink: 0,
+                boxShadow: '0 0 4px rgba(65,99,156,0.8)',
+              }} />
+              <span
+                className="font-pixel text-pixel-xs tracking-widest"
+                style={{ color: '#41639C' }}
+              >
+                COMMAND INTEL
+              </span>
+            </div>
+          </div>
+
+          <div className="p-3 flex flex-col gap-4">
             <InboxSection userId={userId} />
             <HabitSection userId={userId} />
             <ShopGrid userId={userId} />
             <div className="flex-1" />
           </div>
         </aside>
+
       </div>
     </div>
   )

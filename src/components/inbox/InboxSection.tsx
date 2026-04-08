@@ -79,7 +79,7 @@ export default function InboxSection({ userId }: Props) {
           <span>{expanded ? '▼' : '▶'}</span>
           <span>INBOX</span>
           {count > 0 && (
-            <span className="ml-1 inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full bg-red-600 text-white font-pixel text-[10px] leading-none">
+            <span className="ml-1 inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 bg-red-600 text-white font-pixel text-[10px] leading-none">
               {count}
             </span>
           )}

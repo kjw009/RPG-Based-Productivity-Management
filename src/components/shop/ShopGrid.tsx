@@ -28,7 +28,7 @@ export default function ShopGrid({ userId }: Props) {
 
   return (
     <section>
-      <SectionHeader title="ITEM SHOP" sub={`${player.gold} 🪙`} />
+      <SectionHeader title="ITEM SHOP" sub={`${player.gold} RS`} />
 
       {isLoading && (
         <div className="font-grimoire text-grimoire-sm text-rpg-muted p-2">Loading...</div>

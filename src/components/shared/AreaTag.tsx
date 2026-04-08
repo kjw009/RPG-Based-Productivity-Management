@@ -11,10 +11,10 @@ export default function AreaTag({ name, color, onRemove }: Props) {
     <span
       className="inline-flex items-center gap-1 px-2 py-0.5 font-pixel text-pixel-xs"
       style={{
-        backgroundColor: color + '22', // 13% opacity background
-        border: `2px solid ${color}`,
+        backgroundColor: color + '18', // 10% opacity background
+        border: `1px solid ${color}`,
+        borderRadius: 0,
         color,
-        imageRendering: 'pixelated',
       }}
     >
       {name}

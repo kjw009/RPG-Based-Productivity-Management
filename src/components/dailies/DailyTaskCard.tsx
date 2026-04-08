@@ -56,7 +56,7 @@ export default function DailyTaskCard({ task, onComplete, onDelete, onEdit, isCo
         <DifficultyGem difficulty={task.difficulty} />
         <StreakCounter streak={task.streak} size="sm" />
         {!isDone && (
-          <span className="font-grimoire text-grimoire-sm ink-gold font-bold">+{goldPreview}g</span>
+          <span className="font-grimoire text-grimoire-sm ink-gold font-bold">+{goldPreview} RS</span>
         )}
         {isDone && (
           <span className="font-grimoire text-grimoire-sm ink-green font-bold">✓</span>

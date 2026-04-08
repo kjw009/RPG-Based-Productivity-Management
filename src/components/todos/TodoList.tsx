@@ -95,7 +95,7 @@ export default function TodoList({ userId, filterProjectId, filterArea }: Props)
       {active.length === 0 && !isLoading && (
         <PixelPanel className="mb-2">
           <p className="font-grimoire text-grimoire-sm text-rpg-muted">
-            {filterProjectId ? 'No active quests for this project.' : 'Quest log is clear.'}
+            {filterProjectId ? 'No active missions for this campaign.' : 'Mission board is clear.'}
           </p>
         </PixelPanel>
       )}
@@ -105,7 +105,7 @@ export default function TodoList({ userId, filterProjectId, filterArea }: Props)
         <div className="font-grimoire text-grimoire-sm text-rpg-hp mb-1 font-bold">⚠ Overdue ({overdue.length})</div>
       )}
 
-      {/* All active quests in a scrollable grid */}
+      {/* All active missions in a scrollable grid */}
       {active.length > 0 && (
         <div className="flex flex-col gap-1 mb-2 max-h-[360px] overflow-y-auto pr-1 scrollbar-thin">
           {active.map((t) => editingId === t.id ? (

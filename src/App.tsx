@@ -56,8 +56,19 @@ export default function App() {
 
   if (userId === undefined) {
     return (
-      <div className="flex items-center justify-center h-screen bg-rpg-bg">
-        <p className="font-pixel text-pixel-base text-rpg-gold animate-blink">LOADING...</p>
+      <div
+        className="flex flex-col items-center justify-center h-screen bg-rpg-bg gap-3"
+        style={{
+          background: '#070a0d',
+          backgroundImage: 'radial-gradient(ellipse at 50% 40%, rgba(65,99,156,0.08) 0%, transparent 60%)',
+        }}
+      >
+        <p
+          className="font-pixel text-pixel-xs animate-blink"
+          style={{ color: '#FFE710', letterSpacing: '0.2em' }}
+        >
+          ESTABLISHING UPLINK...
+        </p>
       </div>
     )
   }

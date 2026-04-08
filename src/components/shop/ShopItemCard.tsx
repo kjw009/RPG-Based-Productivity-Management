@@ -31,7 +31,7 @@ export default function ShopItemCard({ item, player, onBuy, onUse, onRedeem, isP
         <span className="font-grimoire text-grimoire-base ink-text truncate flex-1 min-w-0">
           {item.name}
         </span>
-        <span className="font-grimoire text-grimoire-sm ink-gold font-bold flex-shrink-0">{item.cost}🪙</span>
+        <span className="font-grimoire text-grimoire-sm ink-gold font-bold flex-shrink-0">{item.cost} RS</span>
         <span className="font-grimoire text-grimoire-sm ink-muted flex-shrink-0">×{item.quantity}</span>
       </div>
 

@@ -83,10 +83,15 @@ export default function DailyQuote() {
 
   return (
     <div className="notice-board px-3 py-2 mb-2">
-      <div className="flex items-baseline gap-2">
-        <span className="text-rpg-gold flex-shrink-0 text-sm opacity-60">✦</span>
-        <blockquote className="font-grimoire text-grimoire-base leading-snug min-w-0 italic">
-          &ldquo;{quote.content}&rdquo; <cite className="not-italic opacity-60">— {quote.author}</cite>
+      <div className="flex items-start gap-3">
+        <div className="flex-shrink-0 flex flex-col gap-0.5 pt-0.5">
+          <span className="font-pixel text-pixel-xs" style={{ color: '#FFE710', fontSize: 7, letterSpacing: '0.1em' }}>
+            INTEL
+          </span>
+        </div>
+        <blockquote className="font-grimoire text-grimoire-base leading-snug min-w-0 italic" style={{ color: '#c8d8e4' }}>
+          &ldquo;{quote.content}&rdquo;{' '}
+          <cite className="not-italic" style={{ color: '#2d5a7a' }}>— {quote.author}</cite>
         </blockquote>
       </div>
     </div>

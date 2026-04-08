@@ -13,8 +13,8 @@ export default function HPBar({ hp, maxHp }: Props) {
   return (
     <div className="w-full">
       <div className="flex justify-between items-center mb-1">
-        <span className="font-grimoire text-grimoire-sm text-rpg-hp">HP</span>
-        <span className={`font-grimoire text-grimoire-sm ${isLow ? 'text-rpg-hp animate-blink' : 'text-rpg-text'}`}>
+        <span className="font-pixel text-pixel-xs text-rpg-hp" style={{ letterSpacing: '0.1em' }}>VITALS</span>
+        <span className={`font-pixel text-pixel-xs ${isLow ? 'text-rpg-hp animate-blink' : 'text-rpg-text'}`}>
           {hp} / {maxHp}
         </span>
       </div>

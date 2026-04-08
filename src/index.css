@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* ============================================================
-   GLOBAL RESET & BASE — GRIMOIRE THEME
+   GLOBAL RESET & BASE — HELLDIVERS 2 TACTICAL COMMAND THEME
    ============================================================ */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -16,196 +16,280 @@ html, body, #root {
 }
 
 body {
-  background-color: #1a120b;
-  color: #d8ccb4;
-  font-family: 'MedievalSharp', cursive;
-  font-size: 18px;
+  background-color: #070a0d;
+  color: #c8d8e4;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 15px;
   line-height: 1.4;
-  /* Subtle leather grain texture */
+  /* Deep space tactical background — subtle dot grid + atmospheric glow */
   background-image:
-    radial-gradient(ellipse at 20% 50%, rgba(60,30,10,0.4) 0%, transparent 70%),
-    radial-gradient(ellipse at 80% 50%, rgba(60,30,10,0.4) 0%, transparent 70%),
-    url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='60' height='60' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    radial-gradient(ellipse at 15% 30%, rgba(65,99,156,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 70%, rgba(65,99,156,0.05) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 10%, rgba(255,231,16,0.03) 0%, transparent 40%),
+    url("data:image/svg+xml,%3Csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='20' cy='20' r='0.8' fill='rgba(45,90,122,0.25)'/%3E%3C/svg%3E");
   scroll-behavior: auto;
 }
 
-/* Pixel font for labels */
+/* Subtle scanline overlay — always on top of everything */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(0, 0, 0, 0.04) 3px,
+    rgba(0, 0, 0, 0.04) 4px
+  );
+  pointer-events: none;
+  z-index: 9997;
+}
+
+/* Font class aliases — keep same class names, now military fonts */
 .font-pixel {
-  font-family: 'Press Start 2P', monospace;
+  font-family: 'Orbitron', monospace;
 }
-
-/* Body font */
 .font-body {
-  font-family: 'VT323', monospace;
+  font-family: 'Share Tech Mono', monospace;
 }
-
-/* Grimoire heading font */
 .font-grimoire {
-  font-family: 'MedievalSharp', cursive;
+  font-family: 'Barlow Condensed', sans-serif;
 }
-
-/* Gothic display font */
 .font-fraktur {
-  font-family: 'UnifrakturMaguntia', cursive;
+  font-family: 'Orbitron', monospace;
+  font-weight: 900;
+  letter-spacing: 0.05em;
 }
 
 /* ============================================================
-   GRIMOIRE PANELS — Parchment page look
+   TACTICAL PANELS — Dark steel HUD elements
    ============================================================ */
 .pixel-panel {
-  background: linear-gradient(145deg, #c8b88a 0%, #b8a878 40%, #a89868 100%);
-  border: 2px solid #8b6914;
-  box-shadow:
-    inset 0 0 20px rgba(80,50,10,0.15),
-    inset 0 1px 0 rgba(255,255,255,0.15),
-    0 2px 4px rgba(0,0,0,0.3);
-  color: #2a1a0a;
+  background: linear-gradient(135deg, #0f1c26 0%, #0a1520 60%, #0d1a24 100%);
+  border: 1px solid #1a3040;
+  /* Bright top edge — classic military HUD highlight */
+  border-top: 1px solid #2d5a7a;
+  color: #c8d8e4;
   position: relative;
+  /* Clip path for military corner cut */
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
 }
 
-/* Parchment stain effect */
+/* Inner corner bracket overlay */
 .pixel-panel::before {
   content: '';
   position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse at 30% 20%, rgba(120,80,20,0.08) 0%, transparent 50%),
-    radial-gradient(ellipse at 70% 80%, rgba(100,60,10,0.06) 0%, transparent 50%);
+  inset: 5px;
+  border: 1px solid rgba(255, 231, 16, 0.06);
+  clip-path: inherit;
   pointer-events: none;
 }
 
-.pixel-panel-gold {
-  background: linear-gradient(145deg, #d4c090 0%, #c8a868 100%);
-  border: 2px solid #b8942a;
-  box-shadow:
-    inset 0 0 15px rgba(120,80,10,0.2),
-    0 0 8px rgba(184,148,42,0.2),
-    0 2px 4px rgba(0,0,0,0.3);
-  color: #2a1a0a;
+/* Yellow accent stripe on left edge */
+.pixel-panel::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 20%;
+  bottom: 20%;
+  width: 2px;
+  background: linear-gradient(180deg, transparent, #FFE710 30%, #FFE710 70%, transparent);
+  opacity: 0.4;
+  pointer-events: none;
 }
 
+/* Gold variant — highlighted/important panel */
+.pixel-panel-gold {
+  background: linear-gradient(135deg, #141a08 0%, #0e1406 100%);
+  border: 1px solid #4a3800;
+  border-top: 1px solid #FFE710;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  color: #c8d8e4;
+  box-shadow: 0 0 12px rgba(255,231,16,0.08), inset 0 0 20px rgba(255,231,16,0.03);
+}
+
+.pixel-panel-gold::before {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(255, 231, 16, 0.12);
+  clip-path: inherit;
+  pointer-events: none;
+}
+
+/* Crimson variant — alert/danger panel */
 .pixel-panel-crimson {
-  background: linear-gradient(145deg, #c8b088 0%, #b89870 100%);
-  border: 2px solid #8b1a1a;
-  box-shadow:
-    inset 0 0 15px rgba(139,26,26,0.1),
-    0 0 6px rgba(139,26,26,0.15),
-    0 2px 4px rgba(0,0,0,0.3);
-  color: #2a1a0a;
+  background: linear-gradient(135deg, #1a0608 0%, #120406 100%);
+  border: 1px solid #3a0a0e;
+  border-top: 1px solid #FF3344;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  color: #c8d8e4;
+  box-shadow: 0 0 12px rgba(255,51,68,0.08), inset 0 0 20px rgba(255,51,68,0.03);
 }
 
 /* ============================================================
-   GRIMOIRE BUTTONS — Embossed leather / wax seal look
+   TACTICAL BUTTONS — Angular military controls
    ============================================================ */
 .pixel-btn {
   display: inline-block;
-  font-family: 'MedievalSharp', cursive;
-  font-size: 13px;
+  font-family: 'Orbitron', monospace;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
   cursor: pointer;
-  border: 2px solid;
+  border: 1px solid;
   outline: none;
-  padding: 6px 12px;
-  border-radius: 3px;
+  padding: 6px 14px;
+  border-radius: 0;
   user-select: none;
-  transition: all 0.1s ease;
-  line-height: 1.2;
+  transition: all 0.12s ease;
+  line-height: 1.4;
   white-space: nowrap;
-  text-shadow: 0 1px 1px rgba(0,0,0,0.3);
-  box-shadow: 0 2px 0 rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+  /* Angular cut corner */
+  clip-path: polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 5px 100%, 0 calc(100% - 5px));
 }
 
 .pixel-btn:active:not(:disabled) {
-  box-shadow: inset 0 2px 3px rgba(0,0,0,0.3);
-  transform: translateY(2px);
+  transform: translateY(1px);
+  filter: brightness(0.85);
 }
 
 .pixel-btn:disabled {
-  opacity: 0.4;
+  opacity: 0.3;
   cursor: not-allowed;
 }
 
+/* Primary — cyan tactical */
 .pixel-btn-primary {
-  background: linear-gradient(180deg, #3a2a5e 0%, #2a1a4e 100%);
-  border-color: #5a3a8e;
-  color: #d0c8e8;
+  background: linear-gradient(180deg, #1a2a3e 0%, #0f1c28 100%);
+  border-color: #2d5a7a;
+  color: #7DF9FF;
+  text-shadow: 0 0 8px rgba(125,249,255,0.4);
 }
-.pixel-btn-primary:hover:not(:disabled) { background: linear-gradient(180deg, #4a3a6e 0%, #3a2a5e 100%); }
+.pixel-btn-primary:hover:not(:disabled) {
+  background: linear-gradient(180deg, #223044 0%, #1a2836 100%);
+  border-color: #7DF9FF;
+  box-shadow: 0 0 10px rgba(125,249,255,0.2);
+}
 
+/* Success — green allied */
 .pixel-btn-success {
-  background: linear-gradient(180deg, #2a6a3a 0%, #1a5a2a 100%);
-  border-color: #3a8a4a;
-  color: #d0f0d8;
+  background: linear-gradient(180deg, #0a2010 0%, #061408 100%);
+  border-color: #2a7a3a;
+  color: #4fc24e;
+  text-shadow: 0 0 6px rgba(79,194,78,0.4);
 }
-.pixel-btn-success:hover:not(:disabled) { background: linear-gradient(180deg, #3a7a4a 0%, #2a6a3a 100%); }
+.pixel-btn-success:hover:not(:disabled) {
+  background: linear-gradient(180deg, #0e2a14 0%, #0a1a0a 100%);
+  border-color: #4fc24e;
+  box-shadow: 0 0 10px rgba(79,194,78,0.2);
+}
 
+/* Danger — red critical */
 .pixel-btn-danger {
-  background: linear-gradient(180deg, #8a2020 0%, #6a1010 100%);
-  border-color: #aa3030;
-  color: #f0d0d0;
+  background: linear-gradient(180deg, #2a0a0a 0%, #1a0505 100%);
+  border-color: #6a1a1a;
+  color: #FF3344;
+  text-shadow: 0 0 6px rgba(255,51,68,0.4);
 }
-.pixel-btn-danger:hover:not(:disabled) { background: linear-gradient(180deg, #9a3030 0%, #8a2020 100%); }
+.pixel-btn-danger:hover:not(:disabled) {
+  background: linear-gradient(180deg, #361010 0%, #260808 100%);
+  border-color: #FF3344;
+  box-shadow: 0 0 10px rgba(255,51,68,0.2);
+}
 
+/* Gold — Super Earth yellow */
 .pixel-btn-gold {
-  background: linear-gradient(180deg, #8a6a10 0%, #6a5010 100%);
-  border-color: #aa8420;
-  color: #f0e0c0;
+  background: linear-gradient(180deg, #1c1800 0%, #120f00 100%);
+  border-color: #6a5a00;
+  color: #FFE710;
+  text-shadow: 0 0 8px rgba(255,231,16,0.5);
 }
-.pixel-btn-gold:hover:not(:disabled) { background: linear-gradient(180deg, #9a7a20 0%, #8a6a10 100%); }
+.pixel-btn-gold:hover:not(:disabled) {
+  background: linear-gradient(180deg, #2a2200 0%, #1a1600 100%);
+  border-color: #FFE710;
+  box-shadow: 0 0 12px rgba(255,231,16,0.25);
+}
 
+/* Purple → Super Earth blue authority */
 .pixel-btn-purple {
-  background: linear-gradient(180deg, #5a2a8a 0%, #4a1a7a 100%);
-  border-color: #7a3aaa;
-  color: #e0d0f0;
+  background: linear-gradient(180deg, #0a1230 0%, #060c22 100%);
+  border-color: #2a3a7a;
+  color: #81ABFF;
+  text-shadow: 0 0 6px rgba(129,171,255,0.4);
 }
-.pixel-btn-purple:hover:not(:disabled) { background: linear-gradient(180deg, #6a3a9a 0%, #5a2a8a 100%); }
+.pixel-btn-purple:hover:not(:disabled) {
+  background: linear-gradient(180deg, #121a3a 0%, #0a102a 100%);
+  border-color: #81ABFF;
+  box-shadow: 0 0 10px rgba(129,171,255,0.2);
+}
 
-.pixel-btn-sm {
-  font-size: 11px;
-  padding: 4px 10px;
-}
-
-.pixel-btn-xs {
-  font-size: 10px;
-  padding: 3px 8px;
-}
+.pixel-btn-sm  { font-size: 8px;  padding: 4px 10px; }
+.pixel-btn-xs  { font-size: 7px;  padding: 3px 8px;  }
 
 /* ============================================================
-   HP / MANA / PROGRESS BARS — Ornate vials
+   TACTICAL STATUS BARS — HP / STIMS / PROGRESS
    ============================================================ */
 .pixel-bar-track {
-  background: linear-gradient(180deg, #1a120a 0%, #2a1a0a 100%);
-  border: 2px solid #5c3d1e;
-  border-radius: 2px;
-  box-shadow: inset 1px 1px 3px rgba(0,0,0,0.6);
+  background: #050c12;
+  border: 1px solid #1a3040;
+  border-radius: 0;
   overflow: hidden;
   display: block;
+  position: relative;
+}
+
+/* Subtle scanline on bar tracks */
+.pixel-bar-track::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.08) 2px,
+    rgba(0,0,0,0.08) 3px
+  );
+  pointer-events: none;
+  z-index: 2;
 }
 
 .pixel-bar-fill {
   height: 100%;
   transition: width 0.3s ease;
   display: block;
-  border-radius: 1px;
+  position: relative;
+  z-index: 1;
 }
 
+/* Vitals / HP — critical damage red */
 .pixel-bar-hp {
-  background: linear-gradient(180deg, #e03030 0%, #a01818 50%, #c02020 100%);
-  box-shadow: inset 0 -1px 0 rgba(0,0,0,0.3), 0 0 4px rgba(200,40,40,0.3);
-}
-.pixel-bar-mana {
-  background: linear-gradient(180deg, #4a8ae0 0%, #2a5ab0 50%, #3a6ac0 100%);
-  box-shadow: inset 0 -1px 0 rgba(0,0,0,0.3), 0 0 4px rgba(74,122,212,0.3);
-}
-.pixel-bar-xp {
-  background: linear-gradient(180deg, #5ab060 0%, #3a8040 50%, #4a9050 100%);
-  box-shadow: inset 0 -1px 0 rgba(0,0,0,0.3), 0 0 4px rgba(74,160,80,0.3);
-}
-.pixel-bar-gold {
-  background: linear-gradient(180deg, #d4a540 0%, #a07830 50%, #c09038 100%);
-  box-shadow: inset 0 -1px 0 rgba(0,0,0,0.3), 0 0 4px rgba(200,150,40,0.3);
+  background: linear-gradient(90deg, #5a0a0a 0%, #FF3344 90%, #ff6677 100%);
+  box-shadow: 0 0 8px rgba(255,51,68,0.5), inset 0 1px 0 rgba(255,150,150,0.2);
 }
 
-/* Segmented bar effect — overlay so it doesn't replace the fill colour */
+/* Stims / Mana — energy cyan */
+.pixel-bar-mana {
+  background: linear-gradient(90deg, #004050 0%, #7DF9FF 90%, #b0ffff 100%);
+  box-shadow: 0 0 8px rgba(125,249,255,0.5), inset 0 1px 0 rgba(200,255,255,0.2);
+}
+
+/* XP — allied green */
+.pixel-bar-xp {
+  background: linear-gradient(90deg, #0a3010 0%, #4fc24e 90%, #7fff7a 100%);
+  box-shadow: 0 0 8px rgba(79,194,78,0.5), inset 0 1px 0 rgba(180,255,180,0.2);
+}
+
+/* Requisition / Gold — Super Earth yellow */
+.pixel-bar-gold {
+  background: linear-gradient(90deg, #2a2000 0%, #FFE710 90%, #fff060 100%);
+  box-shadow: 0 0 8px rgba(255,231,16,0.5), inset 0 1px 0 rgba(255,255,180,0.2);
+}
+
+/* Segmented overlay (used on some bars) */
 .pixel-bar-segmented {
   position: relative;
 }
@@ -217,268 +301,261 @@ body {
     90deg,
     transparent,
     transparent calc(10% - 1px),
-    rgba(0,0,0,0.2) calc(10% - 1px),
-    rgba(0,0,0,0.2) 10%
+    rgba(0,0,0,0.25) calc(10% - 1px),
+    rgba(0,0,0,0.25) 10%
   );
   border-radius: inherit;
   pointer-events: none;
 }
 
 /* ============================================================
-   SECTION HEADERS — Grimoire chapter headings with icons
+   SECTION HEADERS — Military command titles
    ============================================================ */
 .section-header {
-  background: linear-gradient(90deg, transparent 0%, rgba(92,61,30,0.3) 20%, rgba(92,61,30,0.4) 50%, rgba(92,61,30,0.3) 80%, transparent 100%);
-  border-top: 1px solid #8b6914;
-  border-bottom: 1px solid #8b6914;
-  padding: 6px 16px;
-  font-family: 'MedievalSharp', cursive;
-  font-size: 15px;
-  color: #d4a540;
+  background: transparent;
+  border-top: none;
+  border-bottom: 1px solid #1a3040;
+  padding: 5px 0;
+  font-family: 'Orbitron', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  color: #FFE710;
   letter-spacing: 2px;
   text-transform: uppercase;
   position: relative;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
 }
 
+/* Yellow left bracket */
 .section-header::before {
-  content: '✦';
-  color: #d4a540;
-  margin-right: 10px;
-  font-size: 10px;
-  opacity: 0.8;
+  content: '//';
+  color: #FFE710;
+  margin-right: 8px;
+  opacity: 0.7;
+  font-size: 9px;
+  flex-shrink: 0;
 }
 
+/* Trailing dim bracket */
 .section-header::after {
-  content: '✦';
-  color: #d4a540;
-  margin-left: 10px;
-  font-size: 10px;
-  opacity: 0.8;
+  content: '//';
+  color: #FFE710;
+  margin-left: 8px;
+  opacity: 0.3;
+  font-size: 7px;
+  flex-shrink: 0;
 }
 
 /* ============================================================
-   DIFFICULTY GEMS — Polished jewels
+   DIFFICULTY MARKERS — Tactical threat ratings
    ============================================================ */
 .gem {
   display: inline-block;
   width: 10px;
   height: 10px;
   transform: rotate(45deg);
-  border-radius: 1px;
+  border-radius: 0;
   box-shadow:
-    inset -2px -2px 0px rgba(0,0,0,0.4),
-    inset 1px 1px 0px rgba(255,255,255,0.3),
-    0 0 3px rgba(255,255,255,0.1);
+    inset -2px -2px 0px rgba(0,0,0,0.5),
+    inset 1px 1px 0px rgba(255,255,255,0.15);
 }
-.gem-1 { background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%); }
-.gem-2 { background: linear-gradient(135deg, #4ade80 0%, #16a34a 100%); }
-.gem-3 { background: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%); }
-.gem-4 { background: linear-gradient(135deg, #c084fc 0%, #7e22ce 100%); }
-.gem-5 { background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%); box-shadow: inset -2px -2px 0px rgba(0,0,0,0.3), inset 1px 1px 0px rgba(255,255,255,0.4), 0 0 6px rgba(251,191,36,0.4); }
+
+/* E through A ratings */
+.gem-1 { background: linear-gradient(135deg, #3a4a5a 0%, #2a3a4a 100%); }
+.gem-2 { background: linear-gradient(135deg, #1a6a30 0%, #4fc24e 100%); }
+.gem-3 { background: linear-gradient(135deg, #1a4a7a 0%, #7DF9FF 100%); }
+.gem-4 { background: linear-gradient(135deg, #7a3010 0%, #FF9D45 100%); }
+.gem-5 {
+  background: linear-gradient(135deg, #8a6a00 0%, #FFE710 100%);
+  box-shadow:
+    inset -2px -2px 0px rgba(0,0,0,0.3),
+    inset 1px 1px 0px rgba(255,255,200,0.4),
+    0 0 8px rgba(255,231,16,0.5);
+}
 
 /* ============================================================
-   PIXEL CHECKBOX — Wax seal style
+   TACTICAL CHECKBOX — Military status toggle
    ============================================================ */
 .pixel-checkbox {
   appearance: none;
   -webkit-appearance: none;
   width: 16px;
   height: 16px;
-  border: 2px solid #8b6914;
-  background: #2a1a0a;
-  border-radius: 2px;
+  border: 1px solid #2d5a7a;
+  background: #050c12;
+  border-radius: 0;
   cursor: pointer;
   flex-shrink: 0;
   position: relative;
-  box-shadow: inset 1px 1px 2px rgba(0,0,0,0.5);
 }
 
 .pixel-checkbox:checked {
-  background: linear-gradient(135deg, #4a9e5c 0%, #2a6e3a 100%);
-  border-color: #3a8a4a;
+  background: linear-gradient(135deg, #1a4020 0%, #4fc24e 100%);
+  border-color: #4fc24e;
 }
 
 .pixel-checkbox:checked::after {
   content: '✓';
   position: absolute;
-  top: -3px;
+  top: -2px;
   left: 1px;
   font-size: 12px;
-  color: #e0ffe0;
+  color: #a0ffa0;
   font-family: monospace;
   font-weight: bold;
-  text-shadow: 0 1px 1px rgba(0,0,0,0.5);
 }
 
 /* ============================================================
-   PIXEL INPUTS — Ink-stained parchment fields
+   TACTICAL INPUTS — Terminal data entry fields
    ============================================================ */
 .pixel-input {
-  background: linear-gradient(180deg, #c0a870 0%, #b89860 100%);
-  border: 2px solid #8b6914;
-  color: #2a1a0a;
-  font-family: 'MedievalSharp', cursive;
-  font-size: 16px;
+  background: #050c12;
+  border: 1px solid #1a3040;
+  color: #c8d8e4;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 14px;
   padding: 6px 10px;
   outline: none;
   width: 100%;
-  border-radius: 2px;
-  box-shadow: inset 2px 2px 4px rgba(0,0,0,0.15);
+  border-radius: 0;
 }
 
 .pixel-input::placeholder {
-  color: #7a6a4a;
-  font-style: italic;
+  color: #2d4a60;
+  font-style: normal;
 }
 
 .pixel-input:focus {
-  border-color: #d4a540;
-  box-shadow: inset 2px 2px 4px rgba(0,0,0,0.15), 0 0 0 1px #d4a540;
+  border-color: #FFE710;
+  box-shadow: 0 0 0 1px rgba(255,231,16,0.2);
 }
 
 .pixel-select {
-  background: linear-gradient(180deg, #c0a870 0%, #b89860 100%);
-  border: 2px solid #8b6914;
-  color: #2a1a0a;
-  font-family: 'MedievalSharp', cursive;
-  font-size: 16px;
-  padding: 6px 10px;
+  background: #050c12;
+  border: 1px solid #1a3040;
+  color: #c8d8e4;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 15px;
+  padding: 6px 30px 6px 10px;
   outline: none;
   cursor: pointer;
-  border-radius: 2px;
+  border-radius: 0;
   appearance: none;
   -webkit-appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%232a1a0a'/%3E%3C/svg%3E");
+  /* Yellow arrow indicator */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23FFE710'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 10px center;
-  padding-right: 30px;
+  width: 100%;
 }
 
 .pixel-select:focus {
-  border-color: #d4a540;
+  border-color: #FFE710;
+  box-shadow: 0 0 0 1px rgba(255,231,16,0.2);
 }
 
 /* ============================================================
-   ITEM / ABILITY CARDS — Grimoire entry slots
+   INVENTORY / MISSION SLOTS — Dark tactical cards
    ============================================================ */
 .inventory-slot {
-  background: linear-gradient(145deg, #c0a870 0%, #b09060 100%);
-  border: 2px solid #8b6914;
-  border-radius: 3px;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.1),
-    inset 0 -1px 0 rgba(0,0,0,0.1),
-    0 1px 3px rgba(0,0,0,0.2);
-  color: #2a1a0a;
+  background: linear-gradient(135deg, #0d1820 0%, #081018 100%);
+  border: 1px solid #1a3040;
+  border-top: 1px solid #2d5a7a;
+  border-radius: 0;
+  color: #c8d8e4;
   position: relative;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .inventory-slot:hover {
-  border-color: #d4a540;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.15),
-    inset 0 -1px 0 rgba(0,0,0,0.1),
-    0 0 6px rgba(212,165,64,0.2);
+  border-color: #2d5a7a;
+  border-top-color: #FFE710;
+  box-shadow: 0 0 10px rgba(255,231,16,0.1), inset 0 0 10px rgba(255,231,16,0.03);
 }
 
 /* ============================================================
-   GRIMOIRE SPINE — Binding between panels
+   GRIMOIRE SPINE → TACTICAL DIVIDER
    ============================================================ */
 .grimoire-spine {
-  background: linear-gradient(90deg,
-    #1a0e06 0%,
-    #3a2010 15%,
-    #5a3820 30%,
-    #4a2818 50%,
-    #5a3820 70%,
-    #3a2010 85%,
-    #1a0e06 100%
-  );
-  width: 16px;
+  /* Slim tactical divider — no more leather binding */
+  background: linear-gradient(180deg, transparent 0%, #FFE710 10%, #1a3040 20%, #1a3040 80%, #FFE710 90%, transparent 100%);
+  width: 2px;
   flex-shrink: 0;
   position: relative;
-  box-shadow: inset 0 0 8px rgba(0,0,0,0.5);
+  opacity: 0.6;
 }
 
 .grimoire-spine::before {
-  content: '';
-  position: absolute;
-  top: 10%;
-  left: 3px;
-  right: 3px;
-  bottom: 10%;
-  background: repeating-linear-gradient(
-    180deg,
-    transparent,
-    transparent 30px,
-    #8b6914 30px,
-    #8b6914 32px,
-    transparent 32px,
-    transparent 60px
-  );
-  opacity: 0.4;
+  display: none; /* remove decorative lines */
 }
 
 /* ============================================================
-   GRIMOIRE PAGE — Left/right page styles
+   TACTICAL PAGES — Command terminal content areas
    ============================================================ */
 .grimoire-page {
-  background: linear-gradient(145deg, #d8c898 0%, #c8b080 40%, #baa870 100%);
+  background: #070a0d;
   position: relative;
 }
 
 .grimoire-page::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse at 20% 30%, rgba(100,70,20,0.06) 0%, transparent 50%),
-    radial-gradient(ellipse at 75% 65%, rgba(80,50,10,0.05) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 90%, rgba(90,60,15,0.04) 0%, transparent 40%);
-  pointer-events: none;
+  display: none; /* no stain effects */
 }
 
-/* Left page — slight curl shadow on right edge */
+/* Subtle left shadow for depth */
 .grimoire-page-left {
-  box-shadow: inset -10px 0 15px -8px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.2);
+  box-shadow: none;
 }
 
-/* Right page — slight curl shadow on left edge */
+/* Subtle right shadow */
 .grimoire-page-right {
-  box-shadow: inset 10px 0 15px -8px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.2);
+  box-shadow: none;
 }
 
 /* ============================================================
-   GRIMOIRE COVER — Leather binding
+   COMMAND SIDEBAR — Left/right tactical panel
    ============================================================ */
 .grimoire-cover {
-  background: linear-gradient(145deg, #3a2010 0%, #2a1508 100%);
-  border: 3px solid #5a3820;
-  box-shadow:
-    inset 0 0 20px rgba(0,0,0,0.3),
-    inset 0 1px 0 rgba(255,255,255,0.05),
-    0 4px 12px rgba(0,0,0,0.5);
+  background: linear-gradient(180deg, #0a1218 0%, #070a0d 100%);
+  border: none;
+  border-right: 1px solid #1a3040;
   position: relative;
 }
 
-/* Decorative corner filigree */
+/* Top hazard stripe accent on the cover/sidebar */
 .grimoire-cover::before {
   content: '';
   position: absolute;
-  inset: 6px;
-  border: 1px solid rgba(212,165,64,0.2);
-  border-radius: 2px;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: repeating-linear-gradient(
+    90deg,
+    #FFE710 0px,
+    #FFE710 8px,
+    #000 8px,
+    #000 16px
+  );
   pointer-events: none;
+  z-index: 1;
 }
 
 /* ============================================================
-   KO OVERLAY
+   KO OVERLAY → HELLDIVER DOWN SCREEN
    ============================================================ */
 .ko-overlay {
   position: fixed;
   inset: 0;
-  background-color: rgba(80, 10, 10, 0.9);
+  /* Dark red with aggressive scanlines */
+  background-color: rgba(20, 2, 4, 0.96);
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(0, 0, 0, 0.35) 3px,
+    rgba(0, 0, 0, 0.35) 6px
+  );
   display: flex;
   align-items: center;
   justify-content: center;
@@ -486,58 +563,67 @@ body {
 }
 
 .ko-text {
-  font-family: 'UnifrakturMaguntia', cursive;
-  font-size: clamp(40px, 10vw, 100px);
-  color: #ff4444;
-  text-shadow: 4px 4px 0px #000, -2px -2px 0px #000, 0 0 20px rgba(200,30,30,0.5);
+  font-family: 'Orbitron', monospace;
+  font-weight: 900;
+  font-size: clamp(32px, 8vw, 80px);
+  color: #FF3344;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-shadow:
+    0 0 20px rgba(255,51,68,0.8),
+    0 0 50px rgba(255,51,68,0.4),
+    0 0 100px rgba(255,51,68,0.2),
+    0 2px 4px rgba(0,0,0,0.9);
   animation: koFlash 0.4s steps(1) infinite;
 }
 
 /* ============================================================
-   NOTICE BOARD — Ancient scroll
+   INTEL BOARD — Mission briefing quote strip
    ============================================================ */
 .notice-board {
-  background: linear-gradient(145deg, #d8c898 0%, #c8b078 100%);
-  border: 2px solid #8b6914;
-  border-radius: 3px;
-  box-shadow:
-    inset 0 0 15px rgba(80,50,10,0.1),
-    0 2px 6px rgba(0,0,0,0.2);
-  color: #3a2a10;
+  background: #0a1218;
+  border: 1px solid #1a3040;
+  border-left: 3px solid #FFE710;
+  border-radius: 0;
+  color: #c8d8e4;
   position: relative;
 }
 
 /* ============================================================
-   OVERDUE / ARMED / COMPLETED EFFECTS
+   STATUS EFFECTS
    ============================================================ */
 .overdue-glow {
-  border-color: #c93030 !important;
-  box-shadow: 0 0 8px rgba(200,48,48,0.3) !important;
+  border-color: #FF3344 !important;
+  box-shadow: 0 0 10px rgba(255,51,68,0.25) !important;
 }
 
 .completed-dim {
-  opacity: 0.45;
+  opacity: 0.4;
   text-decoration: line-through;
 }
 
 .armed-glow {
-  border-color: #d4a540 !important;
-  box-shadow: 0 0 8px rgba(212,165,64,0.3) !important;
+  border-color: #FFE710 !important;
+  box-shadow: 0 0 10px rgba(255,231,16,0.25) !important;
 }
 
 /* ============================================================
-   SCROLLBAR — Aged leather
+   SCROLLBARS — Tactical dark
    ============================================================ */
-::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-track { background: #2a1a0a; }
-::-webkit-scrollbar-thumb { background: #5c3d1e; border: 1px solid #2a1a0a; border-radius: 2px; }
-::-webkit-scrollbar-thumb:hover { background: #8b6914; }
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #040810; }
+::-webkit-scrollbar-thumb {
+  background: #1a3040;
+  border: 1px solid #040810;
+  border-radius: 0;
+}
+::-webkit-scrollbar-thumb:hover { background: #2d5a7a; }
 
 .scrollbar-thin::-webkit-scrollbar { width: 4px; }
-.scrollbar-thin::-webkit-scrollbar-thumb { background: #5c3d1e; border: none; border-radius: 2px; }
+.scrollbar-thin::-webkit-scrollbar-thumb { background: #1a3040; border: none; }
 
 /* ============================================================
-   RUNE DECORATIONS
+   TACTICAL DIVIDERS — Scanning line decorators
    ============================================================ */
 .rune-divider {
   display: flex;
@@ -551,7 +637,30 @@ body {
   content: '';
   flex: 1;
   height: 1px;
-  background: linear-gradient(90deg, transparent, #8b6914, transparent);
+  background: linear-gradient(90deg, transparent, #2d5a7a, transparent);
+}
+
+/* ============================================================
+   HAZARD STRIPE — Yellow/black warning pattern utility
+   ============================================================ */
+.hazard-stripe {
+  background: repeating-linear-gradient(
+    -45deg,
+    #FFE710,
+    #FFE710 6px,
+    #000 6px,
+    #000 14px
+  );
+}
+
+.hazard-stripe-sm {
+  background: repeating-linear-gradient(
+    -45deg,
+    #FFE710,
+    #FFE710 3px,
+    #000 3px,
+    #000 8px
+  );
 }
 
 /* ============================================================
@@ -574,7 +683,7 @@ body {
 }
 
 /* ============================================================
-   ABILITY ICON STYLES
+   STRATAGEM / ABILITY ICONS
    ============================================================ */
 .ability-icon {
   width: 28px;
@@ -583,66 +692,59 @@ body {
 }
 
 .ability-icon svg {
-  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+  filter: drop-shadow(0 0 4px rgba(125,249,255,0.4));
 }
 
 /* ============================================================
-   INK ON PARCHMENT — dark text for cards/panels
+   TEXT COLOR UTILITIES — On dark tactical backgrounds
    ============================================================ */
-.ink-text { color: #2a1a0a; }
-.ink-muted { color: #6a5a3a; }
-.ink-gold { color: #8a6a10; }
-.ink-hp { color: #8b1a1a; }
-.ink-mana { color: #2a4a8a; }
-.ink-green { color: #2a6a2a; }
-.ink-purple { color: #5a2a7a; }
+.ink-text   { color: #c8d8e4; }   /* primary text */
+.ink-muted  { color: #4a6878; }   /* dim tactical text */
+.ink-gold   { color: #FFE710; }   /* Super Earth yellow */
+.ink-hp     { color: #FF3344; }   /* critical red */
+.ink-mana   { color: #7DF9FF; }   /* stims cyan */
+.ink-green  { color: #4fc24e; }   /* allied green */
+.ink-purple { color: #41639C; }   /* Super Earth blue */
 
 /* ============================================================
-   WEEKLY CALENDAR MODAL — Time blocking grimoire
+   WEEKLY CALENDAR MODAL — Tactical time-block grid
    ============================================================ */
 .calendar-modal {
   width: 95vw;
   max-width: 1200px;
   max-height: 90vh;
   overflow: hidden;
-  background: linear-gradient(145deg, #1a120b 0%, #241a10 100%);
-  border: 2px solid #5c3d1e;
-  box-shadow: 0 0 40px rgba(0,0,0,0.8), inset 0 0 20px rgba(0,0,0,0.3);
+  background: linear-gradient(135deg, #0a1218 0%, #070a0d 100%);
+  border: 1px solid #1a3040;
+  border-top: 2px solid #2d5a7a;
+  box-shadow: 0 0 60px rgba(0,0,0,0.9), 0 0 20px rgba(65,99,156,0.1);
 }
 
-.calendar-scroll::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-.calendar-scroll::-webkit-scrollbar-track {
-  background: rgba(26,18,11,0.5);
-}
-.calendar-scroll::-webkit-scrollbar-thumb {
-  background: #5c3d1e;
-  border-radius: 3px;
-}
+.calendar-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
+.calendar-scroll::-webkit-scrollbar-track { background: #040810; }
+.calendar-scroll::-webkit-scrollbar-thumb { background: #1a3040; border-radius: 0; }
 
-/* Hour cells — the drop targets */
+/* Hour cells */
 .calendar-hour-cell {
   position: absolute;
   left: 0;
   right: 0;
-  border-bottom: 1px solid rgba(92,61,30,0.2);
-  border-right: 1px solid rgba(92,61,30,0.15);
+  border-bottom: 1px solid rgba(26,48,64,0.4);
+  border-right: 1px solid rgba(26,48,64,0.3);
   transition: background-color 0.1s ease;
 }
 
 .calendar-cell-hover {
-  background-color: rgba(212,165,64,0.12) !important;
+  background-color: rgba(255,231,16,0.06) !important;
 }
 
-/* Placed quest blocks on the time grid */
+/* Placed mission blocks on the time grid */
 .calendar-block {
   position: absolute;
   left: 3px;
   right: 3px;
   border-left: 3px solid;
-  border-radius: 3px;
+  border-radius: 0;
   padding: 3px 6px;
   cursor: grab;
   overflow: hidden;
@@ -651,15 +753,12 @@ body {
   justify-content: space-between;
   z-index: 5;
   transition: box-shadow 0.15s ease;
-  backdrop-filter: blur(2px);
 }
 
-.calendar-block:active {
-  cursor: grabbing;
-}
+.calendar-block:active { cursor: grabbing; }
 
 .calendar-block:hover {
-  box-shadow: 0 0 10px rgba(212,165,64,0.25);
+  box-shadow: 0 0 12px rgba(255,231,16,0.2);
 }
 
 .calendar-block:hover .calendar-block-controls {
@@ -675,102 +774,94 @@ body {
 }
 
 .calendar-block-controls button {
-  background: rgba(0,0,0,0.5);
-  border: 1px solid rgba(92,61,30,0.6);
-  color: #d8ccb4;
-  font-family: 'VT323', monospace;
-  font-size: 14px;
+  background: rgba(0,0,0,0.7);
+  border: 1px solid rgba(26,48,64,0.8);
+  color: #c8d8e4;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
   width: 20px;
   height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  border-radius: 2px;
+  border-radius: 0;
   padding: 0;
   line-height: 1;
 }
 
 .calendar-block-controls button:hover {
-  background: rgba(92,61,30,0.5);
-  border-color: #d4a540;
+  background: rgba(26,48,64,0.8);
+  border-color: #FFE710;
 }
 
-/* Sidebar quest chips — draggable items */
+/* Sidebar mission chips */
 .calendar-quest-chip {
-  padding: 6px 8px;
-  background: rgba(42,26,10,0.6);
-  border: 1px solid rgba(92,61,30,0.4);
+  padding: 5px 8px;
+  background: rgba(10,18,24,0.8);
+  border: 1px solid rgba(26,48,64,0.6);
   border-left: 3px solid;
   cursor: grab;
   display: flex;
   flex-direction: column;
   gap: 2px;
-  color: #d8ccb4;
+  color: #c8d8e4;
   transition: all 0.15s ease;
-  border-radius: 2px;
+  border-radius: 0;
 }
 
 .calendar-quest-chip:hover {
-  background: rgba(60,38,14,0.8);
-  border-color: rgba(139,105,20,0.6);
-  box-shadow: 0 0 6px rgba(212,165,64,0.15);
+  background: rgba(15,28,38,0.9);
+  box-shadow: 0 0 8px rgba(255,231,16,0.1);
 }
 
-.calendar-quest-chip:active {
-  cursor: grabbing;
-}
+.calendar-quest-chip:active { cursor: grabbing; }
 
-/* View mode quest cards */
+/* View mode mission cards */
 .calendar-view-card {
-  padding: 5px 7px;
-  background: rgba(42,26,10,0.5);
-  border: 1px solid rgba(92,61,30,0.3);
+  padding: 4px 7px;
+  background: rgba(10,18,24,0.6);
+  border: 1px solid rgba(26,48,64,0.4);
   border-left: 3px solid;
   display: flex;
   flex-direction: column;
   gap: 1px;
-  color: #d8ccb4;
-  border-radius: 2px;
+  color: #c8d8e4;
+  border-radius: 0;
   transition: background 0.15s ease;
 }
 
-.calendar-view-card:hover {
-  background: rgba(60,38,14,0.7);
-}
+.calendar-view-card:hover { background: rgba(15,28,38,0.8); }
 
-/* Google Calendar event blocks — read-only, mana-blue tinted */
+/* Google Calendar synced event blocks */
 .calendar-gcal-block {
   position: absolute;
   left: 3px;
   right: 3px;
-  border-left: 3px solid #4a7fd4;
-  border-radius: 3px;
+  border-left: 3px solid #41639C;
+  border-radius: 0;
   padding: 3px 6px;
-  background: rgba(74,127,212,0.15);
+  background: rgba(65,99,156,0.12);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   z-index: 4;
   pointer-events: auto;
-  color: #a0c4f0;
+  color: #81ABFF;
 }
 
-.calendar-gcal-block:hover {
-  background: rgba(74,127,212,0.25);
-}
+.calendar-gcal-block:hover { background: rgba(65,99,156,0.22); }
 
-/* All-day Google Calendar event pills in day headers */
+/* All-day event pills */
 .calendar-gcal-allday {
-  font-family: 'VT323', monospace;
-  font-size: 13px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
   line-height: 1.3;
   padding: 1px 4px;
-  background: rgba(74,127,212,0.2);
-  border-left: 2px solid #4a7fd4;
-  color: #a0c4f0;
-  border-radius: 2px;
-  text-align: left;
+  background: rgba(65,99,156,0.15);
+  border-left: 2px solid #41639C;
+  color: #81ABFF;
+  border-radius: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -778,22 +869,16 @@ body {
   min-width: 0;
 }
 
-/* Quest due-date all-day pills — shown in the day header for quests with
-   a due date but no scheduled time block. Uses the quest's difficulty color
-   on the left border to visually distinguish from gcal all-day events. */
-/* Constrain pills to their column so long titles don't bleed into
-   adjacent day columns. overflow + max-width + min-width: 0 ensure
-   the truncate utility and flex containment work correctly. */
+/* Quest due-date all-day pills */
 .calendar-quest-allday {
-  font-family: 'VT323', monospace;
-  font-size: 13px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
   line-height: 1.3;
   padding: 1px 4px;
-  background: rgba(42,26,10,0.5);
+  background: rgba(10,18,24,0.6);
   border-left: 3px solid;
-  color: #e2d6c6;
-  border-radius: 2px;
-  text-align: left;
+  color: #c8d8e4;
+  border-radius: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
