@@ -69,9 +69,6 @@ export function useGameEconomy(userId: string) {
       .from('player')
       .update({
         gold: player.gold + amount,
-        lifetime_gold: player.lifetime_gold + amount,
-        // Rank is derived from lifetime gold so it always stays current
-        rank_title: getRankTitle(player.lifetime_gold + amount),
       })
       .eq('user_id', userId)
 
