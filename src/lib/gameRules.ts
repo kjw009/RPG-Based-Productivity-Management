@@ -4,20 +4,34 @@
 // without hunting through component or hook files.
 // ============================================================
 
-// Rank thresholds based on lifetime gold (not current gold —
-// rank never goes backwards even if you lose gold to a KO).
+// Rank thresholds based on XP (future feature)
 export const RANK_THRESHOLDS = [
-  { min: 0,     max: 500,      title: 'Pickpocket' },
-  { min: 501,   max: 1500,     title: 'Cutpurse' },
-  { min: 1501,  max: 4000,     title: 'Rogue' },
-  { min: 4001,  max: 10000,    title: 'Shadow' },
-  { min: 10001, max: 25000,    title: 'Phantom' },
-  { min: 25001, max: Infinity, title: 'Shadow Master' },
+  { min: 0,        max: 1599,     title: 'Cadet' },
+  { min: 1600,     max: 7099,     title: 'Space Cadet' },
+  { min: 7100,     max: 14399,    title: 'Sergeant' },
+  { min: 14400,    max: 23899,    title: 'Master Sergeant' },
+  { min: 23900,    max: 35899,    title: 'Chief' },
+  { min: 35900,    max: 50399,    title: 'Space Chief Prime' },
+  { min: 50400,    max: 67399,    title: 'Death Captain' },
+  { min: 67400,    max: 86899,    title: 'Marshal' },
+  { min: 86900,    max: 108899,   title: 'Star Marshal' },
+  { min: 108900,   max: 133399,   title: 'Admiral' },
+  { min: 133400,   max: 190999,   title: 'Skull Admiral' },
+  { min: 191000,   max: 258499,   title: 'Fleet Admiral' },
+  { min: 258500,   max: 335999,   title: 'Admirable Admiral' },
+  { min: 336000,   max: 423499,   title: 'Commander' },
+  { min: 423500,   max: 520999,   title: 'Galactic Commander' },
+  { min: 521000,   max: 630999,   title: 'Hell Commander' },
+  { min: 631000,   max: 750499,   title: 'General' },
+  { min: 750500,   max: 879999,   title: '5-Star General' },
+  { min: 880000,   max: 1019499,  title: '10-Star General' },
+  { min: 1019500,  max: 1167999,  title: 'Private' },
+  { min: 1168000,  max: Infinity, title: 'Super Private' },
 ] as const
 
-export function getRankTitle(lifetimeGold: number): string {
-  const rank = RANK_THRESHOLDS.find((r) => lifetimeGold >= r.min && lifetimeGold <= r.max)
-  return rank?.title ?? 'Shadow Master'
+export function getRankTitle(currentXP: number): string {
+  const rank = RANK_THRESHOLDS.find((r) => currentXP >= r.min && currentXP <= r.max)
+  return rank?.title ?? 'Super Private'
 }
 
 // Daily gold scales with streak: longer streaks = bigger multiplier.

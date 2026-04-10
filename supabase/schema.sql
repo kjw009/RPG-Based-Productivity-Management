@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS player (
   id            UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   user_id       UUID REFERENCES auth.users(id) ON DELETE CASCADE UNIQUE NOT NULL,
   name          TEXT NOT NULL DEFAULT 'Hero',
-  rank_title    TEXT NOT NULL DEFAULT 'Pickpocket',
+  rank_title    TEXT NOT NULL DEFAULT 'Cadet',
   hp            INTEGER NOT NULL DEFAULT 100,
   max_hp        INTEGER NOT NULL DEFAULT 100,
   mana          INTEGER NOT NULL DEFAULT 100,
