@@ -38,3 +38,4 @@ pnpm-debug.log*
 
 # Claude
 CLAUDE.md
+.env*.local
