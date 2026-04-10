@@ -1,6 +1,6 @@
 // Detailed pixel-art SVG icons for each ability
 
-export function PickpocketIcon() {
+function PickpocketIcon() {
   return (
     <svg viewBox="0 0 16 16" width="28" height="28" className="ability-icon" style={{ imageRendering: 'pixelated' }}>
       {/* Hand reaching into coin purse */}
@@ -23,7 +23,7 @@ export function PickpocketIcon() {
   )
 }
 
-export function ShadowStepIcon() {
+function ShadowStepIcon() {
   return (
     <svg viewBox="0 0 16 16" width="28" height="28" className="ability-icon" style={{ imageRendering: 'pixelated' }}>
       {/* Ghost / shadow figure */}
@@ -48,7 +48,7 @@ export function ShadowStepIcon() {
   )
 }
 
-export function SmokeBombIcon() {
+function SmokeBombIcon() {
   return (
     <svg viewBox="0 0 16 16" width="28" height="28" className="ability-icon" style={{ imageRendering: 'pixelated' }}>
       {/* Bomb body */}
@@ -74,7 +74,7 @@ export function SmokeBombIcon() {
   )
 }
 
-export function BackstabIcon() {
+function BackstabIcon() {
   return (
     <svg viewBox="0 0 16 16" width="28" height="28" className="ability-icon" style={{ imageRendering: 'pixelated' }}>
       {/* Dagger — ornate */}
@@ -112,7 +112,7 @@ export function BackstabIcon() {
   )
 }
 
-export function DefaultAbilityIcon() {
+function DefaultAbilityIcon() {
   return (
     <svg viewBox="0 0 16 16" width="28" height="28" className="ability-icon" style={{ imageRendering: 'pixelated' }}>
       {/* Magic star/sparkle */}
@@ -140,7 +140,7 @@ export function DefaultAbilityIcon() {
 }
 
 // Map effect_type to icon component
-export const ABILITY_ICON_MAP: Record<string, () => JSX.Element> = {
+const ABILITY_ICON_MAP: Record<string, () => JSX.Element> = {
   pickpocket: PickpocketIcon,
   shadow_step: ShadowStepIcon,
   smoke_bomb: SmokeBombIcon,

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useAreas } from '../../hooks/useAreas'
-import { AREA_COLOR_PRESETS } from '../../types'
+import { AREA_COLOR_PRESETS } from '../../lib/constants'
 import AreaTag from './AreaTag'
 
 interface Props {
