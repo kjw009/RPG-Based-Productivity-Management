@@ -3,7 +3,6 @@ export interface Player {
   user_id: string
   name: string
   rank_title: string
-  lifetime_gold: number
   hp: number
   max_hp: number
   mana: number

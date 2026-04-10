@@ -23,24 +23,6 @@ export function usePlayer(userId: string) {
   })
 }
 
-export function useUpdatePlayer(userId: string) {
-  const qc = useQueryClient()
-  return useMutation({
-    mutationFn: async (updates: Partial<Player>) => {
-      // Auto-update rank_title when lifetime_gold changes
-      if (updates.lifetime_gold !== undefined) {
-        updates.rank_title = getRankTitle(updates.lifetime_gold)
-      }
-      const { error } = await supabase
-        .from('player')
-        .update(updates)
-        .eq('user_id', userId)
-      if (error) throw error
-    },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['player', userId] }),
-  })
-}
-
 export function useSeedPlayer(userId: string) {
   const qc = useQueryClient()
   return useMutation({

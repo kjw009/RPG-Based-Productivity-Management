@@ -65,14 +65,6 @@ export default function PlayerPanel({ player, compact = false, onSignOut }: Prop
       {/* Requisition slips */}
       <div className="pt-2" style={{ borderTop: '1px solid #1a3040' }}>
         <GoldCounter gold={player.gold} />
-        <div className="mt-2 flex items-center gap-2">
-          <span className="font-grimoire text-grimoire-sm" style={{ color: '#2d5a7a' }}>
-            LIFETIME
-          </span>
-          <span className="font-grimoire text-grimoire-sm text-rpg-gold">
-            {player.lifetime_gold.toLocaleString()} RS
-          </span>
-        </div>
       </div>
 
       {/* Sign out */}
