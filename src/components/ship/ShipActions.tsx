@@ -35,7 +35,6 @@ interface Props {
 
 export default function ShipActions({ userId }: Props) {
   const { data: records, activateAction } = useShipActions(userId)
-
   return (
     <section>
       <SectionHeader title="SHIP" />
