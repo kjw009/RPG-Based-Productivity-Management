@@ -26,6 +26,7 @@ export default function PlayerPanel({ player, compact = false, onSignOut }: Prop
           <div className="flex gap-2 items-center">
             <div className="flex-1"><HPBar hp={player.hp} maxHp={player.max_hp} /></div>
             <div className="flex-1"><ManaBar mana={player.mana} maxMana={player.max_mana} /></div>
+            <div className="flex-1"><XPBar xp={player.xp} maxXp={player.max_xp} /></div>
           </div>
         </div>
         <GoldCounter gold={player.gold} compact />
