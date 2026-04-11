@@ -45,7 +45,7 @@ export function useDailies(userId: string) {
 
       const newStreak = task.streak + 1
       let goldEarned = calculateDailyGold(task.difficulty, player?.xp ?? 0, task.streak)
-      let xpEarned = goldEarned * 1.5 // simple XP formula: 10 gold = 1 XP
+      let xpEarned = Math.floor(goldEarned * 1.5) // simple XP formula: 10 gold = 1 XP
 
       // Backstab triples gold for the next streak completion, then auto-expires
       if (task.streak > 0 && economy.hasActiveEffect('backstab')) {
