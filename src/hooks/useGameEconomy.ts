@@ -8,7 +8,6 @@ import {
 } from '../lib/gameRules'
 import { useGameContext } from '../context/GameContext'
 import type { Player, ActiveEffect } from '../types'
-import { useUpdatePlayer } from './usePlayer'
 
 /**
  * Central hook for all gold/HP/mana transactions.
