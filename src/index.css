@@ -277,10 +277,10 @@ body::after {
   box-shadow: 0 0 8px rgba(125,249,255,0.5), inset 0 1px 0 rgba(200,255,255,0.2);
 }
 
-/* XP — allied green */
+/* XP — Helldivers 2 blue-steel */
 .pixel-bar-xp {
-  background: linear-gradient(90deg, #0a3010 0%, #4fc24e 90%, #7fff7a 100%);
-  box-shadow: 0 0 8px rgba(79,194,78,0.5), inset 0 1px 0 rgba(180,255,180,0.2);
+  background: linear-gradient(90deg, #0a0e1a 0%, #2a3560 50%, #7a87b8 85%, #c3c6e1 100%);
+  box-shadow: 0 0 8px rgba(195,198,225,0.35), inset 0 1px 0 rgba(195,198,225,0.15);
 }
 
 /* Requisition / Gold — Super Earth yellow */

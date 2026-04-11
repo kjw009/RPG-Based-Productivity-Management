@@ -25,6 +25,7 @@ export default {
           crimson:     '#FF3344',   // critical alert
           navy:        '#040a10',   // deep navy
           amber:       '#FF9D45',   // warning orange
+          xp:          '#c3c6e1',   // Helldivers 2 XP blue-steel
         },
         // Tactical panel colors — same key names as old grimoire palette
         grimoire: {
