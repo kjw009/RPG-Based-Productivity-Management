@@ -33,10 +33,10 @@ export default function PlayerPanel({ player, compact = false, onSignOut }: Prop
   }
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-2">
       {/* Avatar + identity */}
       <div
-        className="flex flex-col items-center gap-2 pb-3"
+        className="flex flex-col items-center gap-1 pb-2"
         style={{ borderBottom: '1px solid #1a3040' }}
       >
         <div className="animate-idle-bob">
@@ -63,7 +63,7 @@ export default function PlayerPanel({ player, compact = false, onSignOut }: Prop
       <XPBar xp={player.xp} maxXp={player.max_xp} />
 
       {/* Requisition slips */}
-      <div className="pt-2" style={{ borderTop: '1px solid #1a3040' }}>
+      <div className="pt-1" style={{ borderTop: '1px solid #1a3040' }}>
         <GoldCounter gold={player.gold} />
       </div>
 

@@ -180,7 +180,7 @@ export default function Dashboard({ userId, onSignOut }: Props) {
             </div>
           </div>
 
-          <div className="p-3 flex flex-col gap-4 relative z-10">
+          <div className="p-3 flex flex-col gap-3 relative z-10">
             <PlayerPanel player={player} />
             <StratagemActions userId={userId} />
             <StratagemGrid userId={userId} />
