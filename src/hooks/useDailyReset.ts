@@ -28,6 +28,7 @@ const LAST_CHECK_KEY = 'rpg_last_daily_check'
  */
 export function useDailyReset(userId: string) {
   const qc = useQueryClient()
+  const player = qc.getQueryData<Player | null>(['player', userId])
   const { triggerKO } = useGameContext()
   const ran = useRef(false) // prevents double-run in React Strict Mode
 
@@ -75,7 +76,7 @@ export function useDailyReset(userId: string) {
         // Skip tasks completed yesterday
         if (task.last_completed_date === yesterday) continue
 
-        totalHPLoss += calculateMissedDailyHP(task.difficulty)
+        totalHPLoss += calculateMissedDailyHP(task.difficulty, player?.xp ?? 0)
         missedIds.push(task.id)
       }
 
@@ -102,7 +103,7 @@ export function useDailyReset(userId: string) {
       for (const todo of (todos ?? []) as Todo[]) {
         // Shadow-stepped todos had their deadline extended — skip penalty
         if (!todo.shadow_stepped) {
-          totalHPLoss += calculateOverdueTodoHP(todo.difficulty)
+          totalHPLoss += calculateOverdueTodoHP(todo.difficulty, player?.xp ?? 0)
         }
         overdueIds.push(todo.id)
       }
