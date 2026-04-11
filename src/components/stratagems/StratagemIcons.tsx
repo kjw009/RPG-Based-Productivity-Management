@@ -1,113 +1,121 @@
 // Detailed pixel-art SVG icons for each stratagem
-
-function PickpocketIcon() {
+function MachineGunIcon() {
   return (
     <svg viewBox="0 0 16 16" width="28" height="28" className="stratagem-icon" style={{ imageRendering: 'pixelated' }}>
-      {/* Hand reaching into coin purse */}
-      <rect x="4" y="2" width="8" height="6" rx="0" fill="#6a4a10" /> {/* purse body */}
-      <rect x="5" y="1" width="6" height="1" fill="#8a6a18" /> {/* purse rim */}
-      <rect x="6" y="0" width="4" height="1" fill="#5a3a08" /> {/* drawstring */}
-      <rect x="7" y="3" width="2" height="2" fill="#d4a540" /> {/* coin showing */}
-      <rect x="7" y="3" width="1" height="1" fill="#f0d080" opacity="0.6" /> {/* coin shine */}
-      {/* Sneaky hand */}
-      <rect x="2" y="6" width="2" height="1" fill="#e8b88a" />
-      <rect x="3" y="5" width="2" height="1" fill="#e8b88a" />
-      <rect x="4" y="4" width="1" height="2" fill="#e8b88a" />
-      {/* Sparkles */}
-      <rect x="12" y="1" width="1" height="1" fill="#d4a540" opacity="0.8" />
-      <rect x="13" y="3" width="1" height="1" fill="#d4a540" opacity="0.5" />
-      <rect x="11" y="4" width="1" height="1" fill="#d4a540" opacity="0.6" />
-      {/* Shadow */}
-      <rect x="5" y="9" width="6" height="1" fill="rgba(0,0,0,0.2)" />
+      {/* Barrel */}
+      <rect x="1" y="6" width="9" height="2" fill="#7a8a8a" />
+      <rect x="1" y="6" width="9" height="1" fill="#9aacac" opacity="0.6" /> {/* barrel top shine */}
+      <rect x="10" y="7" width="2" height="1" fill="#5a6a6a" /> {/* muzzle shadow */}
+      <rect x="10" y="6" width="2" height="1" fill="#aabcbc" /> {/* muzzle tip */}
+      {/* Muzzle flash */}
+      <rect x="12" y="5" width="2" height="1" fill="#ffcc44" opacity="0.9" />
+      <rect x="13" y="6" width="2" height="2" fill="#ff8800" opacity="0.8" />
+      <rect x="12" y="8" width="2" height="1" fill="#ffcc44" opacity="0.9" />
+      <rect x="14" y="6" width="1" height="1" fill="#ffffff" opacity="0.7" /> {/* flash center */}
+      {/* Receiver body */}
+      <rect x="4" y="5" width="5" height="5" fill="#5a6060" />
+      <rect x="4" y="5" width="5" height="1" fill="#7a8888" opacity="0.5" /> {/* receiver top */}
+      {/* Magazine */}
+      <rect x="5" y="10" width="3" height="4" fill="#4a5050" />
+      <rect x="5" y="10" width="3" height="1" fill="#6a7878" opacity="0.4" />
+      {/* Stock */}
+      <rect x="1" y="7" width="3" height="3" fill="#5a4030" />
+      <rect x="1" y="7" width="3" height="1" fill="#7a6050" opacity="0.5" />
+      {/* Trigger guard */}
+      <rect x="6" y="9" width="1" height="2" fill="#3a4040" />
+      {/* Ejected shell */}
+      <rect x="7" y="4" width="1" height="2" fill="#c8a020" opacity="0.7" />
     </svg>
   )
 }
 
-function ShadowStepIcon() {
+function OrbitalStrikeIcon() {
   return (
     <svg viewBox="0 0 16 16" width="28" height="28" className="stratagem-icon" style={{ imageRendering: 'pixelated' }}>
-      {/* Ghost / shadow figure */}
-      <rect x="6" y="1" width="4" height="1" fill="#4a3a6e" opacity="0.7" />
-      <rect x="5" y="2" width="6" height="2" fill="#3a2a5e" opacity="0.6" />
-      {/* Shadow eyes */}
-      <rect x="6" y="3" width="1" height="1" fill="#8a7aee" />
-      <rect x="9" y="3" width="1" height="1" fill="#8a7aee" />
-      {/* Body fading */}
-      <rect x="4" y="4" width="8" height="2" fill="#3a2a5e" opacity="0.5" />
-      <rect x="3" y="6" width="10" height="2" fill="#2a1a4e" opacity="0.4" />
-      <rect x="2" y="8" width="12" height="2" fill="#1a0a3e" opacity="0.3" />
-      <rect x="1" y="10" width="14" height="2" fill="#1a0a3e" opacity="0.15" />
-      {/* Footprints dissolving */}
-      <rect x="4" y="13" width="2" height="1" fill="#2a1a4e" opacity="0.3" />
-      <rect x="9" y="14" width="2" height="1" fill="#2a1a4e" opacity="0.2" />
-      {/* Magic particles */}
-      <rect x="2" y="2" width="1" height="1" fill="#8a7aee" opacity="0.5" />
-      <rect x="13" y="4" width="1" height="1" fill="#8a7aee" opacity="0.4" />
-      <rect x="1" y="6" width="1" height="1" fill="#8a7aee" opacity="0.3" />
+      {/* Target reticle on ground */}
+      <rect x="6" y="13" width="4" height="1" fill="#ff3344" opacity="0.9" />
+      <rect x="5" y="12" width="1" height="1" fill="#ff3344" opacity="0.9" />
+      <rect x="10" y="12" width="1" height="1" fill="#ff3344" opacity="0.9" />
+      <rect x="4" y="11" width="1" height="1" fill="#ff3344" opacity="0.6" />
+      <rect x="11" y="11" width="1" height="1" fill="#ff3344" opacity="0.6" />
+      {/* Center crosshair dot */}
+      <rect x="7" y="14" width="2" height="1" fill="#ffffff" opacity="0.9" />
+      {/* Strike beam */}
+      <rect x="7" y="2" width="2" height="12" fill="#7dd9ff" opacity="0.25" /> {/* outer glow */}
+      <rect x="7" y="2" width="2" height="11" fill="#aaeeff" opacity="0.4" />
+      <rect x="8" y="1" width="1" height="13" fill="#ffffff" opacity="0.8" /> {/* core beam */}
+      {/* Orbital glow at top */}
+      <rect x="6" y="0" width="4" height="2" fill="#7dd9ff" opacity="0.5" />
+      <rect x="5" y="1" width="1" height="1" fill="#7dd9ff" opacity="0.3" />
+      <rect x="10" y="1" width="1" height="1" fill="#7dd9ff" opacity="0.3" />
+      {/* Impact sparks */}
+      <rect x="5" y="10" width="1" height="1" fill="#ffcc44" opacity="0.7" />
+      <rect x="10" y="10" width="1" height="1" fill="#ffcc44" opacity="0.7" />
+      <rect x="4" y="12" width="1" height="1" fill="#ff8800" opacity="0.5" />
+      <rect x="11" y="12" width="1" height="1" fill="#ff8800" opacity="0.5" />
     </svg>
   )
 }
 
-function SmokeBombIcon() {
+function EagleStrafingIcon() {
   return (
     <svg viewBox="0 0 16 16" width="28" height="28" className="stratagem-icon" style={{ imageRendering: 'pixelated' }}>
-      {/* Bomb body */}
-      <rect x="6" y="8" width="4" height="4" fill="#3a3a3a" />
-      <rect x="5" y="9" width="6" height="2" fill="#2a2a2a" />
-      <rect x="7" y="8" width="1" height="1" fill="#5a5a5a" opacity="0.5" /> {/* shine */}
-      {/* Fuse */}
-      <rect x="8" y="6" width="1" height="2" fill="#8a6a18" />
-      <rect x="9" y="5" width="1" height="1" fill="#8a6a18" />
-      {/* Fuse spark */}
-      <rect x="9" y="4" width="1" height="1" fill="#ff8844" />
-      <rect x="10" y="3" width="1" height="1" fill="#ffaa44" opacity="0.7" />
-      {/* Smoke clouds billowing */}
-      <rect x="3" y="2" width="3" height="2" fill="#8a8a8a" opacity="0.4" />
-      <rect x="2" y="1" width="4" height="2" fill="#9a9a9a" opacity="0.3" />
-      <rect x="8" y="1" width="4" height="2" fill="#8a8a8a" opacity="0.35" />
-      <rect x="10" y="3" width="3" height="2" fill="#7a7a7a" opacity="0.3" />
-      <rect x="1" y="3" width="3" height="2" fill="#7a7a7a" opacity="0.25" />
-      <rect x="4" y="0" width="3" height="1" fill="#aaaaaa" opacity="0.2" />
-      {/* Ground shadow */}
-      <rect x="4" y="13" width="8" height="1" fill="rgba(0,0,0,0.2)" />
+      {/* Eagle/jet body (angled dive) */}
+      <rect x="8" y="1" width="2" height="2" fill="#c8d0d8" /> {/* nose */}
+      <rect x="7" y="3" width="3" height="2" fill="#b0b8c0" /> {/* fuselage front */}
+      <rect x="6" y="5" width="4" height="2" fill="#9aa2aa" /> {/* fuselage mid */}
+      <rect x="6" y="7" width="3" height="2" fill="#8a9298" /> {/* fuselage rear */}
+      {/* Wings swept back */}
+      <rect x="3" y="4" width="4" height="1" fill="#b0b8c0" /> {/* left wing */}
+      <rect x="2" y="5" width="3" height="1" fill="#9aa2aa" opacity="0.8" />
+      <rect x="10" y="4" width="3" height="1" fill="#b0b8c0" /> {/* right wing */}
+      <rect x="12" y="5" width="2" height="1" fill="#9aa2aa" opacity="0.8" />
+      {/* Tail fins */}
+      <rect x="5" y="8" width="2" height="1" fill="#9aa2aa" />
+      <rect x="9" y="8" width="2" height="1" fill="#9aa2aa" />
+      {/* Engine glow */}
+      <rect x="7" y="9" width="2" height="1" fill="#ff6622" opacity="0.9" />
+      <rect x="7" y="10" width="2" height="1" fill="#ffaa44" opacity="0.6" />
+      {/* Gun strafing lines */}
+      <rect x="4" y="11" width="1" height="3" fill="#ffcc44" opacity="0.8" />
+      <rect x="6" y="10" width="1" height="4" fill="#ffcc44" opacity="0.9" />
+      <rect x="8" y="11" width="1" height="3" fill="#ffcc44" opacity="0.8" />
+      <rect x="10" y="10" width="1" height="4" fill="#ffcc44" opacity="0.7" />
+      {/* Impact flashes on ground */}
+      <rect x="3" y="14" width="2" height="1" fill="#ff8800" opacity="0.6" />
+      <rect x="6" y="15" width="2" height="1" fill="#ff8800" opacity="0.7" />
+      <rect x="10" y="14" width="2" height="1" fill="#ff8800" opacity="0.5" />
     </svg>
   )
 }
 
-function BackstabIcon() {
+function MachineGunSentryIcon() {
   return (
     <svg viewBox="0 0 16 16" width="28" height="28" className="stratagem-icon" style={{ imageRendering: 'pixelated' }}>
-      {/* Dagger — ornate */}
-      {/* Blade */}
-      <rect x="3" y="2" width="1" height="7" fill="#c0d0e0" />
-      <rect x="4" y="2" width="1" height="7" fill="#a0b0c0" />
-      {/* Blade tip */}
-      <rect x="3" y="1" width="2" height="1" fill="#d0e0f0" />
-      <rect x="3" y="0" width="1" height="1" fill="#e0f0ff" />
-      {/* Blade edge shine */}
-      <rect x="3" y="3" width="1" height="1" fill="#e0f0ff" opacity="0.5" />
-      <rect x="3" y="5" width="1" height="1" fill="#e0f0ff" opacity="0.3" />
-      {/* Guard — ornate crossguard */}
-      <rect x="1" y="9" width="6" height="1" fill="#d4a540" />
-      <rect x="2" y="10" width="4" height="1" fill="#b8942a" />
-      {/* Guard gems */}
-      <rect x="1" y="9" width="1" height="1" fill="#c93030" />
-      <rect x="6" y="9" width="1" height="1" fill="#c93030" />
-      {/* Grip */}
-      <rect x="3" y="11" width="2" height="2" fill="#5a2a08" />
-      <rect x="3" y="11" width="1" height="1" fill="#6a3a18" opacity="0.5" /> {/* grip highlight */}
-      {/* Pommel */}
-      <rect x="3" y="13" width="2" height="1" fill="#d4a540" />
-      {/* Blood drops */}
-      <rect x="7" y="3" width="1" height="1" fill="#c93030" opacity="0.8" />
-      <rect x="8" y="5" width="1" height="1" fill="#c93030" opacity="0.6" />
-      <rect x="9" y="4" width="1" height="2" fill="#c93030" opacity="0.4" />
-      {/* Impact lines */}
-      <rect x="6" y="1" width="2" height="1" fill="#d4a540" opacity="0.4" />
-      <rect x="7" y="2" width="3" height="1" fill="#d4a540" opacity="0.3" />
-      {/* Speed lines */}
-      <rect x="10" y="6" width="3" height="1" fill="#d8ccb4" opacity="0.2" />
-      <rect x="11" y="8" width="2" height="1" fill="#d8ccb4" opacity="0.15" />
+      {/* Sentry base / tripod */}
+      <rect x="6" y="13" width="4" height="1" fill="#5a6060" /> {/* base plate */}
+      <rect x="5" y="12" width="1" height="2" fill="#4a5050" /> {/* left leg */}
+      <rect x="10" y="12" width="1" height="2" fill="#4a5050" /> {/* right leg */}
+      <rect x="7" y="11" width="2" height="2" fill="#5a6060" /> {/* center post */}
+      {/* Turret body */}
+      <rect x="5" y="8" width="6" height="4" fill="#6a7878" />
+      <rect x="5" y="8" width="6" height="1" fill="#8a9898" opacity="0.5" /> {/* top highlight */}
+      <rect x="6" y="9" width="1" height="1" fill="#3a4848" /> {/* vent left */}
+      <rect x="9" y="9" width="1" height="1" fill="#3a4848" /> {/* vent right */}
+      {/* Barrel */}
+      <rect x="11" y="9" width="4" height="2" fill="#8a9898" />
+      <rect x="11" y="9" width="4" height="1" fill="#aabcbc" opacity="0.5" /> {/* barrel shine */}
+      <rect x="14" y="9" width="1" height="2" fill="#6a7878" /> {/* muzzle */}
+      {/* Muzzle flash */}
+      <rect x="15" y="8" width="1" height="1" fill="#ffcc44" opacity="0.9" />
+      <rect x="15" y="10" width="1" height="1" fill="#ffcc44" opacity="0.9" />
+      <rect x="15" y="9" width="1" height="1" fill="#ffffff" opacity="0.8" />
+      {/* Sensor eye */}
+      <rect x="7" y="8" width="2" height="1" fill="#ff3344" opacity="0.9" />
+      <rect x="8" y="8" width="1" height="1" fill="#ff6666" opacity="0.7" /> {/* eye glow */}
+      {/* Ammo belt */}
+      <rect x="5" y="11" width="1" height="1" fill="#c8a020" opacity="0.6" />
+      <rect x="5" y="10" width="1" height="1" fill="#c8a020" opacity="0.4" />
     </svg>
   )
 }
@@ -141,10 +149,10 @@ function DefaultStratagemIcon() {
 
 // Map effect_type to icon component
 const STRATAGEM_ICON_MAP: Record<string, () => JSX.Element> = {
-  pickpocket: PickpocketIcon,
-  shadow_step: ShadowStepIcon,
-  smoke_bomb: SmokeBombIcon,
-  backstab: BackstabIcon,
+  machine_gun: MachineGunIcon,
+  orbital_strike: OrbitalStrikeIcon,
+  eagle_strafing: EagleStrafingIcon,
+  machine_gun_sentry: MachineGunSentryIcon,
 }
 
 export function getStratagemIcon(effectType: string) {
