@@ -1,20 +1,20 @@
 import { useState } from 'react'
 import PixelButton from '../shared/PixelButton'
-import { getAbilityIcon } from './AbilityIcons'
-import type { Ability, ActiveEffect, Todo } from '../../types'
+import { getAbilityIcon } from './StratagemIcons'
+import type { Stratagem, ActiveEffect, Todo } from '../../types'
 import { isEffectActive } from '../../lib/gameRules'
 
 interface Props {
-  ability: Ability
+  stratagem: Stratagem
   activeEffects: ActiveEffect[]
   canActivate: boolean
   incompleteTodos: Todo[]
-  onActivate: (ability: Ability, targetTodoId?: string) => void
+  onActivate: (stratagem: Stratagem, targetTodoId?: string) => void
   isPending: boolean
 }
 
-export default function AbilityCard({
-  ability,
+export default function StratagemCard({
+  stratagem,
   activeEffects,
   canActivate,
   incompleteTodos,
@@ -25,20 +25,20 @@ export default function AbilityCard({
   const [showTodoPicker, setShowTodoPicker] = useState(false)
 
   const armed = activeEffects.some(
-    (e) => e.effect_type === ability.effect_type && isEffectActive(e.expires_at)
+    (e) => e.effect_type === stratagem.effect_type && isEffectActive(e.expires_at)
   )
 
   function handleActivate() {
-    if (ability.effect_type === 'shadow_step') {
+    if (stratagem.effect_type === 'shadow_step') {
       setShowTodoPicker(true)
     } else {
-      onActivate(ability)
+      onActivate(stratagem)
     }
   }
 
   function confirmShadowStep() {
     if (!selectedTodo) return
-    onActivate(ability, selectedTodo)
+    onActivate(stratagem, selectedTodo)
     setShowTodoPicker(false)
     setSelectedTodo('')
   }
@@ -47,12 +47,12 @@ export default function AbilityCard({
     <div className={`inventory-slot px-2 py-1.5 ${armed ? 'armed-glow' : ''}`}>
       {/* Single row: icon + name + mana + activate */}
       <div className="flex items-center gap-1.5">
-        <div className="flex-shrink-0 animate-rune-glow">{getAbilityIcon(ability.effect_type)}</div>
+        <div className="flex-shrink-0 animate-rune-glow">{getAbilityIcon(stratagem.effect_type)}</div>
         <div className="flex-1 min-w-0">
           <div className="font-grimoire text-grimoire-base ink-text leading-tight font-bold truncate">
-            {ability.name}
+            {stratagem.name}
           </div>
-          <div className="font-grimoire text-grimoire-sm ink-mana">{ability.mana_cost} SP</div>
+          <div className="font-grimoire text-grimoire-sm ink-mana">{stratagem.mana_cost} SP</div>
         </div>
         {armed ? (
           <span className="font-grimoire text-grimoire-sm ink-gold animate-blink font-bold flex-shrink-0">Armed</span>
@@ -70,7 +70,7 @@ export default function AbilityCard({
 
       {/* Description */}
       <div className="font-grimoire text-grimoire-sm ink-muted italic mt-1">
-        {ability.description}
+        {stratagem.description}
       </div>
 
       {/* Shadow step todo picker (expands below when needed) */}

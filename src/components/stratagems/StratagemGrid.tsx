@@ -2,7 +2,7 @@
  * Grid layout for ability cards, used to display the player's active and available abilities.
  */
 import SectionHeader from '../shared/SectionHeader'
-import AbilityCard from './AbilityCard'
+import StratagemCard from './StratagemCard'
 import { useAbilities } from '../../hooks/useAbilities'
 import { useTodos } from '../../hooks/useTodos'
 
@@ -24,13 +24,13 @@ export default function AbilityGrid({ userId }: Props) {
       )}
       <div className="flex flex-col gap-1 max-h-[440px] overflow-y-auto pr-1 scrollbar-thin">
         {abilities.map((ability) => (
-          <AbilityCard
+          <StratagemCard
             key={ability.id}
-            ability={ability}
+            stratagem={ability}
             activeEffects={effects}
             canActivate={canActivate(ability)}
             incompleteTodos={incompleteTodos}
-            onActivate={(ab, todoId) => activateAbility.mutate({ ability: ab, targetTodoId: todoId })}
+            onActivate={(stratagem, todoId) => activateAbility.mutate({ ability: stratagem, targetTodoId: todoId })}
             isPending={activateAbility.isPending}
           />
         ))}

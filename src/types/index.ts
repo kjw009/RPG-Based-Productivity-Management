@@ -100,7 +100,7 @@ export interface ShopItem {
   created_at: string
 }
 
-export interface Ability {
+export interface Stratagem {
   id: string
   user_id: string
   name: string
