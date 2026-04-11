@@ -1,5 +1,6 @@
 import HPBar from './HPBar'
 import ManaBar from './ManaBar'
+import XPBar from './XPBar'
 import GoldCounter from './GoldCounter'
 import PixelAvatar from './PixelAvatar'
 import type { Player } from '../../types'
@@ -61,6 +62,7 @@ export default function PlayerPanel({ player, compact = false, onSignOut }: Prop
       {/* Tactical stats */}
       <HPBar hp={player.hp} maxHp={player.max_hp} />
       <ManaBar mana={player.mana} maxMana={player.max_mana} showReset />
+      <XPBar xp={player.xp} maxXp={player.max_xp} />
 
       {/* Requisition slips */}
       <div className="pt-2" style={{ borderTop: '1px solid #1a3040' }}>
