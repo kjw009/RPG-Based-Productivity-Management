@@ -11,9 +11,9 @@ import ProjectGrid from '../components/projects/ProjectGrid'
 import TodoList from '../components/todos/TodoList'
 import ShopGrid from '../components/shop/ShopGrid'
 import StratagemGrid from '../components/stratagems/StratagemGrid'
+import StratagemActions from '../components/stratagems/StratagemActions'
 import GoldCounter from '../components/player/GoldCounter'
 import HPBar from '../components/player/HPBar'
-import ManaBar from '../components/player/ManaBar'
 import InboxSection from '../components/inbox/InboxSection'
 
 interface Props {
@@ -107,9 +107,8 @@ export default function Dashboard({ userId, onSignOut }: Props) {
             >
               {player.name}
             </span>
-            <div className="flex-1 min-w-0 flex flex-col gap-1">
+            <div className="flex-1 min-w-0">
               <HPBar hp={player.hp} maxHp={player.max_hp} />
-              <ManaBar mana={player.mana} maxMana={player.max_mana} />
             </div>
             <GoldCounter gold={player.gold} compact />
           </div>
@@ -120,6 +119,7 @@ export default function Dashboard({ userId, onSignOut }: Props) {
           <DailyQuote />
           <InboxSection userId={userId} />
           <PlayerPanel player={player} onSignOut={onSignOut} />
+          <StratagemActions />
           <DailyTaskList userId={userId} />
           <HabitSection userId={userId} />
           <ProjectGrid
@@ -182,6 +182,7 @@ export default function Dashboard({ userId, onSignOut }: Props) {
 
           <div className="p-3 flex flex-col gap-4 relative z-10">
             <PlayerPanel player={player} onSignOut={onSignOut} />
+            <StratagemActions />
             <StratagemGrid userId={userId} />
             <div className="flex-1" />
 
