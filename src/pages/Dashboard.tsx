@@ -181,10 +181,23 @@ export default function Dashboard({ userId, onSignOut }: Props) {
           </div>
 
           <div className="p-3 flex flex-col gap-4 relative z-10">
-            <PlayerPanel player={player} onSignOut={onSignOut} />
+            <PlayerPanel player={player} />
             <StratagemActions userId={userId} />
             <StratagemGrid userId={userId} />
             <div className="flex-1" />
+
+            {/* Disconnect */}
+            <div style={{ borderTop: '1px solid #1a3040', paddingTop: 10 }}>
+              <button
+                className="font-pixel text-pixel-xs w-full text-center transition-colors"
+                style={{ color: '#2d5a7a', letterSpacing: '0.1em' }}
+                onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = '#FF3344' }}
+                onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = '#2d5a7a' }}
+                onClick={onSignOut}
+              >
+                DISCONNECT
+              </button>
+            </div>
 
             {/* Bottom classification stamp */}
             <div
