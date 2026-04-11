@@ -18,7 +18,7 @@ export default function AbilityGrid({ userId }: Props) {
 
   return (
     <section>
-      <SectionHeader title="ABILITIES" />
+      <SectionHeader title="STRATAGEMS" />
       {abilitiesQuery.isLoading && (
         <div className="font-grimoire text-grimoire-sm text-rpg-muted p-2">Loading...</div>
       )}
