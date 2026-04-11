@@ -6,7 +6,6 @@ import DifficultyGem from '../shared/DifficultyGem'
 import PixelButton from '../shared/PixelButton'
 import AreaTag from '../shared/AreaTag'
 import { useAreas } from '../../hooks/useAreas'
-import { calculateHabitGold, calculateBadHabitHP } from '../../lib/gameRules'
 import type { Habit } from '../../types'
 
 interface Props {
@@ -54,10 +53,10 @@ export default function HabitCard({ habit, consistencyPct, onLog, onDelete, onEd
         <DifficultyGem difficulty={habit.difficulty} />
         <span className="font-grimoire text-grimoire-sm ink-muted">×{habit.total_count}</span>
         {showPositive && (
-          <span className="font-grimoire text-grimoire-sm ink-green font-bold">+{calculateHabitGold(habit.difficulty)} RS</span>
+          <span className="font-grimoire text-grimoire-sm ink-green font-bold"></span>
         )}
         {showNegative && (
-          <span className="font-grimoire text-grimoire-sm ink-hp font-bold">-{calculateBadHabitHP(habit.difficulty)} VIT</span>
+          <span className="font-grimoire text-grimoire-sm ink-hp font-bold"></span>
         )}
         <span className="font-grimoire text-grimoire-sm ink-muted">{consistencyPct}%</span>
         {habit.areas.map((a) => (

@@ -2,7 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { supabase } from '../lib/supabase'
 import { calculateTodoGold, todayStr, calcDoomScore } from '../lib/gameRules'
 import { useGameEconomy } from './useGameEconomy'
-import type { Todo } from '../types'
+import type { Player, Todo } from '../types'
 
 async function fetchTodos(userId: string): Promise<Todo[]> {
   const { data, error } = await supabase
@@ -15,6 +15,7 @@ async function fetchTodos(userId: string): Promise<Todo[]> {
 
 export function useTodos(userId: string) {
   const qc = useQueryClient()
+  const player = qc.getQueryData<Player | null>(['player', userId])
   const economy = useGameEconomy(userId)
 
   const query = useQuery({
@@ -26,7 +27,7 @@ export function useTodos(userId: string) {
   const completeTodo = useMutation({
     mutationFn: async (todo: Todo) => {
       if (todo.completed) return
-      await economy.awardGold(calculateTodoGold(todo.difficulty))
+      await economy.awardGold(calculateTodoGold(todo.difficulty, player?.xp ?? 0))
       const { error } = await supabase
         .from('todos')
         .update({ completed: true, completed_at: new Date().toISOString() })

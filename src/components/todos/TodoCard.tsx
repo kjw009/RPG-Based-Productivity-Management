@@ -6,7 +6,6 @@ import DifficultyGem from '../shared/DifficultyGem'
 import PixelButton from '../shared/PixelButton'
 import AreaTag from '../shared/AreaTag'
 import { useAreas } from '../../hooks/useAreas'
-import { calculateTodoGold } from '../../lib/gameRules'
 import type { Todo, Project } from '../../types'
 
 interface Props {
@@ -62,7 +61,7 @@ export default function TodoCard({ todo, project, isOverdue, onComplete, onDelet
           <span className="font-grimoire text-grimoire-sm ink-muted italic">{project.title}</span>
         )}
         {!todo.completed && (
-          <span className="font-grimoire text-grimoire-sm ink-gold font-bold">+{calculateTodoGold(todo.difficulty)} RS</span>
+          <span className="font-grimoire text-grimoire-sm ink-gold font-bold"></span>
         )}
         {todo.shadow_stepped && (
           <span className="font-grimoire text-grimoire-sm ink-muted" title="Shadow stepped">👤+3d</span>

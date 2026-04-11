@@ -7,7 +7,7 @@ import StreakCounter from '../shared/StreakCounter'
 import PixelButton from '../shared/PixelButton'
 import AreaTag from '../shared/AreaTag'
 import { useAreas } from '../../hooks/useAreas'
-import { calculateDailyGold, todayStr } from '../../lib/gameRules'
+import { todayStr } from '../../lib/gameRules'
 import type { DailyTask } from '../../types'
 
 interface Props {
@@ -23,7 +23,6 @@ export default function DailyTaskCard({ task, onComplete, onDelete, onEdit, isCo
   const { colorFor } = useAreas(task.user_id)
   const today = todayStr()
   const isDone = task.last_completed_date === today
-  const goldPreview = calculateDailyGold(task.difficulty, task.streak)
 
   return (
     <div className={`group inventory-slot px-2 py-1.5 ${isDone ? 'completed-dim' : ''}`}>
@@ -56,7 +55,7 @@ export default function DailyTaskCard({ task, onComplete, onDelete, onEdit, isCo
         <DifficultyGem difficulty={task.difficulty} />
         <StreakCounter streak={task.streak} size="sm" />
         {!isDone && (
-          <span className="font-grimoire text-grimoire-sm ink-gold font-bold">+{goldPreview} RS</span>
+          <span className="font-grimoire text-grimoire-sm ink-gold font-bold"></span>
         )}
         {isDone && (
           <span className="font-grimoire text-grimoire-sm ink-green font-bold">✓</span>

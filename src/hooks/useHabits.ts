@@ -2,7 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { supabase } from '../lib/supabase'
 import { calculateBadHabitHP, calculateHabitGold } from '../lib/gameRules'
 import { useGameEconomy } from './useGameEconomy'
-import type { Habit, HabitLog } from '../types'
+import type { Player, Habit, HabitLog } from '../types'
 
 async function fetchHabits(userId: string): Promise<Habit[]> {
   const { data, error } = await supabase
@@ -29,6 +29,7 @@ async function fetchHabitLogs(userId: string): Promise<HabitLog[]> {
 
 export function useHabits(userId: string) {
   const qc = useQueryClient()
+  const player = qc.getQueryData<Player | null>(['player', userId])
   const economy = useGameEconomy(userId)
 
   const habitsQuery = useQuery({
@@ -63,12 +64,12 @@ export function useHabits(userId: string) {
       if (countError) throw countError
 
       if (direction === 'good') {
-        await economy.awardGold(calculateHabitGold(habit.difficulty))
+        await economy.awardGold(calculateHabitGold(habit.difficulty, player?.xp ?? 0))
       } else {
         if (economy.hasActiveEffect('smoke_bomb')) {
           await economy.consumeEffect('smoke_bomb')
         } else {
-          await economy.deductHP(calculateBadHabitHP(habit.difficulty))
+          await economy.deductHP(calculateBadHabitHP(habit.difficulty, player?.xp ?? 0))
         }
       }
     },

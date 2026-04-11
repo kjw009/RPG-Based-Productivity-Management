@@ -7,7 +7,7 @@ import {
   todayWeekday,
 } from '../lib/gameRules'
 import { useGameEconomy } from './useGameEconomy'
-import type { DailyTask } from '../types'
+import type { DailyTask, Player } from '../types'
 
 async function fetchDailies(userId: string): Promise<DailyTask[]> {
   const { data, error } = await supabase
@@ -21,6 +21,8 @@ async function fetchDailies(userId: string): Promise<DailyTask[]> {
 
 export function useDailies(userId: string) {
   const qc = useQueryClient()
+  // Read player from the React Query cache — same key used by usePlayer hook.
+  const player = qc.getQueryData<Player | null>(['player', userId])
   const economy = useGameEconomy(userId)
   const today = todayStr()
   const todayDow = todayWeekday()
@@ -42,7 +44,7 @@ export function useDailies(userId: string) {
       if (task.last_completed_date === today) return
 
       const newStreak = task.streak + 1
-      let gold = calculateDailyGold(task.difficulty, task.streak)
+      let gold = calculateDailyGold(task.difficulty, player?.xp ?? 0, task.streak)
 
       // Backstab triples gold for the next streak completion, then auto-expires
       if (task.streak > 0 && economy.hasActiveEffect('backstab')) {
