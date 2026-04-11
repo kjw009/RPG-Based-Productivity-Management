@@ -2,9 +2,9 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { supabase } from '../lib/supabase'
 import { endOfToday, endOfWeek, isEffectActive } from '../lib/gameRules'
 import { useGameEconomy } from './useGameEconomy'
-import type { Ability, ActiveEffect, Player, Todo } from '../types'
+import type { Stratagem, ActiveEffect, Player, Todo } from '../types'
 
-async function fetchAbilities(userId: string): Promise<Ability[]> {
+async function fetchAbilities(userId: string): Promise<Stratagem[]> {
   const { data, error } = await supabase
     .from('abilities')
     .select('*')
@@ -60,7 +60,7 @@ export function useAbilities(userId: string) {
    * - The player has enough mana
    * - Backstab isn't already active (once-per-day restriction)
    */
-  function canActivate(ability: Ability): boolean {
+  function canActivate(ability: Stratagem): boolean {
     const player = getPlayer()
     if (!player || player.mana < ability.mana_cost) return false
     if (ability.effect_type === 'backstab' && isArmed('backstab')) return false
@@ -72,7 +72,7 @@ export function useAbilities(userId: string) {
       ability,
       targetTodoId,
     }: {
-      ability: Ability
+      ability: Stratagem
       targetTodoId?: string
     }) => {
       const player = getPlayer()
