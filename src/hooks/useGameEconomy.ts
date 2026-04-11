@@ -183,6 +183,7 @@ export function useGameEconomy(userId: string) {
     hasActiveEffect,
     consumeEffect,
     awardGold,
+    awardXP,
     deductHP,
     handleKO,
     deductMana,
