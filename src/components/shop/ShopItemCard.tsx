@@ -5,7 +5,7 @@ import PixelButton from '../shared/PixelButton'
 import type { ShopItem, Player } from '../../types'
 
 const EFFECT_ICONS: Record<string, string> = {
-  health_potion: '🧪',
+  stim: '💉',
   double_gold:   '📜',
   custom:        '🎁',
 }
