@@ -66,7 +66,7 @@ export function useHabits(userId: string) {
       if (direction === 'good') {
         let goldEarned = calculateHabitGold(habit.difficulty, player?.xp ?? 0)
         await economy.awardGold(goldEarned)
-        await economy.awardXP(goldEarned * 1.5)
+        await economy.awardXP(Math.floor(goldEarned * 1.5))
       } else {
         if (economy.hasActiveEffect('smoke_bomb')) {
           await economy.consumeEffect('smoke_bomb')

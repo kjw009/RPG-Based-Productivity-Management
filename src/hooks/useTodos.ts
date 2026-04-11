@@ -29,7 +29,7 @@ export function useTodos(userId: string) {
       if (todo.completed) return
       let goldEarned = calculateTodoGold(todo.difficulty, player?.xp ?? 0)
       await economy.awardGold(goldEarned)
-      await economy.awardXP(goldEarned * 1.5)
+      await economy.awardXP(Math.floor(goldEarned * 1.5))
       const { error } = await supabase
         .from('todos')
         .update({ completed: true, completed_at: new Date().toISOString() })
