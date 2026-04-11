@@ -147,7 +147,7 @@ export default function Dashboard({ userId, onSignOut }: Props) {
 
         {/* ── Left Sidebar — Helldiver Profile ── */}
         <aside
-          className="grimoire-cover sticky top-0 h-screen overflow-y-auto flex-shrink-0"
+          className="grimoire-cover sticky top-0 h-screen overflow-hidden flex-shrink-0"
           style={{ width: 260 }}
         >
           {/* Header ID strip */}
