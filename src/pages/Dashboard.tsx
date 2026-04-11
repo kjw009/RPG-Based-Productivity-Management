@@ -10,7 +10,7 @@ import HabitSection from '../components/habits/HabitSection'
 import ProjectGrid from '../components/projects/ProjectGrid'
 import TodoList from '../components/todos/TodoList'
 import ShopGrid from '../components/shop/ShopGrid'
-import AbilityGrid from '../components/stratagems/StratagemGrid'
+import StratagemGrid from '../components/stratagems/StratagemGrid'
 import GoldCounter from '../components/player/GoldCounter'
 import HPBar from '../components/player/HPBar'
 import ManaBar from '../components/player/ManaBar'
@@ -131,7 +131,7 @@ export default function Dashboard({ userId, onSignOut }: Props) {
           />
           <TodoList userId={userId} filterProjectId={selectedProjectId} filterArea={selectedArea} />
           <ShopGrid userId={userId} />
-          <AbilityGrid userId={userId} />
+          <StratagemGrid userId={userId} />
           <div className="h-4" />
         </div>
       </div>
@@ -182,7 +182,7 @@ export default function Dashboard({ userId, onSignOut }: Props) {
 
           <div className="p-3 flex flex-col gap-4 relative z-10">
             <PlayerPanel player={player} onSignOut={onSignOut} />
-            <AbilityGrid userId={userId} />
+            <StratagemGrid userId={userId} />
             <div className="flex-1" />
 
             {/* Bottom classification stamp */}

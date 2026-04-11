@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import PixelButton from '../shared/PixelButton'
-import { getAbilityIcon } from './StratagemIcons'
+import { getStratagemIcon } from './StratagemIcons'
 import type { Stratagem, ActiveEffect, Todo } from '../../types'
 import { isEffectActive } from '../../lib/gameRules'
 
@@ -47,7 +47,7 @@ export default function StratagemCard({
     <div className={`inventory-slot px-2 py-1.5 ${armed ? 'armed-glow' : ''}`}>
       {/* Single row: icon + name + mana + activate */}
       <div className="flex items-center gap-1.5">
-        <div className="flex-shrink-0 animate-rune-glow">{getAbilityIcon(stratagem.effect_type)}</div>
+        <div className="flex-shrink-0 animate-rune-glow">{getStratagemIcon(stratagem.effect_type)}</div>
         <div className="flex-1 min-w-0">
           <div className="font-grimoire text-grimoire-base ink-text leading-tight font-bold truncate">
             {stratagem.name}

@@ -1,8 +1,8 @@
-// Detailed pixel-art SVG icons for each ability
+// Detailed pixel-art SVG icons for each stratagem
 
 function PickpocketIcon() {
   return (
-    <svg viewBox="0 0 16 16" width="28" height="28" className="ability-icon" style={{ imageRendering: 'pixelated' }}>
+    <svg viewBox="0 0 16 16" width="28" height="28" className="stratagem-icon" style={{ imageRendering: 'pixelated' }}>
       {/* Hand reaching into coin purse */}
       <rect x="4" y="2" width="8" height="6" rx="0" fill="#6a4a10" /> {/* purse body */}
       <rect x="5" y="1" width="6" height="1" fill="#8a6a18" /> {/* purse rim */}
@@ -25,7 +25,7 @@ function PickpocketIcon() {
 
 function ShadowStepIcon() {
   return (
-    <svg viewBox="0 0 16 16" width="28" height="28" className="ability-icon" style={{ imageRendering: 'pixelated' }}>
+    <svg viewBox="0 0 16 16" width="28" height="28" className="stratagem-icon" style={{ imageRendering: 'pixelated' }}>
       {/* Ghost / shadow figure */}
       <rect x="6" y="1" width="4" height="1" fill="#4a3a6e" opacity="0.7" />
       <rect x="5" y="2" width="6" height="2" fill="#3a2a5e" opacity="0.6" />
@@ -50,7 +50,7 @@ function ShadowStepIcon() {
 
 function SmokeBombIcon() {
   return (
-    <svg viewBox="0 0 16 16" width="28" height="28" className="ability-icon" style={{ imageRendering: 'pixelated' }}>
+    <svg viewBox="0 0 16 16" width="28" height="28" className="stratagem-icon" style={{ imageRendering: 'pixelated' }}>
       {/* Bomb body */}
       <rect x="6" y="8" width="4" height="4" fill="#3a3a3a" />
       <rect x="5" y="9" width="6" height="2" fill="#2a2a2a" />
@@ -76,7 +76,7 @@ function SmokeBombIcon() {
 
 function BackstabIcon() {
   return (
-    <svg viewBox="0 0 16 16" width="28" height="28" className="ability-icon" style={{ imageRendering: 'pixelated' }}>
+    <svg viewBox="0 0 16 16" width="28" height="28" className="stratagem-icon" style={{ imageRendering: 'pixelated' }}>
       {/* Dagger — ornate */}
       {/* Blade */}
       <rect x="3" y="2" width="1" height="7" fill="#c0d0e0" />
@@ -112,9 +112,9 @@ function BackstabIcon() {
   )
 }
 
-function DefaultAbilityIcon() {
+function DefaultStratagemIcon() {
   return (
-    <svg viewBox="0 0 16 16" width="28" height="28" className="ability-icon" style={{ imageRendering: 'pixelated' }}>
+    <svg viewBox="0 0 16 16" width="28" height="28" className="stratagem-icon" style={{ imageRendering: 'pixelated' }}>
       {/* Magic star/sparkle */}
       <rect x="7" y="1" width="2" height="3" fill="#d4a540" />
       <rect x="7" y="12" width="2" height="3" fill="#d4a540" />
@@ -140,14 +140,14 @@ function DefaultAbilityIcon() {
 }
 
 // Map effect_type to icon component
-const ABILITY_ICON_MAP: Record<string, () => JSX.Element> = {
+const STRATAGEM_ICON_MAP: Record<string, () => JSX.Element> = {
   pickpocket: PickpocketIcon,
   shadow_step: ShadowStepIcon,
   smoke_bomb: SmokeBombIcon,
   backstab: BackstabIcon,
 }
 
-export function getAbilityIcon(effectType: string) {
-  const Icon = ABILITY_ICON_MAP[effectType] ?? DefaultAbilityIcon
+export function getStratagemIcon(effectType: string) {
+  const Icon = STRATAGEM_ICON_MAP[effectType] ?? DefaultStratagemIcon
   return <Icon />
 }

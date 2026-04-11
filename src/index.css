@@ -685,13 +685,13 @@ body::after {
 /* ============================================================
    STRATAGEM / ABILITY ICONS
    ============================================================ */
-.ability-icon {
+.stratagem-icon {
   width: 28px;
   height: 28px;
   flex-shrink: 0;
 }
 
-.ability-icon svg {
+.stratagem-icon svg {
   filter: drop-shadow(0 0 4px rgba(125,249,255,0.4));
 }
 
