@@ -6,7 +6,7 @@ import type { Stratagem, ActiveEffect, Player, Todo } from '../types'
 
 async function fetchStratagems(userId: string): Promise<Stratagem[]> {
   const { data, error } = await supabase
-    .from('abilities')
+    .from('stratagems')
     .select('*')
     .eq('user_id', userId)
     .order('created_at', { ascending: true })
