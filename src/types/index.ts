@@ -7,6 +7,8 @@ export interface Player {
   max_hp: number
   mana: number
   max_mana: number
+  xp: number
+  max_xp: number
   gold: number
   sync_token: string
   created_at: string

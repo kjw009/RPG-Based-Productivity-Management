@@ -23,6 +23,28 @@ export function usePlayer(userId: string) {
   })
 }
 
+// Separate mutation hook for player updates, so we can keep the main usePlayer hook focused on data fetching and caching. This also lets us reuse the update logic
+// inside other hooks (useGameEconomy) without needing to call usePlayer inside them.
+export function useUpdatePlayer(userId: string) {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: async (updates: Partial<Player>) => {
+      // Auto-update rank_title when xp changes
+      if (updates.xp !== undefined) {
+        updates.rank_title = getRankTitle(updates.xp)
+      }
+      // Only update the fields that were actually changed, to avoid overwriting concurrent updates from other hooks.
+      const { error } = await supabase
+        .from('player')
+        .update(updates)
+        .eq('user_id', userId)
+      if (error) throw error
+    },
+    // Invalidate the player query to refresh data after an update.
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['player', userId] }),
+  })
+}
+
 export function useSeedPlayer(userId: string) {
   const qc = useQueryClient()
   return useMutation({

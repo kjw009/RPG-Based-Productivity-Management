@@ -1,12 +1,14 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { supabase } from '../lib/supabase'
 import {
+  getRank,
   getRankTitle,
   PICKPOCKET_GOLD_RECOVERY,
   isEffectActive,
 } from '../lib/gameRules'
 import { useGameContext } from '../context/GameContext'
 import type { Player, ActiveEffect } from '../types'
+import { useUpdatePlayer } from './usePlayer'
 
 /**
  * Central hook for all gold/HP/mana transactions.
@@ -51,30 +53,54 @@ export function useGameEconomy(userId: string) {
   /**
    * Awards gold to the player.
    * Automatically applies the Double Gold Scroll multiplier (×2) if active.
-   * Also updates lifetime_gold (used for rank) and recalculates rank_title.
    * Returns the final amount awarded after multipliers.
    */
-  async function awardGold(baseAmount: number): Promise<number> {
+  async function awardGold(goldReceived: number): Promise<number> {
     const player = getPlayer()
     if (!player) return 0
 
-    let amount = baseAmount
+    let goldEarned = goldReceived
 
     // Double Gold Scroll stacks on top of any other multiplier already applied
     if (hasActiveEffect('double_gold')) {
-      amount *= 2
+      goldEarned *= 2
     }
 
     const { error } = await supabase
       .from('player')
       .update({
-        gold: player.gold + amount,
+        gold: player.gold + goldEarned,
       })
       .eq('user_id', userId)
 
     if (error) throw error
     qc.invalidateQueries({ queryKey: ['player', userId] })
-    return amount
+    return goldEarned
+  }
+
+  /**
+   * Awards XP to the player and updates rank_title if needed.
+   * Returns the final amount awarded.
+   */
+  async function awardXP(xpReceived: number): Promise<number> {
+    const player = getPlayer()
+    if (!player) return 0
+
+    let xpGained = xpReceived
+    
+    // Update player attribute: add gold and recalculate rank_title based on new xp total
+    const { error } = await supabase
+      .from('player')
+      .update({
+        xp: player.xp + xpGained,
+        max_xp: getRank(player.xp + xpGained)?.max ?? player.max_xp, // Update max_xp if rank changes
+        rank_title: getRankTitle(player.xp + xpGained), // Update rank_title if rank changes
+      })
+      .eq('user_id', userId)
+
+    if (error) throw error
+    qc.invalidateQueries({ queryKey: ['player', userId] })
+    return xpGained
   }
 
   /**
