@@ -36,7 +36,10 @@ export function useTodos(userId: string) {
         .eq('id', todo.id)
       if (error) throw error
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['todos', userId] }),
+    onSuccess: (_, todo) => {
+      if (todo.difficulty > 3) window.dispatchEvent(new CustomEvent('hard-task-complete'))
+      qc.invalidateQueries({ queryKey: ['todos', userId] })
+    },
   })
 
   const addTodo = useMutation({

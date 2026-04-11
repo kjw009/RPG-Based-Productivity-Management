@@ -64,7 +64,10 @@ export function useDailies(userId: string) {
         .eq('id', task.id)
       if (error) throw error
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['dailies', userId] }),
+    onSuccess: (_, task) => {
+      if (task.difficulty > 3) window.dispatchEvent(new CustomEvent('hard-task-complete'))
+      qc.invalidateQueries({ queryKey: ['dailies', userId] })
+    },
   })
 
   const addTask = useMutation({
