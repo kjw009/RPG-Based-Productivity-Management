@@ -27,7 +27,9 @@ export function useTodos(userId: string) {
   const completeTodo = useMutation({
     mutationFn: async (todo: Todo) => {
       if (todo.completed) return
-      await economy.awardGold(calculateTodoGold(todo.difficulty, player?.xp ?? 0))
+      let goldEarned = calculateTodoGold(todo.difficulty, player?.xp ?? 0)
+      await economy.awardGold(goldEarned)
+      await economy.awardXP(Math.floor(goldEarned / 10))
       const { error } = await supabase
         .from('todos')
         .update({ completed: true, completed_at: new Date().toISOString() })
