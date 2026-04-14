@@ -49,6 +49,48 @@ export default function Dashboard({ userId, onSignOut }: Props) {
     return () => window.removeEventListener('resize', handler)
   }, [])
 
+  // Seeding failed — show an error instead of hanging on the loading screen forever
+  if (seedPlayer.isError) {
+    return (
+      <div className="min-h-screen bg-rpg-bg flex flex-col items-center justify-center gap-4 p-6">
+        <div
+          className="font-pixel text-pixel-sm"
+          style={{ color: '#FF3344', letterSpacing: '0.2em', textAlign: 'center' }}
+        >
+          UPLINK FAILED
+        </div>
+        <div
+          className="font-pixel text-pixel-xs"
+          style={{ color: '#2d5a7a', letterSpacing: '0.1em', textAlign: 'center', maxWidth: 320 }}
+        >
+          Could not initialize your Helldiver profile. Check your connection and try again.
+        </div>
+        {seedPlayer.error instanceof Error && (
+          <div
+            className="font-pixel text-pixel-xs"
+            style={{ color: '#1a3040', letterSpacing: '0.05em', textAlign: 'center', maxWidth: 320 }}
+          >
+            {seedPlayer.error.message}
+          </div>
+        )}
+        <button
+          className="font-pixel text-pixel-xs mt-2"
+          style={{ color: '#FFE710', letterSpacing: '0.15em', border: '1px solid #FFE710', padding: '8px 16px' }}
+          onClick={() => seedPlayer.mutate('Helldiver')}
+        >
+          RETRY
+        </button>
+        <button
+          className="font-pixel text-pixel-xs"
+          style={{ color: '#2d5a7a', letterSpacing: '0.1em' }}
+          onClick={onSignOut}
+        >
+          DISCONNECT
+        </button>
+      </div>
+    )
+  }
+
   if (playerLoading || !player) {
     return (
       <div className="min-h-screen bg-rpg-bg flex flex-col items-center justify-center gap-4">
