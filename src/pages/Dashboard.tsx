@@ -65,12 +65,12 @@ export default function Dashboard({ userId, onSignOut }: Props) {
         >
           Could not initialize your Helldiver profile. Check your connection and try again.
         </div>
-        {seedPlayer.error instanceof Error && (
+        {seedPlayer.error && (
           <div
             className="font-pixel text-pixel-xs"
-            style={{ color: '#1a3040', letterSpacing: '0.05em', textAlign: 'center', maxWidth: 320 }}
+            style={{ color: '#FF3344', letterSpacing: '0.05em', textAlign: 'center', maxWidth: 320, opacity: 0.7 }}
           >
-            {seedPlayer.error.message}
+            {(seedPlayer.error as any)?.message ?? JSON.stringify(seedPlayer.error)}
           </div>
         )}
         <button
